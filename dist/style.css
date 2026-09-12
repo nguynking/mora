@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light;
+  --paper: #f7f8fa;
+  --ink: #252a35;
+  --quiet: #676d79;
+  --accent: #2f50db;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; }
+header { padding: 2rem 3.5rem; }
+h1 { margin: 0; font: normal 2rem/1 Georgia, "Times New Roman", serif; letter-spacing: -.06em; }
+h1 span { color: var(--accent); }
+p { margin: 0; color: var(--quiet); }
+main { width: min(100%, 52rem); margin: auto; padding: clamp(2.5rem, 10vh, 6rem) 2rem 2rem; }
+.paper { position: relative; height: max(20rem, 49svh); }
+.writing {
+  width: 100%; height: 100%; margin: 0; padding: .25rem .75rem 3rem .25rem;
+  border: 0; border-radius: 0; background: transparent;
+  font: normal clamp(1.5rem, 2.3vw, 2rem)/1.65 Georgia, "Times New Roman", serif;
+  letter-spacing: 0; tab-size: 4; white-space: pre-wrap; overflow-wrap: break-word;
+  overflow: auto; scrollbar-width: none;
+}
+.writing::-webkit-scrollbar { display: none; }
+#mirror { pointer-events: none; }
+#mirror span { transition: opacity 120ms linear; }
+#editor { position: absolute; inset: 0; resize: none; color: transparent; caret-color: var(--accent); outline: none; }
+#editor::placeholder { color: #787e89; opacity: 1; }
+#editor::selection { background: #2f50db20; }
+.paper::before { content: ""; position: absolute; top: -1.75rem; left: .25rem; width: 1.5rem; height: 2px; background: var(--accent); }
+.fallback { text-align: center; padding: 1rem; }
+@media (max-width: 600px) {
+  header { padding: 1.75rem 1.5rem; }
+  main { padding: 4rem 1.5rem 1.5rem; }
+  .paper { height: max(18rem, 48svh); }
+}
+@media (prefers-reduced-motion: reduce) { #mirror span { transition: none; } }
+@media (forced-colors: active) {
+  #editor { forced-color-adjust: none; caret-color: Highlight; }
+  #mirror { color: CanvasText; }
+  .paper::before { background: Highlight; }
+}
