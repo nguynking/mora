@@ -10,16 +10,30 @@
   <title>Mora</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f50db'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='25' fill='white'%3Em%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <script src="app.js" type="module"></script>
 </head>
 <body>
-  <header><h1>mora<span aria-hidden="true">.</span></h1></header>
+  <div class="weather" aria-hidden="true"></div>
+  <canvas id="atmosphere" aria-hidden="true"></canvas>
+  <header>
+    <h1><button id="release" aria-label="Hold to clear the page. Hold Space or Enter when using a keyboard." title="Hold to let go">mora<span aria-hidden="true">.</span></button></h1>
+    <button id="room-button" class="presence" aria-label="Open shared silence" title="Shared silence"><span aria-hidden="true"></span></button>
+  </header>
   <main>
     <div class="paper">
       <div id="mirror" class="writing" aria-hidden="true"></div>
       <textarea id="editor" class="writing" aria-label="Your thoughts" placeholder="What's on your mind?" spellcheck="false" autocomplete="off" autocapitalize="sentences" autofocus></textarea>
     </div>
   </main>
+  <dialog id="room-dialog" aria-labelledby="room-title">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <h2 id="room-title">Shared silence</h2>
+    <p>Only presence is shared. Your words stay yours.</p>
+    <p id="room-status" role="status">Invite someone to write alongside you.</p>
+    <button id="invite">Copy invitation</button>
+    <button id="leave" hidden>Leave room</button>
+    <input id="room-link" aria-label="Room invitation link" readonly hidden>
+  </dialog>
   <noscript><p class="fallback">Enable JavaScript to write and watch your words fade.</p></noscript>
 </body>
 </html>
