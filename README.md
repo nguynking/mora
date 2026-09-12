@@ -1,10 +1,10 @@
 # Mora
 
-A quiet writing space. Words fade in place with a little dust, typing stirs the page edges, and finished paragraphs leave temporary stars.
+A writing canvas made of light. Keystrokes create ripples, completed words send sparks into a luminous orbit, and words fade in place. Finished paragraphs leave temporary stars.
 
 [Open Mora](https://mora.nguynking.chatgpt.site)
 
-Hold the logo (or hold Space/Enter while it is focused) to let everything go. The small circle opens a private invitation: visitors share presence, never their writing. Reduced-motion preferences are respected.
+Hold the glowing circle or logo to draw your writing into the orbit and start again. Keyboard: hold Space/Enter with either control focused. “Together” opens a private invitation: visitors share presence, never their words. Reduced motion keeps the orbit still and removes moving effects.
 
 Text stays only in page memory until cleared, reloaded, or closed. The server stores anonymous presence; inactive visitors disappear after 12 seconds, and stale rows are pruned on subsequent activity.
 

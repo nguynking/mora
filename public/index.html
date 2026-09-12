@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f8fa">
+  <meta name="theme-color" content="#080c16">
   <meta name="description" content="A quiet place to write. Your words slowly fade away.">
   <meta property="og:title" content="Mora">
   <meta property="og:description" content="A quiet place to write and let go.">
   <title>Mora</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f50db'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='25' fill='white'%3Em%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23080c16'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='25' fill='%23a4caff'%3Em%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" type="module"></script>
 </head>
@@ -17,14 +17,17 @@
   <canvas id="atmosphere" aria-hidden="true"></canvas>
   <header>
     <h1><button id="release" aria-label="Hold to clear the page. Hold Space or Enter when using a keyboard." title="Hold to let go">mora<span aria-hidden="true">.</span></button></h1>
-    <button id="room-button" class="presence" aria-label="Open shared silence" title="Shared silence"><span aria-hidden="true"></span></button>
+    <button id="room-button" class="presence" aria-label="Open shared silence" title="Shared silence"><span aria-hidden="true"></span><span class="presence-label">together</span></button>
   </header>
   <main>
     <div class="paper">
       <div id="mirror" class="writing" aria-hidden="true"></div>
-      <textarea id="editor" class="writing" aria-label="Your thoughts" placeholder="What's on your mind?" spellcheck="false" autocomplete="off" autocapitalize="sentences" autofocus></textarea>
+      <textarea id="editor" class="writing" aria-label="Your thoughts" placeholder="Let it out." spellcheck="false" autocomplete="off" autocapitalize="sentences" autofocus></textarea>
     </div>
   </main>
+  <div class="release-space">
+    <button id="portal" aria-label="Hold to release your writing. Hold Space or Enter when using a keyboard." title="Hold to release"><span>hold to release</span></button>
+  </div>
   <dialog id="room-dialog" aria-labelledby="room-title">
     <form method="dialog"><button class="close" aria-label="Close">×</button></form>
     <h2 id="room-title">Shared silence</h2>

@@ -6,6 +6,7 @@ const mirror = document.querySelector('#mirror');
 const lifetime = 30_000;
 let text = '', born = [], fading = [], composing = false, releasing = false;
 const emitted = new Map();
+let caret = null;
 
 // Keep a native textarea for selection, mobile keyboards, and Vietnamese input.
 // The mirror paints each word; timestamps never leave this page's memory.
@@ -18,7 +19,8 @@ function sync(event) {
   text = next;
   render();
   if (event) {
-    rhythm(); typing();
+    const completed = /[\s.!?,;:]$/.test(next.slice(0, editor.selectionStart));
+    rhythm(caret, completed); typing();
     if (!composing && event.inputType === 'insertLineBreak' && next.slice(0, editor.selectionStart).split('\n').at(-2)?.trim()) paragraph();
   }
 }
@@ -27,6 +29,7 @@ function render() {
   const now = Date.now();
   const fragment = document.createDocumentFragment();
   fading = [];
+  let caretSpan = null, caretOffset = 0;
   for (const match of text.matchAll(/\S+\s*|\s+/gu)) {
     const chunk = match[0], index = match.index;
     // Completing a word starts its own clock, without refreshing older words.
@@ -38,12 +41,22 @@ function render() {
     span.style.opacity = Math.max(0, 1 - (now - latest) / lifetime).toFixed(3);
     if (now - latest < lifetime) fading.push({ span, latest, key: `${index}:${latest}` });
     fragment.append(span);
+    if (editor.selectionStart >= index && editor.selectionStart <= index + chunk.length) { caretSpan = span; caretOffset = editor.selectionStart - index; }
   }
   // A final newline needs a line box to match the native textarea's scrolling.
   fragment.append(document.createTextNode('\u200b'));
   mirror.replaceChildren(fragment);
   mirror.scrollTop = editor.scrollTop;
+  if (caretSpan) {
+    const range = document.createRange();
+    range.setStart(caretSpan.firstChild, caretOffset); range.collapse(true);
+    const r = range.getClientRects()[0] || caretSpan.getClientRects()[0];
+    const bounds = paperBounds();
+    caret = r && r.top >= bounds.top && r.bottom <= bounds.bottom ? { x: r.left, y: r.top + r.height * .75 } : null;
+  } else caret = null;
 }
+
+function paperBounds() { return document.querySelector('.paper').getBoundingClientRect(); }
 
 // Fade only the ink. Keep every character and line break in the layout so
 // time passing never moves later words, changes selection, or shifts the caret.
@@ -70,7 +83,7 @@ releaseGesture(() => {
   setTimeout(() => {
     reset(); document.body.classList.remove('releasing');
     editor.readOnly = false; releasing = false; editor.focus();
-  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700);
+  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1500);
 });
 
 editor.addEventListener('input', sync);
