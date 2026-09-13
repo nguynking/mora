@@ -45,8 +45,9 @@ export default {
     }
     const asset = assets[url.pathname === '/index.html' ? '/' : url.pathname];
     if (!asset || !['GET', 'HEAD'].includes(request.method)) return new Response('Not found', { status: 404 });
-    return new Response(request.method === 'HEAD' ? null : asset.body, { headers: {
-      'Content-Type': asset.type + '; charset=utf-8',
+    const body = request.method === 'HEAD' ? null : asset.base64 ? Uint8Array.from(atob(asset.body), c => c.charCodeAt(0)) : asset.body;
+    return new Response(body, { headers: {
+      'Content-Type': asset.type + (asset.base64 ? '' : '; charset=utf-8'),
       'Cache-Control': 'no-cache',
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'no-referrer',
