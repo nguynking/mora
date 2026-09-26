@@ -1,1379 +1,610 @@
 <title>Mora Brand Book</title>
-<meta name="description" content="Mora brand guideline v2: an interactive brand book for the AI-native work chat for Vietnamese teams.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<meta name="description" content="Mora brand guideline v3: a monochrome, Grok Bot-style work chat where bots are the only color.">
 <style>
 :root{
-  --paper:#F5F4F0; --surface:#FFFFFF; --sunken:#EDEBE4; --select:#E7E4DC; --line:#E2DED4; --control:#8C8578;
-  --ink:#1D1C19; --ink-2:#5E5A51;
-  --jade:#0B6B57; --jade-hover:#08594A; --on-jade:#FFFFFF; --jade-tint:#E4F1EC; --jade-ink:#0A5A49;
-  --turmeric:#E0A032; --turmeric-tint:#FBEED3; --turmeric-soft:#FFF8EB; --turmeric-line:#EFD9AA; --turmeric-ink:#80480A;
-  --lacquer:#B42318; --lacquer-tint:#FCEAE7;
-  --tone-0-bg:#E6E1D8; --tone-0-fg:#4F473C; --tone-1-bg:#DFE4EA; --tone-1-fg:#44505D; --tone-2-bg:#E6DFE3; --tone-2-fg:#56474F;
-  --shadow:0 12px 40px rgb(29 28 25 / 16%);
-  --font:"Be Vietnam Pro","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bg:#FFFFFF; --sidebar:#F7F7F7; --field:#EBEBEB; --hover:#EFEFEF; --selected:#E8E8E8;
+  --bubble:#F0F0F0; --own:#0A0A0A; --own-fg:#FFFFFF; --fg:#0A0A0A; --fg-2:#666666; --line:#EBEBEB; --input:#CFCFCF;
+  --primary:#0A0A0A; --primary-hover:#333333; --on-primary:#FFFFFF; --composer:#FFFFFF; --working:#8B5CF6; --danger:#D92D20;
+  --page:#FAFAFA; --shadow:0 12px 40px rgb(0 0 0 / 12%); --composer-shadow:0 2px 14px rgb(0 0 0 / 6%);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --paper:#141412; --surface:#1C1B18; --sunken:#25231F; --select:#2A2824; --line:#35332D; --control:#7C766A;
-    --ink:#F1EEE7; --ink-2:#A8A294;
-    --jade:#43C29E; --jade-hover:#5FD0AF; --on-jade:#0B1F1A; --jade-tint:#15302A; --jade-ink:#6FD6B6;
-    --turmeric:#F0B45A; --turmeric-tint:#352914; --turmeric-soft:#231E14; --turmeric-line:#4A3A1C; --turmeric-ink:#F4C47A;
-    --lacquer:#F07A6E; --lacquer-tint:#3A1D1A;
-    --tone-0-bg:#33302A; --tone-0-fg:#D9D2C4; --tone-1-bg:#2A3038; --tone-1-fg:#C9D2DC; --tone-2-bg:#342C30; --tone-2-fg:#D8C9D0;
-    --shadow:0 12px 40px rgb(0 0 0 / 50%);
+    --bg:#141414; --sidebar:#1B1B1B; --field:#262626; --hover:#242424; --selected:#2C2C2C;
+    --bubble:#262626; --own:#3F3F3F; --own-fg:#FFFFFF; --fg:#EDEDED; --fg-2:#9B9B9B; --line:#2A2A2A; --input:#4A4A4A;
+    --primary:#EDEDED; --primary-hover:#FFFFFF; --on-primary:#0A0A0A; --composer:#232323; --working:#A78BFA; --danger:#F97066;
+    --page:#0E0E0E; --shadow:0 12px 40px rgb(0 0 0 / 50%); --composer-shadow:none;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --paper:#141412; --surface:#1C1B18; --sunken:#25231F; --select:#2A2824; --line:#35332D; --control:#7C766A;
-  --ink:#F1EEE7; --ink-2:#A8A294;
-  --jade:#43C29E; --jade-hover:#5FD0AF; --on-jade:#0B1F1A; --jade-tint:#15302A; --jade-ink:#6FD6B6;
-  --turmeric:#F0B45A; --turmeric-tint:#352914; --turmeric-soft:#231E14; --turmeric-line:#4A3A1C; --turmeric-ink:#F4C47A;
-  --lacquer:#F07A6E; --lacquer-tint:#3A1D1A;
-  --tone-0-bg:#33302A; --tone-0-fg:#D9D2C4; --tone-1-bg:#2A3038; --tone-1-fg:#C9D2DC; --tone-2-bg:#342C30; --tone-2-fg:#D8C9D0;
-  --shadow:0 12px 40px rgb(0 0 0 / 50%);
+  --bg:#141414; --sidebar:#1B1B1B; --field:#262626; --hover:#242424; --selected:#2C2C2C;
+  --bubble:#262626; --own:#3F3F3F; --own-fg:#FFFFFF; --fg:#EDEDED; --fg-2:#9B9B9B; --line:#2A2A2A; --input:#4A4A4A;
+  --primary:#EDEDED; --primary-hover:#FFFFFF; --on-primary:#0A0A0A; --composer:#232323; --working:#A78BFA; --danger:#F97066;
+  --page:#0E0E0E; --shadow:0 12px 40px rgb(0 0 0 / 50%); --composer-shadow:none;
 }
-
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--page);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 button:disabled{cursor:default}
 svg{flex-shrink:0}
-:focus-visible{outline:2px solid var(--jade);outline-offset:2px}
-h1,h2,h3,h4{margin:0;text-wrap:balance;line-height:1.25}
+h1,h2,h3,h4,h5{margin:0;text-wrap:balance;line-height:1.2}
 p{margin:0}
-code,.mono{font-family:var(--mono);font-size:.875em}
+:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
 .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 .ic.sm{width:16px;height:16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:.875em}
 
-/* top bar */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px}
-.lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex-shrink:0}
-.wordmark{font-weight:700;letter-spacing:-.035em;font-size:22px;line-height:1}
+/* top */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--page);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:56px}
+.lockup{display:flex;align-items:center;gap:8px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em}
 .nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
 .nav::-webkit-scrollbar{display:none}
-.nav a{padding:6px 10px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
-.nav a:hover{background:var(--sunken);color:var(--ink)}
-.seg{display:inline-flex;background:var(--sunken);border-radius:10px;padding:3px;gap:2px;flex-shrink:0}
-.seg button{border:0;background:none;border-radius:8px;padding:5px 10px;font-size:13px;font-weight:500;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;min-height:32px}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / 8%)}
-@media (max-width:760px){.top .wrap{flex-wrap:wrap;padding-block:8px;gap:8px}.nav{order:3;flex-basis:100%}.lockup{margin-right:auto}.seg .lbl{display:none}}
+.nav a{padding:6px 10px;border-radius:999px;color:var(--fg-2);text-decoration:none;font-size:14px;white-space:nowrap}
+.nav a:hover{background:var(--hover);color:var(--fg)}
+.seg{display:inline-flex;background:var(--field);border-radius:999px;padding:3px;gap:2px;flex-shrink:0}
+.seg button{border:0;background:none;border-radius:999px;padding:4px 12px;font-size:13px;color:var(--fg-2);min-height:30px}
+.seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0 / 10%)}
+@media (max-width:760px){.top .wrap{flex-wrap:wrap;padding-block:8px;gap:8px}.nav{order:3;flex-basis:100%}.lockup{margin-right:auto}}
 
-/* sections */
 section{padding-block:72px;border-bottom:1px solid var(--line)}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-bottom:12px}
-.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px 56px;align-items:end;margin-bottom:40px}
-.sec-head h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.02em}
-.sec-head p{color:var(--ink-2);max-width:62ch}
+.eyebrow{font-size:13px;color:var(--fg-2);margin-bottom:10px}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px 56px;align-items:end;margin-bottom:36px}
+.sec-head h2{font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.025em}
+.sec-head p{color:var(--fg-2);max-width:60ch}
 @media (max-width:820px){.sec-head{grid-template-columns:1fr}}
-.sub{font-size:18px;font-weight:600;margin-bottom:16px;line-height:1.4}
-.note{font-size:14px;color:var(--ink-2)}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media (max-width:900px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
-.stack{display:flex;flex-direction:column;gap:12px}
-.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+@media (max-width:640px){.grid3{grid-template-columns:1fr}}
+.note{font-size:14px;color:var(--fg-2)}
+.sub{font-size:17px;font-weight:600;margin-bottom:8px}
 
 /* hero */
-.hero{padding-block:72px 64px}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:center}
-.hero h1{font-size:clamp(40px,7vw,80px);font-weight:800;letter-spacing:-.035em;line-height:1.2}
-.hero h1 .en{display:block;font-size:.34em;font-weight:500;letter-spacing:-.01em;color:var(--ink-2);margin-top:18px;line-height:1.3}
-.hero .lede{font-size:18px;color:var(--ink-2);max-width:56ch;margin-top:24px}
-.hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-.fact{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px;font-weight:500}
-.fact i{width:20px;height:20px;border-radius:50%;display:block}
-.hero-mark{position:relative;display:grid;place-items:center;aspect-ratio:1;max-width:420px;width:100%;justify-self:center}
-.hero-mark svg{width:52%;height:auto}
-.callout{position:absolute;font-size:13px;line-height:1.35;color:var(--ink-2);max-width:14ch}
-.callout b{display:block;color:var(--ink);font-weight:600}
-.callout.c1{left:0;top:2%}.callout.c2{right:0;top:2%;text-align:right}.callout.c3{left:50%;bottom:2%;transform:translateX(-50%);text-align:center;max-width:22ch}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-mark{max-width:340px}}
+.hero{padding-block:80px 64px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:center}
+.hero h1{font-family:var(--display);font-size:clamp(40px,7vw,76px);font-weight:600;letter-spacing:-.04em;line-height:1.15}
+.hero .en{font-size:clamp(18px,2.4vw,24px);color:var(--fg-2);margin-top:16px;letter-spacing:-.01em}
+.hero .lede{font-size:17px;color:var(--fg-2);max-width:54ch;margin-top:24px}
+.hero-bots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;justify-items:center;align-items:center;max-width:360px;width:100%;justify-self:center}
+.hero-bots svg{width:100%;max-width:96px;height:auto}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-bots{max-width:300px}}
 
-/* avatars */
-.av{width:36px;height:36px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:600;flex-shrink:0;line-height:1}
-.av.t0{background:var(--tone-0-bg);color:var(--tone-0-fg)}.av.t1{background:var(--tone-1-bg);color:var(--tone-1-fg)}.av.t2{background:var(--tone-2-bg);color:var(--tone-2-fg)}
-.av.ai{border-radius:30%;background:var(--turmeric-tint);color:var(--turmeric-ink)}
-.av.ai svg{width:58%;height:58%}
-.av.room{border-radius:10px;background:var(--sunken);color:var(--ink-2)}
-.av.sm{width:28px;height:28px;font-size:11px}
-.av.xs{width:22px;height:22px;font-size:10px}
-.ai-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:6px;background:var(--turmeric-tint);color:var(--turmeric-ink);line-height:1.5}
-
-/* chips */
-.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:3px 10px 3px 8px;border-radius:999px;line-height:1.5;white-space:nowrap}
-.chip.neutral{background:var(--sunken);color:var(--ink-2)}
-.chip.attn{background:var(--turmeric-tint);color:var(--turmeric-ink)}
-.chip.ok{background:var(--jade-tint);color:var(--jade-ink)}
-.chip.bad{background:var(--lacquer-tint);color:var(--lacquer)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--turmeric);display:inline-block;flex-shrink:0}
-.pulse{animation:pulse 1.6s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:8px 16px;border-radius:10px;font-size:14px;font-weight:600;border:1px solid transparent;transition:background-color .12s ease-out,border-color .12s ease-out,color .12s ease-out;white-space:nowrap}
-.btn.primary{background:var(--jade);color:var(--on-jade)}
-.btn.primary:hover,.btn.primary.is-hover{background:var(--jade-hover)}
-.btn.secondary{background:var(--surface);border-color:var(--control);color:var(--ink)}
-.btn.secondary:hover,.btn.secondary.is-hover{background:var(--sunken)}
-.btn.quiet{background:none;color:var(--jade-ink);padding-inline:10px}
-.btn.quiet:hover,.btn.quiet.is-hover{background:var(--jade-tint)}
-.btn.stop{background:var(--surface);border-color:var(--lacquer);color:var(--lacquer)}
-.btn.stop:hover,.btn.stop.is-hover{background:var(--lacquer-tint)}
-.btn.danger{background:var(--lacquer);color:var(--surface)}
-.btn.danger:hover,.btn.danger.is-hover{filter:brightness(.92)}
-.btn.is-focus{outline:2px solid var(--jade);outline-offset:2px}
-.btn:disabled{background:var(--sunken);color:var(--ink-2);border-color:transparent;filter:none}
-.btn.sm{min-height:32px;padding:5px 12px;font-size:13px}
-.spin{width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
+/* shared chat components (mirror app/globals.css) */
+.avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600;line-height:1;background:var(--field);color:var(--fg-2)}
+.avatar.group{border-radius:30%}
+.bot-face{display:block;flex-shrink:0;overflow:visible}
+.bot-face.is-mora{color:var(--fg)}
+.bot-face .eyes{transform-box:fill-box;transform-origin:center}
+.bot-face.is-waiting .eyes{transform:translateY(-8%);animation:bot-blink 4.5s ease-in-out infinite}
+.bot-face.is-working{animation:bot-bob .9s ease-in-out infinite}
+.bot-face.is-working .eyes{animation:bot-scan 1.8s ease-in-out infinite}
+@keyframes bot-bob{50%{transform:translateY(-7%)}}
+@keyframes bot-scan{0%,100%{transform:translateX(-10%)}50%{transform:translateX(10%)}}
+@keyframes bot-blink{0%,92%,100%{transform:translateY(-8%) scaleY(1)}96%{transform:translateY(-8%) scaleY(.15)}}
+.ai-label{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--fg-2);border:1px solid var(--line);border-radius:6px;padding:0 5px;line-height:1.45;flex-shrink:0}
+.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;border:0;background:none;color:var(--fg-2);border-radius:10px;flex-shrink:0}
+.icon-btn:hover{background:var(--hover);color:var(--fg)}
+.icon-btn.is-active{color:var(--working)}
+.msg{display:flex;flex-direction:column;align-items:flex-start;margin-top:4px}
+.msg.run{margin-top:14px}
+.msg.own{align-items:flex-end}
+.author{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--fg-2);margin:0 0 6px 2px}
+.bubble{max-width:min(520px,80%);background:var(--bubble);border-radius:18px;padding:10px 16px;font-size:15.5px;line-height:1.5;overflow-wrap:anywhere}
+.own .bubble{background:var(--own);color:var(--own-fg)}
+.event{text-align:center;font-size:13px;color:var(--fg-2);margin:16px auto;max-width:36rem}
+.event b{font-weight:400;color:var(--fg)}
+.divider{text-align:center;font-size:12px;color:var(--fg-2);padding:18px 0 6px;font-variant-numeric:tabular-nums}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--fg-2);opacity:.5;animation:typing 1.2s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes typing{30%{opacity:1;transform:translateY(-2px)}}
+.plan{max-width:min(520px,92%);margin-top:14px;background:var(--bubble);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.plan header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-inline:4px}
+.plan .kicker{font-size:12px;font-weight:600;color:var(--fg-2)}
+.plan h4{font-size:16px;font-weight:600;padding-inline:4px}
+.plan ol{margin:0;padding:12px 14px 12px 34px;background:var(--bg);border-radius:12px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--fg-2);white-space:nowrap}
+.status.on{color:var(--fg)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;min-height:36px;padding:6px 14px;font-size:14px;font-weight:500;border:1px solid transparent}
+.btn.primary{background:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover)}
+.btn.outline{border-color:var(--input);background:transparent}
+.btn.outline:hover{background:var(--hover)}
+.composer{display:flex;align-items:flex-end;gap:6px;background:var(--composer);border:1px solid var(--line);border-radius:26px;padding:6px;box-shadow:var(--composer-shadow)}
+.composer:focus-within{border-color:var(--input)}
+.composer textarea{flex:1;border:0;background:none;resize:none;min-height:40px;max-height:120px;padding:8px 4px;font-size:16px;line-height:1.5;min-width:0}
+.composer textarea:focus-visible{outline:none}
+.plus,.send{width:40px;height:40px;border-radius:50%;border:0;display:inline-grid;place-items:center;flex-shrink:0}
+.plus{background:var(--bubble);color:var(--fg)}
+.send{background:var(--primary);color:var(--on-primary)}
+.send:disabled{background:var(--bubble);color:var(--fg-2)}
+.spin{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* messages */
-.msg{display:flex;gap:10px;align-items:flex-start;margin-block:14px}
-.msg .body{min-width:0;max-width:min(86%,560px)}
-.msg .who{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-bottom:4px;flex-wrap:wrap}
-.msg .who time{font-weight:400;color:var(--ink-2);font-size:12px;font-variant-numeric:tabular-nums}
-.bubble{background:var(--surface);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:10px 14px;font-size:15px;line-height:1.6;overflow-wrap:anywhere}
-.msg.own{justify-content:flex-end}
-.msg.own .bubble{background:var(--jade-tint);border-color:var(--jade-tint);border-radius:16px 4px 16px 16px}
-.msg.own .who{justify-content:flex-end}
-.msg.agent .bubble{background:var(--turmeric-soft);border-color:var(--turmeric-line)}
-.mention{font-weight:600;border-radius:5px;padding:0 3px}
-.mention.p{color:var(--jade-ink);background:var(--jade-tint)}
-.mention.a{color:var(--turmeric-ink);background:var(--turmeric-tint)}
-.sys{text-align:center;font-size:12px;color:var(--ink-2);margin-block:10px}
-.day{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--ink-2);margin-block:20px 8px;font-weight:500}
-.day::before,.day::after{content:"";flex:1;height:1px;background:var(--line)}
+/* live app */
+.app{display:grid;grid-template-columns:272px minmax(0,1fr) 300px;height:640px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--bg);box-shadow:var(--shadow)}
+.app.rail{grid-template-columns:72px minmax(0,1fr) 300px}
+.app.no-panel{grid-template-columns:272px minmax(0,1fr)}
+.app.rail.no-panel{grid-template-columns:72px minmax(0,1fr)}
+.app.no-panel .a-panel{display:none}
+.a-side{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;padding:0 10px}
+.a-side-h{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.a-search{display:flex;align-items:center;gap:8px;background:var(--field);border-radius:10px;padding:0 12px;min-height:36px;color:var(--fg-2);font-size:14px;margin-bottom:10px}
+.a-rows{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin}
+.a-row{width:100%;display:flex;align-items:center;gap:12px;padding:8px;border:0;border-radius:12px;background:none;text-align:left;margin-bottom:2px}
+.a-row:hover{background:var(--hover)}
+.a-row.sel{background:var(--selected)}
+.a-copy{flex:1;min-width:0}
+.a-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.a-top b{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-top time{font-size:12px;color:var(--fg-2);flex-shrink:0}
+.a-prev{display:block;font-size:13px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-foot{display:flex;align-items:center;gap:10px;padding:12px 8px 14px;font-size:14px;font-weight:500}
+.rail .a-side{padding-inline:8px}
+.rail .a-side-h{flex-direction:column;gap:4px;padding-top:8px}
+.rail .a-search{display:none}
+.rail .a-row{justify-content:center;padding:8px 0}
+.rail .a-copy,.rail .a-foot span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.rail .a-foot{justify-content:center}
+.a-conv{display:flex;flex-direction:column;min-width:0;min-height:0}
+.a-head{display:flex;align-items:center;gap:4px;min-height:52px;padding:0 10px 0 14px}
+.a-head .who{display:flex;align-items:center;gap:8px;margin-right:auto;min-width:0;font-weight:600;font-size:15px}
+.a-head .who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-scroll{flex:1;overflow-y:auto;min-height:0;padding:0 22px 12px;scrollbar-width:thin}
+.a-compose{padding:4px 22px 18px}
+.a-panel{background:var(--sidebar);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.a-panel-h{display:flex;justify-content:space-between;align-items:center;min-height:52px;padding:0 8px 0 18px;font-weight:600;font-size:15px}
+.a-panel-b{flex:1;overflow-y:auto;min-height:0;padding:4px 18px 24px;display:flex;flex-direction:column;gap:24px}
+.p-id{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding-top:10px}
+.p-id h4{font-size:16px;margin-top:10px}
+.p-id p{font-size:13px;color:var(--fg-2)}
+.p-sec h5{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--fg-2)}
+.p-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.p-list li{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.p-list li b{font-weight:600}
+.p-ctx{font-size:14px;margin:0}
+.p-ctx dt{font-size:12px;color:var(--fg-2);margin-top:10px}
+.p-ctx dt:first-child{margin-top:0}
+.p-ctx dd{margin:2px 0 0}
+@media (max-width:1040px){
+  .app,.app.rail{grid-template-columns:72px minmax(0,1fr) 280px}
+  .app.no-panel,.app.rail.no-panel{grid-template-columns:72px minmax(0,1fr)}
+  .app .a-side{padding-inline:8px}
+  .app .a-search,.rail-btn{display:none}
+  .app .a-row{justify-content:center;padding:8px 0}
+  .app .a-copy,.app .a-foot span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .app .a-side-h{flex-direction:column;gap:4px;padding-top:8px}
+  .app .a-foot{justify-content:center}
+}
+@media (max-width:720px){.app,.app.rail,.app.no-panel,.app.rail.no-panel{display:flex;flex-direction:column;height:auto}.a-side{display:none}.a-conv{height:560px}.a-panel{border-left:0;border-top:1px solid var(--line)}.a-scroll,.a-compose{padding-inline:12px}}
+.app-note{margin-top:18px}
 
-/* task card */
-.task{background:var(--surface);border:1px solid var(--turmeric-line);border-radius:14px;margin-top:8px;overflow:hidden;font-size:14px}
-.task-h{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--turmeric-soft);border-bottom:1px solid var(--turmeric-line);flex-wrap:wrap}
-.task-h strong{font-size:15px;flex:1;min-width:12ch}
-.task-ctx{padding:10px 14px 0;color:var(--ink-2);font-size:13px}
-.task ol{list-style:none;margin:0;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
-.task li{display:flex;gap:10px;align-items:flex-start;line-height:1.5}
-.step-i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px;border:1.5px solid var(--line);color:var(--ink-2);background:var(--surface)}
-.step-i.done{background:var(--jade);border-color:var(--jade);color:var(--on-jade)}
-.step-i.now{border-color:var(--turmeric)}
-.step-i.now .dot{width:8px;height:8px}
-li.is-done{color:var(--ink-2)}
-.task-f{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px 14px;border-top:1px solid var(--line)}
-.task-f .note{flex:1;min-width:16ch;font-size:13px}
-.pr{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-top:1px solid var(--line)}
-.pr .ic{color:var(--jade)}
-.pr b{display:block;font-size:14px}
-.pr small{display:block;color:var(--ink-2);font-size:13px;font-variant-numeric:tabular-nums}
-.bar{height:4px;background:var(--sunken);border-radius:4px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--turmeric);border-radius:4px;transition:width .2s ease-out}
-
-/* mock app */
-.mock{display:grid;grid-template-columns:248px minmax(0,1fr) 320px;height:660px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow)}
-.m-rooms{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;padding:0 10px}
-.m-ws{display:flex;align-items:center;gap:10px;min-height:56px;padding-inline:6px;font-weight:600;font-size:15px}
-.m-search{display:flex;align-items:center;gap:8px;background:var(--sunken);border-radius:10px;padding:8px 10px;color:var(--ink-2);font-size:13px;margin-bottom:12px}
-.m-label{font-size:12px;font-weight:600;color:var(--ink-2);padding:10px 8px 6px}
-.m-row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:12px;font-size:14px;font-weight:500;color:var(--ink)}
-.m-row.sel{background:var(--select)}
-.m-row > span:not(.av){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m-row .count{flex:0 0 auto;font-size:11px;font-weight:600;background:var(--ink);color:var(--paper);border-radius:999px;padding:0 7px;line-height:18px}
-.m-foot{margin-top:auto;padding:12px 8px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-2)}
-.m-foot .meter{margin-top:6px}
-.m-conv{display:flex;flex-direction:column;min-width:0;min-height:0}
-.m-head{display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--line)}
-.m-head h3{font-size:15px;font-weight:600;flex:1;min-width:0}
-.m-head h3 small{display:block;font-size:12px;color:var(--ink-2);font-weight:400}
-.faces{display:flex}
-.faces .av{border:2px solid var(--surface);margin-left:-6px}
-.m-scroll{flex:1;overflow-y:auto;padding:4px 20px 12px;min-height:0;scrollbar-width:thin}
-.m-compose{padding:8px 16px 14px}
-.composer{display:flex;align-items:flex-end;gap:6px;background:var(--surface);border:1px solid var(--control);border-radius:28px;padding:5px}
-.composer:focus-within{border-color:var(--jade)}
-.composer .fake{flex:1;padding:8px 6px;color:var(--ink-2);font-size:15px}
-.icon-btn{width:38px;height:38px;border-radius:50%;border:0;background:none;color:var(--ink-2);display:inline-grid;place-items:center;flex-shrink:0}
-.icon-btn:hover{background:var(--sunken);color:var(--ink)}
-.send{width:38px;height:38px;border-radius:50%;border:0;background:var(--jade);color:var(--on-jade);display:inline-grid;place-items:center;flex-shrink:0}
-.send:disabled{background:var(--sunken);color:var(--ink-2)}
-.m-panel{background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
-.m-panel-h{display:flex;align-items:center;gap:8px;min-height:56px;padding:0 16px;border-bottom:1px solid var(--line);font-weight:600;font-size:15px}
-.m-panel-b{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:20px;min-height:0}
-.p-sec h4{font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.p-repo{display:flex;align-items:center;gap:8px;background:var(--sunken);border-radius:10px;padding:8px 10px;font-size:13px}
-.p-repo .mono{flex:1;min-width:0;overflow-wrap:anywhere}
-.dec{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.dec li{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;line-height:1.45;transition:background-color .6s ease-out}
-.dec li small{display:block;font-size:12px;color:var(--ink-2);margin-top:2px}
-.dec li.fresh{background:var(--jade-tint);border-color:var(--jade-tint)}
-.mini-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13px}
-.mini-steps li{display:flex;gap:8px;align-items:flex-start}
-.mini-steps .step-i{width:18px;height:18px;font-size:10px}
-.empty-note{font-size:13px;color:var(--ink-2);background:var(--sunken);border-radius:10px;padding:10px 12px}
-@media (max-width:1040px){.mock{grid-template-columns:minmax(0,1fr) 300px}.m-rooms{display:none}}
-@media (max-width:720px){.mock{display:flex;flex-direction:column;height:auto}.m-conv{height:540px}.m-panel{border-left:0;border-top:1px solid var(--line)}.m-panel-b{max-height:none}.m-scroll{padding-inline:12px}}
-
-.story{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:center;margin-top:20px}
-.story p{font-size:16px;max-width:70ch}
-.story p b{font-weight:600}
-.story-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.pips{display:flex;gap:6px;margin-right:8px}
-.pips i{width:8px;height:8px;border-radius:50%;background:var(--line);display:block}
-.pips i.on{background:var(--jade)}
-@media (max-width:720px){.story{grid-template-columns:1fr}}
-
-/* idea */
-.traits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.trait{padding:20px}
-.trait h3{font-size:18px;font-weight:600;margin-bottom:8px}
-.trait .is{font-size:14px;margin-bottom:10px}
-.trait .isnt{font-size:13px;color:var(--ink-2);padding-top:10px;border-top:1px dashed var(--line)}
-@media (max-width:980px){.traits{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.traits{grid-template-columns:1fr}}
-.name-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center;padding:24px;margin-top:20px}
-.name-card .big{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1}
-.name-card .big span{color:var(--ink-2);font-weight:500}
-@media (max-width:640px){.name-card{grid-template-columns:1fr}}
-.kv{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:0;font-size:15px}
-.kv>*{padding:12px 0;border-bottom:1px solid var(--line)}
-.kv dt{color:var(--ink-2);font-size:14px;padding-right:16px}
-.kv dd{margin:0}
-@media (max-width:560px){.kv{grid-template-columns:1fr}.kv dt{border-bottom:0;padding-bottom:0}}
-
-/* changes */
-.chg{display:grid;grid-template-columns:140px minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
-.chg>div{padding:16px;border-bottom:1px solid var(--line);min-width:0}
-.chg .hd{font-size:12px;font-weight:600;color:var(--ink-2);background:var(--sunken);padding-block:10px}
-.chg .area{font-weight:600;font-size:14px}
-.chg .old{border-right:1px solid var(--line)}
-.chg .cell{display:flex;flex-direction:column;gap:10px;font-size:14px}
-.chg .cell p{color:var(--ink-2);font-size:13px}
-.chg>div:nth-last-child(-n+3){border-bottom:0}
-@media (max-width:760px){.chg{grid-template-columns:1fr 1fr}.chg .area{grid-column:1/-1;background:var(--sunken);padding-block:8px}.chg .hd.a{display:none}}
-.schem{display:flex;gap:3px;height:54px;width:150px;max-width:100%;border:1px solid var(--line);border-radius:8px;padding:3px;background:var(--paper)}
-.schem i{display:block;border-radius:4px;background:var(--sunken)}
-.schem i.c{flex:1;background:var(--surface);border:1px solid var(--line)}
-.schem i.w{width:34%;background:var(--turmeric-tint)}
-.v1-bubble{background:#FFFFFF;border:1px solid #E8E7ED;color:#24232B;border-radius:4px 16px 16px 16px;padding:8px 12px;font:14px/1.5 "Segoe UI",-apple-system,Arial,sans-serif;max-width:260px}
-.v1-bubble b{font-size:12px;display:flex;gap:6px;margin-bottom:2px}
-.v1-bubble b span{color:#6F6B79}
-.v1-btn{background:#6254C8;color:#FFFFFF;border:0;border-radius:10px;padding:8px 16px;font:500 14px "Segoe UI",-apple-system,Arial,sans-serif;align-self:flex-start}
-.sysfont{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-size:20px}
-.bvp{font-size:20px;font-weight:600;letter-spacing:-.01em}
-
-/* logo */
-.logo-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px}
-@media (max-width:860px){.logo-grid{grid-template-columns:1fr}}
-.stage{display:flex;flex-direction:column;min-height:420px}
-.stage-art{flex:1;display:grid;place-items:center;min-height:300px;background:var(--paper);border-radius:14px 14px 0 0;background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:16px 16px}
-.stage-ctl{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
-.stage-ctl label{font-size:13px;color:var(--ink-2);display:flex;align-items:center;gap:10px}
-.stage-ctl input[type=range]{accent-color:var(--jade);width:160px}
-.size-out{font-family:var(--mono);font-size:13px;color:var(--ink);min-width:5ch;font-variant-numeric:tabular-nums}
-.anat{padding:20px;display:flex;flex-direction:column;gap:14px}
-.anat-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:center}
-.anat-row .sw{width:44px;height:44px;border-radius:10px;display:grid;place-items:center}
-.anat-row b{display:block;font-size:15px}
-.anat-row span{font-size:13px;color:var(--ink-2)}
-.lockups{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
-.lk{border-radius:14px;min-height:140px;display:flex;flex-direction:column;justify-content:space-between;padding:16px;border:1px solid var(--line)}
-.lk .art{flex:1;display:grid;place-items:center}
-.lk small{font-size:12px}
-@media (max-width:860px){.lockups{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.donts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:20px}
-.dont{padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
-.dont .art{height:72px;display:grid;place-items:center}
-.dont p{font-size:12px;color:var(--ink-2);display:flex;gap:6px;align-items:flex-start;text-align:left}
-.dont p .ic{color:var(--lacquer);margin-top:1px}
-@media (max-width:980px){.donts{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:520px){.donts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* reference principles */
+.prin{padding:22px;display:flex;flex-direction:column;gap:8px}
+.prin h3{font-size:17px;font-weight:600}
+.prin p{font-size:14px;color:var(--fg-2)}
+.prin .from{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);color:var(--fg)}
+.quote{font-family:var(--display);font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.3;padding:28px;margin-bottom:16px}
+.quote span{display:block;font-family:var(--font);font-size:14px;color:var(--fg-2);margin-top:12px;letter-spacing:0}
 
 /* color */
-.meanings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}
-.meaning{padding:20px;display:flex;flex-direction:column;gap:10px}
-.meaning .blob{height:64px;border-radius:10px;display:flex;align-items:flex-end;padding:10px 12px;font-weight:600;font-size:14px}
-.meaning h3{font-size:17px;font-weight:600}
-.meaning p{font-size:14px;color:var(--ink-2)}
-@media (max-width:760px){.meanings{grid-template-columns:1fr}}
-.ratio{display:flex;height:44px;border-radius:10px;overflow:hidden;gap:2px;margin-top:8px}
-.ratio i{display:flex;align-items:center;padding-inline:10px;font-style:normal;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden}
-.color-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
-@media (max-width:900px){.color-layout{grid-template-columns:1fr}}
-.swatches{display:flex;flex-direction:column;gap:22px}
-.sw-group h4{font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:8px}
-.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.sw{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0;text-align:left;overflow:hidden;display:flex;flex-direction:column;transition:border-color .12s ease-out}
-.sw:hover,.sw:focus-visible{border-color:var(--ink)}
-.sw .chipc{height:56px;display:flex;align-items:flex-end;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid var(--line)}
-.sw .chipc span{font-size:11px;font-weight:600;border-radius:6px;padding:0 6px;background:rgb(255 255 255 / 85%);color:#1D1C19;font-variant-numeric:tabular-nums}
-.sw .meta{padding:8px 10px 10px;display:flex;flex-direction:column;gap:1px}
-.sw .meta b{font-size:13px;font-weight:600}
-.sw .meta code{font-size:11.5px;color:var(--ink-2)}
-.sw .meta small{font-size:11.5px;color:var(--ink-2);line-height:1.35}
-.specimen{position:sticky;top:90px;padding:16px;background:var(--paper)}
-.specimen .hint{font-size:13px;color:var(--ink-2);margin-bottom:10px;min-height:2.6em}
-.specimen .hint b{color:var(--ink)}
-.hl{outline:2px dashed var(--ink) !important;outline-offset:2px}
-.sp-in{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--paper)}
+.tokens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.theme-col{border-radius:20px;overflow:hidden;border:1px solid #E0E0E0;padding-bottom:8px}
+.theme-col.dk{border-color:#2A2A2A}
+.theme-col h3{font-size:14px;font-weight:600;padding:14px 18px 6px}
+.tok{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 18px;border:0;width:100%;background:none;text-align:left;color:inherit}
+.tok i{width:44px;height:30px;border-radius:8px;display:block}
+.tok b{font-size:13px;font-weight:600;display:block}
+.tok small{font-size:12px;opacity:.72;display:block;line-height:1.35}
+.tok code{font-family:var(--mono);font-size:12px;opacity:.8}
+.tok:hover{background:rgb(128 128 128 / 10%)}
+@media (max-width:760px){.tokens{grid-template-columns:1fr}}
+.bot-colors{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.bot-colors button{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 10px 8px;font-family:var(--mono);font-size:11px;color:var(--fg-2);min-width:84px}
+.bot-colors button i{width:48px;height:32px;border-radius:8px;display:block}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.rules .card{padding:20px}
+.rules h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.rules p{font-size:14px;color:var(--fg-2)}
+@media (max-width:760px){.rules{grid-template-columns:1fr}}
+
+/* bots */
+.maker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+@media (max-width:820px){.maker{grid-template-columns:1fr}}
+.stage{display:grid;place-items:center;min-height:300px;background:var(--bg);border-radius:20px;border:1px solid var(--line);position:relative;padding-bottom:28px}
+.stage .cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:13px;color:var(--fg-2)}
+.ctl{padding:22px;display:flex;flex-direction:column;gap:16px}
+.field label{display:block;font-size:13px;color:var(--fg-2);margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--input);background:var(--bg);border-radius:12px;padding:10px 14px;font-size:16px}
+.lineup{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:16px}
+.lineup div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border:1px solid var(--line);border-radius:16px;background:var(--bg);font-size:13px;text-align:center}
+.lineup small{color:var(--fg-2);font-size:12px;font-family:var(--mono)}
+.whois{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.whois div{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
+.whois b{font-size:15px}
+.whois div>span:last-child{font-size:13px;color:var(--fg-2)}
+@media (max-width:820px){.whois{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.whois{grid-template-columns:1fr}}
 
 /* type */
-.fam{padding:24px;display:flex;flex-direction:column;gap:14px}
-.fam .glyphs{font-size:clamp(34px,5vw,52px);line-height:1.3;font-weight:600;letter-spacing:-.01em;overflow-wrap:anywhere}
-.fam.m .glyphs{font-family:var(--mono);font-weight:400;font-size:clamp(20px,3vw,28px)}
-.fam p{font-size:14px;color:var(--ink-2)}
-.tsample{display:flex;flex-direction:column;gap:8px;margin-block:28px 12px}
-.tsample label{font-size:13px;color:var(--ink-2);font-weight:500}
-.tsample input{width:100%;border:1px solid var(--control);background:var(--surface);border-radius:10px;padding:10px 14px;font-size:16px}
-.tsample input:focus{border-color:var(--jade);outline:none}
-.scale{border-top:1px solid var(--line)}
-.scale-row{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.scale-row .spec{font-size:12px;color:var(--ink-2);line-height:1.5}
-.scale-row .spec b{display:block;color:var(--ink);font-size:14px;font-weight:600}
-.scale-row .txt{overflow-wrap:anywhere;min-width:0}
-@media (max-width:640px){.scale-row{grid-template-columns:1fr;gap:6px}}
-.lh-demo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.lh-demo .box{padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
-.lh-demo .box .t{font-size:30px;font-weight:600;overflow:hidden;background:repeating-linear-gradient(transparent 0,transparent calc(var(--lh) - 1px),var(--lacquer-tint) calc(var(--lh) - 1px),var(--lacquer-tint) var(--lh))}
-.lh-demo .box small{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--ink-2);margin-top:8px}
-.verdict{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
-.verdict.y{color:var(--jade-ink)}.verdict.n{color:var(--lacquer)}
-table.fmt{width:100%;border-collapse:collapse;font-size:14px}
-table.fmt th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-2);padding:8px 10px;border-bottom:1px solid var(--line)}
-table.fmt td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
-table.fmt td.v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-table.fmt td.x{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--lacquer)}
-.tbl{overflow-x:auto}
-
-/* shape */
-.shapes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.shape{padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
-.shape .av{width:64px;height:64px;font-size:22px}
-.shape h3{font-size:17px;font-weight:600}
-.shape p{font-size:14px;color:var(--ink-2)}
-@media (max-width:760px){.shapes{grid-template-columns:1fr}}
-.radii{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
-.radii div{display:flex;flex-direction:column;gap:8px;align-items:center;font-size:12px;color:var(--ink-2)}
-.radii i{width:72px;height:72px;border:2px solid var(--jade);background:var(--jade-tint);display:block}
-.spacing{display:flex;flex-direction:column;gap:6px}
-.spacing div{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
-.spacing i{height:14px;background:var(--jade);border-radius:3px;display:block}
-.elev{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.elev .pad{padding:20px;background:var(--paper);border-radius:14px;min-height:170px;position:relative}
-.menu{position:absolute;right:20px;top:54px;background:var(--surface);border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--line);padding:6px;width:210px;font-size:14px}
-.menu div{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px}
-.menu div:first-child{background:var(--sunken)}
-@media (max-width:640px){.elev{grid-template-columns:1fr}}
-
-/* components */
-.comp{padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
-.comp-h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
-.comp-h h3{font-size:17px;font-weight:600}
-.comp-h p{font-size:13px;color:var(--ink-2);margin-top:2px}
-.comp .demo{background:var(--paper);border-radius:12px;padding:16px;border:1px solid var(--line);min-width:0}
-.span2{grid-column:1/-1}
-.picker{position:absolute;bottom:calc(100% + 6px);left:0;right:0;max-width:320px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:5}
-.picker button{display:flex;width:100%;align-items:center;gap:10px;border:0;background:none;padding:6px 8px;border-radius:8px;text-align:left}
-.picker button[aria-selected="true"],.picker button:hover{background:var(--sunken)}
-.picker button > span:not(.av){display:flex;flex-direction:column;line-height:1.3;font-size:14px;font-weight:500;min-width:0}
-.picker button small{font-size:12px;color:var(--ink-2);font-weight:400}
-.picker .pk-h{font-size:12px;color:var(--ink-2);padding:4px 8px}
-.cwrap{position:relative}
-.composer textarea{flex:1;border:0;background:none;resize:none;min-height:40px;max-height:120px;padding:8px 6px;font-size:16px;line-height:1.5;min-width:0}
-.composer textarea:focus-visible{outline:none}
-.typing{font-size:13px;color:var(--ink-2);min-height:22px;padding-inline:8px;display:flex;gap:8px;align-items:center}
-.thread{max-height:300px;overflow-y:auto;padding-inline:2px}
-.ctx-add{display:flex;gap:8px;margin-top:10px}
-.ctx-add input{flex:1;min-width:0;border:1px solid var(--control);background:var(--surface);border-radius:10px;padding:8px 12px;font-size:16px}
-.ctx-add input:focus{border-color:var(--jade);outline:none}
-.dec li{display:flex;gap:8px;align-items:flex-start}
-.dec li>div{flex:1;min-width:0}
-.dec .rm{border:0;background:none;color:var(--ink-2);border-radius:6px;width:28px;height:28px;display:grid;place-items:center;flex-shrink:0}
-.dec .rm:hover{background:var(--sunken);color:var(--ink)}
-.plan{display:flex;flex-direction:column;gap:14px}
-.price{font-size:32px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2}
-.price small{font-size:15px;font-weight:500;color:var(--ink-2);letter-spacing:0}
-.meter{height:8px;border-radius:4px;background:var(--sunken);overflow:hidden}
-.meter i{display:block;height:100%;border-radius:4px;background:var(--jade);transition:width .12s ease-out,background-color .12s ease-out}
-.meter.attn i{background:var(--turmeric)}
-.allow-top{display:flex;justify-content:space-between;gap:12px;font-size:14px;flex-wrap:wrap}
-.allow-top b{font-variant-numeric:tabular-nums}
-.allow-state{font-size:13px;display:flex;gap:8px;align-items:flex-start;color:var(--ink-2)}
-.allow-state.attn{color:var(--turmeric-ink)}
-.allow-state .ic{margin-top:1px}
-.slider-row{display:flex;gap:12px;align-items:center;font-size:13px;color:var(--ink-2)}
-.slider-row input{flex:1;accent-color:var(--jade)}
-.invoice{border:1px dashed var(--control);border-radius:12px;padding:14px 16px;font-size:13px;background:var(--surface)}
-.invoice-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.invoice-h b{font-size:14px}
-.inv-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--line)}
-.inv-row:last-child{border-bottom:0;font-weight:700;font-size:14px}
-.inv-row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
-.btn-state .seg{margin-bottom:4px}
-.fail{border:1px solid var(--lacquer-tint);background:var(--surface);border-radius:14px;overflow:hidden;font-size:14px}
-.fail-h{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--lacquer-tint);color:var(--lacquer);font-weight:600}
-.fail-b{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-.fail-b p{color:var(--ink-2);font-size:13px}
-.room-rows{display:flex;flex-direction:column;gap:2px;background:var(--surface);border-radius:12px;padding:8px;border:1px solid var(--line)}
+.scale-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.scale-row .spec{font-size:12px;color:var(--fg-2)}
+.scale-row .spec b{display:block;font-size:14px;color:var(--fg);font-weight:600}
+.scale-row .t{overflow-wrap:anywhere;min-width:0}
+@media (max-width:640px){.scale-row{grid-template-columns:1fr;gap:4px}}
+.tin{width:100%;border:1px solid var(--input);background:var(--bg);border-radius:12px;padding:10px 14px;font-size:16px;margin-bottom:12px}
 
 /* voice */
-.principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:28px}
-.principle{padding:20px}
-.principle h3{font-size:16px;font-weight:600;margin-bottom:6px}
-.principle p{font-size:14px;color:var(--ink-2)}
-@media (max-width:980px){.principles{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.principles{grid-template-columns:1fr}}
-.pairs{display:flex;flex-direction:column;gap:12px}
-.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
-.pair>div{padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.pair .say{border-left:1px solid var(--line)}
-.pair .lab{font-size:12px;font-weight:600;display:flex;gap:6px;align-items:center}
-.pair .say .lab{color:var(--jade-ink)}.pair .avoid .lab{color:var(--lacquer)}
-.pair .vi{font-size:15px;line-height:1.55}
-.pair .en{font-size:13px;color:var(--ink-2)}
-.pair .why{grid-column:1/-1;border-top:1px solid var(--line);font-size:13px;color:var(--ink-2);background:var(--paper);padding:10px 16px}
-.gloss-off .en{display:none}
-@media (max-width:640px){.pair{grid-template-columns:1fr}.pair .say{border-left:0;border-top:1px solid var(--line)}.pair .say{order:2}}
-.pronoun{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;padding:24px;margin-top:20px;align-items:center}
-@media (max-width:760px){.pronoun{grid-template-columns:1fr}}
-.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:20px}
-.gl{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-.gl b{display:block;font-size:15px}
-.gl span{font-size:13px;color:var(--ink-2)}
-.gl s{font-size:12px;color:var(--ink-2);text-decoration-color:var(--lacquer);display:block;margin-top:4px}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg);margin-bottom:12px}
+.pair>div{padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pair .yes{border-left:1px solid var(--line)}
+.pair .lab{font-size:12px;font-weight:600;color:var(--fg-2);display:flex;gap:6px;align-items:center}
+.pair .no .v{text-decoration:line-through;text-decoration-color:var(--fg-2);color:var(--fg-2)}
+.pair .v{font-size:15px}
+.pair .en{font-size:13px;color:var(--fg-2)}
+@media (max-width:640px){.pair{grid-template-columns:1fr}.pair .yes{border-left:0;border-top:1px solid var(--line)}}
 
-/* motion + icons */
-.mo{padding:20px;display:flex;flex-direction:column;gap:14px}
-.mo .demo{background:var(--paper);border-radius:12px;padding:18px;border:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.rm-sim .pulse,.rm-sim .spin{animation:none}
-.switch{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-2);cursor:pointer}
-.switch input{accent-color:var(--jade);width:18px;height:18px}
-.dur{display:flex;flex-direction:column}
-.dur div{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
-.dur div b{font-family:var(--mono);font-weight:500;font-size:13px}
-.icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
-.icons div{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:12px;color:var(--ink-2);text-align:center}
-.icons div .ic{width:24px;height:24px;color:var(--ink)}
-.icons div.agent{background:var(--turmeric-soft);border-color:var(--turmeric-line)}
+/* changes */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.chg{width:100%;border-collapse:collapse;font-size:14px}
+.chg th{text-align:left;font-size:12px;font-weight:600;color:var(--fg-2);padding:12px 16px;border-bottom:1px solid var(--line)}
+.chg td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.chg td:first-child{font-weight:600}
+.chg tr:last-child td{border-bottom:0}
 
-footer{padding-block:48px 64px;color:var(--ink-2);font-size:14px}
-footer .wrap{display:flex;gap:16px 32px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-size:14px;z-index:50;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+footer{padding-block:40px 56px;color:var(--fg-2);font-size:14px}
+footer .wrap{display:flex;gap:12px 28px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--primary);color:var(--on-primary);padding:10px 16px;border-radius:999px;font-size:14px;z-index:50;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
 </style>
 
 <header class="top">
   <div class="wrap">
     <a class="lockup" href="#top" aria-label="Mora, back to top"><span id="top-mark"></span><span class="wordmark">mora</span></a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#feel">Feel it</a><a href="#idea">Idea</a><a href="#changes">What changed</a><a href="#logo">Logo</a><a href="#color">Color</a><a href="#type">Type</a><a href="#shape">Shape</a><a href="#components">Components</a><a href="#voice">Voice</a><a href="#motion">Motion &amp; icons</a>
-    </nav>
-    <div class="seg" role="group" aria-label="Theme">
-      <button type="button" data-theme-btn="auto" aria-pressed="true"><span data-ic="monitor"></span><span class="lbl">Auto</span></button>
-      <button type="button" data-theme-btn="light" aria-pressed="false"><span data-ic="sun"></span><span class="lbl">Light</span></button>
-      <button type="button" data-theme-btn="dark" aria-pressed="false"><span data-ic="moon"></span><span class="lbl">Dark</span></button>
-    </div>
+    <nav class="nav" aria-label="Sections"><a href="#live">Live</a><a href="#reference">Grok Bot reference</a><a href="#color">Color</a><a href="#bots">Bots</a><a href="#type">Type</a><a href="#voice">Voice</a><a href="#changes">What changed</a></nav>
+    <div class="seg" role="group" aria-label="Theme"><button type="button" data-t="auto" aria-pressed="true">Auto</button><button type="button" data-t="light" aria-pressed="false">Light</button><button type="button" data-t="dark" aria-pressed="false">Dark</button></div>
   </div>
 </header>
 
 <main id="top">
-<!-- HERO -->
 <section class="hero">
   <div class="wrap">
     <div>
-      <div class="eyebrow">Mora brand guideline · v2 · 26/09/2026</div>
-      <h1>Làm tiếp, không cần kể&nbsp;lại.<span class="en">Pick up the work. No re-explaining.</span></h1>
-      <p class="lede">Mora is a work chat where a Vietnamese team and its AI coworkers share one project room, so anyone can continue the agent's work without a briefing. The brand has one job: make that handoff feel obvious, safe and local.</p>
-      <div class="hero-facts">
-        <span class="fact"><i style="background:var(--jade)"></i>Jade: people decide</span>
-        <span class="fact"><i style="background:var(--turmeric)"></i>Turmeric: the AI</span>
-        <span class="fact"><i style="background:var(--lacquer)"></i>Lacquer: stop</span>
-        <span class="fact"><i style="background:var(--sunken);border:1px solid var(--control)"></i>Be Vietnam Pro</span>
-      </div>
+      <div class="eyebrow">Mora brand guideline · v3 · 26/09/2026</div>
+      <h1>Làm tiếp, không cần kể lại.</h1>
+      <p class="en">Pick up the work. No re-explaining.</p>
+      <p class="lede">Mora is a work chat for Vietnamese teams and their AI coworkers. v3 follows the Grok Bot design language: black, white and grey everywhere, so the only color on screen is the bots themselves.</p>
     </div>
-    <div class="hero-mark" id="hero-mark">
-      <div class="callout c1"><b>White arch</b>a teammate</div>
-      <div class="callout c2"><b>Turmeric arch</b>an AI coworker</div>
-      <div class="callout c3"><b>The shared stem</b>is the handoff. Two open arches read as <i>mở ra</i>, to open up.</div>
-    </div>
+    <div class="hero-bots" id="hero-bots" aria-hidden="true"></div>
   </div>
 </section>
 
-<!-- FEEL IT -->
-<section id="feel">
+<section id="live">
   <div class="wrap">
     <div class="sec-head">
-      <div><div class="eyebrow">Feel it</div><h2>One room, one task, three teammates</h2></div>
-      <p>The MVP story from the canvas, rendered in the new brand. Step through it, approve the plan yourself, and switch the theme at the top. Everything below this section explains what you are looking at.</p>
+      <div><div class="eyebrow">Live</div><h2>The interface, working</h2></div>
+      <p>A working copy of the new Mora app. Switch rooms, collapse the sidebar to a rail, close the details panel, and send a message: the bot's avatar starts working and the details icon turns purple until it answers. Approve the plan to see the card update in place.</p>
     </div>
-    <div class="mock" id="mock">
-      <aside class="m-rooms" aria-label="Rooms">
-        <div class="m-ws"><span id="ws-mark"></span>Saigon Lab<span data-ic="chevron-down" style="margin-left:auto;color:var(--ink-2)"></span></div>
-        <div class="m-search"><span data-ic="search" data-sm></span>Tìm phòng, người, AI</div>
-        <div class="m-label">Phòng dự án</div>
-        <div class="m-row sel"><span class="av room sm">#</span><span>app-mobile</span></div>
-        <div class="m-row"><span class="av room sm">#</span><span>san-pham</span><em class="count" style="font-style:normal">3</em></div>
-        <div class="m-row"><span class="av room sm">#</span><span>thiet-ke</span></div>
-        <div class="m-row"><span class="av room sm">#</span><span>khach-hang-an-phat</span></div>
-        <div class="m-label">Tin nhắn</div>
-        <div class="m-row"><span class="av t1 sm">LT</span><span>Linh Trần</span></div>
-        <div class="m-row"><span class="av ai sm" data-arch></span><span>Mora</span><span class="ai-tag" style="flex:0 0 auto">AI</span></div>
-        <div class="m-row"><span class="av t2 sm">HP</span><span>Huy Phạm</span></div>
-        <div class="m-foot">Hạn mức AI của nhóm · <b id="mock-allow" style="color:var(--ink)">62%</b><div class="meter"><i id="mock-allow-bar" style="width:62%"></i></div></div>
+    <div class="app" id="app">
+      <aside class="a-side" aria-label="Rooms">
+        <div class="a-side-h"><button class="icon-btn rail-btn" type="button" id="rail-btn" aria-label="Collapse sidebar" aria-pressed="false"><span data-ic="panelL"></span></button><button class="icon-btn" type="button" aria-label="New chat" data-demo="new"><span data-ic="plus"></span></button></div>
+        <div class="a-search"><span data-ic="search" data-sm></span>Tìm kiếm</div>
+        <div class="a-rows" id="a-rows"></div>
+        <div class="a-foot"><span class="avatar" style="width:28px;height:28px;font-size:10px">MN</span><span>Minh Nguyễn</span></div>
       </aside>
-      <div class="m-conv">
-        <div class="m-head">
-          <span class="av room sm">#</span>
-          <h3>app-mobile<small>Sửa lỗi giao diện mobile trước ngày 30/09</small></h3>
-          <div class="faces" aria-label="4 members"><span class="av t0 xs">MN</span><span class="av t1 xs">LT</span><span class="av t2 xs">HP</span><span class="av ai xs" data-arch></span></div>
-          <button class="icon-btn" type="button" aria-label="Work panel"><span data-ic="panel"></span></button>
-        </div>
-        <div class="m-scroll" id="m-scroll" aria-live="polite"></div>
-        <div class="m-compose"><div class="composer"><button class="icon-btn" type="button" aria-label="Attach file"><span data-ic="clip"></span></button><div class="fake">Nhắn #app-mobile · gõ @ để gọi Mora</div><button class="send" type="button" disabled aria-label="Send"><span data-ic="up"></span></button></div></div>
-      </div>
-      <aside class="m-panel" aria-label="Shared context and work">
-        <div class="m-panel-h"><span data-ic="panel"></span>Bối cảnh &amp; công việc</div>
-        <div class="m-panel-b" id="m-panel"></div>
-      </aside>
-    </div>
-    <div class="story">
-      <p id="story-cap"></p>
-      <div class="story-ctl">
-        <div class="pips" id="pips" aria-hidden="true"></div>
-        <button class="btn secondary sm" type="button" id="st-back">Back</button>
-        <button class="btn primary sm" type="button" id="st-next">Next</button>
-        <button class="btn quiet sm" type="button" id="st-reset"><span data-ic="rotate" data-sm></span>Restart</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- IDEA -->
-<section id="idea">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">Brand idea</div><h2>A teammate you can trust with the work</h2></div>
-      <p>Slack, Teams and Claude Tag now ship shared agents in chat. Mora wins where they do not reach: Zalo-first Vietnamese teams, Vietnamese-first UX and VND billing. The brand has to feel like a capable local colleague, never like a foreign tool with translated strings.</p>
-    </div>
-    <dl class="kv panel" style="padding:4px 20px 0;margin:0 0 24px">
-      <dt>Promise</dt><dd><b>Làm tiếp, không cần kể lại.</b> Pick up the work. No re-explaining.</dd>
-      <dt>Descriptor</dt><dd>Chat làm việc cùng đồng đội AI · Work chat with AI coworkers</dd>
-      <dt>For</dt><dd>5–15-person Vietnamese product startups and software studios that coordinate on Zalo. Buyer: the founder or team lead.</dd>
-      <dt>Internal line</dt><dd>"Slack with AI coworkers, for teams that live on Zalo." Pitch decks and interviews only, never in the product.</dd>
-      <dt style="border-bottom:0">Proof moment</dt><dd style="border-bottom:0">A second teammate continues the agent's task from the room, with no briefing. Every screen should make that easier.</dd>
-    </dl>
-    <div class="traits">
-      <div class="trait panel"><h3>Clear</h3><p class="is">Says what it will do before it does it. Plans are numbered and short.</p><p class="isnt">Not magical: no "AI-powered" sparkle, no surprises.</p></div>
-      <div class="trait panel"><h3>Accountable</h3><p class="is">Shows evidence: the plan, the diff, the test results, who approved.</p><p class="isnt">Not boastful: never claims success without proof.</p></div>
-      <div class="trait panel"><h3>Local</h3><p class="is">Vietnamese first, mixed with the English terms devs use. VND, e-invoices, our date format.</p><p class="isnt">Not translated: not an English product wearing Vietnamese strings.</p></div>
-      <div class="trait panel"><h3>Calm</h3><p class="is">Quiet paper surfaces, one accent at a time, one looping animation.</p><p class="isnt">Not loud: no gradients, confetti or mascot.</p></div>
-    </div>
-    <div class="name-card panel">
-      <div class="big">Mora <span>≈</span> mở&nbsp;ra</div>
-      <p>Read aloud, Mora sounds close to <i>mở ra</i>, "to open up". Today the agent's work is locked in one person's session. Mora opens it to the room. Use this reading in onboarding and talks. Do not present it as an etymology.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CHANGES -->
-<section id="changes">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">From v1 to v2</div><h2>What changed, and why</h2></div>
-      <p>v1 described "a quiet, familiar messenger" with bots styled like people. The canvas now asks for an AI-native work chat where agents are visibly different and their work sits in its own panel. These are the decisions that moved.</p>
-    </div>
-    <div class="chg">
-      <div class="hd a">Area</div><div class="hd old">v1 (current app)</div><div class="hd">v2</div>
-      <div class="area">Accent</div>
-      <div class="cell old"><button class="v1-btn" type="button" tabindex="-1">Gửi</button><p>Iris #6254C8. Sits in the same blue-purple crowd as Teams, Discord, Linear and Zalo.</p></div>
-      <div class="cell"><button class="btn primary sm" type="button" tabindex="-1" style="align-self:flex-start">Gửi</button><p>Jade for people's actions, turmeric for the AI, lacquer for stop. One meaning each.</p></div>
-      <div class="area">Agents</div>
-      <div class="cell old"><div class="v1-bubble"><b>Mora <span>AI</span></b>Mình đã chuẩn bị kế hoạch mẫu.</div><p>Same bubble as people. Only a small grey label.</p></div>
-      <div class="cell"><div class="msg agent" style="margin:0"><span class="av ai sm" data-arch></span><div class="body"><div class="who">Mora <span class="ai-tag">AI</span></div><div class="bubble" style="font-size:14px">Kế hoạch 4 bước bên dưới.</div></div></div><p>Own shape, own color, own label. You can tell before you read.</p></div>
-      <div class="area">Layout</div>
-      <div class="cell old"><div class="schem"><i style="width:30%"></i><i class="c"></i></div><p>Two panes. Context hidden in a dialog.</p></div>
-      <div class="cell"><div class="schem"><i style="width:22%"></i><i class="c"></i><i class="w"></i></div><p>Three panes. The agent's work and shared context stay visible.</p></div>
-      <div class="area">Logo</div>
-      <div class="cell old"><span id="v1-mark"></span><p>White m on iris. No wordmark anywhere.</p></div>
-      <div class="cell"><span class="row" style="gap:10px"><span id="v2-mark"></span><span class="wordmark">mora</span></span><p>Two arches: teammate and AI share the stem. Wordmark for rail, invoices, marketing.</p></div>
-      <div class="area">Type</div>
-      <div class="cell old"><span class="sysfont">Đồng đội AI</span><p>System stack (Segoe UI, Apple, Arial). Looks different on every machine.</p></div>
-      <div class="cell"><span class="bvp">Đồng đội AI</span><p>Be Vietnam Pro, designed in Vietnam, plus JetBrains Mono for code.</p></div>
-      <div class="area">Local</div>
-      <div class="cell old"><span style="font-size:14px">None</span><p>No billing or format rules.</p></div>
-      <div class="cell"><span style="font-weight:700;font-variant-numeric:tabular-nums">4.000.000 ₫/tháng</span><p>VND pricing, e-invoice, Vietnamese number and date formats.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- LOGO -->
-<section id="logo">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">Logo</div><h2>Two open arches</h2></div>
-      <p>A lowercase m drawn as two arches on a jade tile. The teammate's arch and the AI's arch share one stem: that stem is the handoff. Drag the size to see the mark switch to mono below 24&nbsp;px, where two colors blur.</p>
-    </div>
-    <div class="logo-grid">
-      <div class="panel stage">
-        <div class="stage-art" id="stage-art"></div>
-        <div class="stage-ctl">
-          <label for="lg-size">Size <input id="lg-size" type="range" min="16" max="200" value="144"><span class="size-out" id="lg-size-out">144 px</span></label>
-          <label class="switch"><input type="checkbox" id="lg-grid"> Construction</label>
-          <label class="switch"><input type="checkbox" id="lg-mono"> Force mono</label>
+      <div class="a-conv">
+        <div class="a-head"><div class="who" id="a-who"></div><button class="icon-btn" type="button" id="panel-btn" aria-label="Details" aria-pressed="true"><span data-ic="panelR"></span></button></div>
+        <div class="a-scroll" id="a-scroll" aria-live="polite"></div>
+        <div class="a-compose">
+          <form class="composer" id="a-form"><button class="plus" type="button" aria-label="More" data-demo="plus"><span data-ic="plus"></span></button><label class="sr" for="a-input">Message</label><textarea id="a-input" rows="1" placeholder="Nhắn Mora"></textarea><button class="send" type="submit" id="a-send" aria-label="Send" disabled><span data-ic="up"></span></button></form>
         </div>
       </div>
-      <div class="panel anat">
-        <div class="sub" style="margin:0">Anatomy</div>
-        <div class="anat-row"><span class="sw" style="background:#0B6B57"><span style="width:16px;height:16px;border-radius:50%;background:#FFFFFF;display:block"></span></span><div><b>White arch · the teammate</b><span>Always on the left. People start the work.</span></div></div>
-        <div class="anat-row"><span class="sw" style="background:#0B6B57"><span style="width:16px;height:16px;border-radius:50%;background:#F0B45A;display:block"></span></span><div><b>Turmeric arch · the AI coworker</b><span>Always on the right, drawn under the white stem, so it grows out of the person's stroke.</span></div></div>
-        <div class="anat-row"><span class="sw" style="background:var(--sunken)"><span data-ic="users"></span></span><div><b>Shared stem · the handoff</b><span>One continuous line. No gap between human and agent work.</span></div></div>
-        <div class="anat-row"><span class="sw" style="background:var(--sunken);font-family:var(--mono);font-size:12px;font-weight:500">32</span><div><b>Grid</b><span>32-unit tile, 9-unit corners, 3.4-unit stroke, round caps. Clear space: one arch width (8 units) on every side.</span></div></div>
-        <div class="anat-row"><span class="sw" style="background:var(--sunken)"><span class="wordmark" style="font-size:15px">m</span></span><div><b>Wordmark</b><span><code>mora</code> in Be Vietnam Pro Bold, lowercase, −3.5% tracking. Gap to the mark: half the tile width.</span></div></div>
-      </div>
+      <aside class="a-panel" aria-label="Details">
+        <div class="a-panel-h">Chi tiết<button class="icon-btn" type="button" id="panel-close" aria-label="Close details"><span data-ic="x"></span></button></div>
+        <div class="a-panel-b" id="a-panel"></div>
+      </aside>
     </div>
-    <div class="lockups" id="lockups"></div>
-    <div class="sub" style="margin-top:36px">Never do this</div>
-    <div class="donts" id="donts"></div>
+    <p class="note app-note">Try: approve the plan in <b>Nhóm sản phẩm</b>, or message <b>Kiểm thử</b>. Everything here is sample data.</p>
   </div>
 </section>
 
-<!-- COLOR -->
+<section id="reference">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Reference</div><h2>What we take from Grok Bot</h2></div>
+      <p>Reconstructed from xAI's "Designing Grok Bot for a world of persistent agents" and three product screenshots. Full notes and sources: <code class="mono">docs/reference/GROK_BOT_DESIGN.md</code>.</p>
+    </div>
+    <div class="card quote">Did this help someone delegate, or did it give them one more thing to manage?<span>The question every Grok Bot design decision came back to. Mora uses it as its design test.</span></div>
+    <div class="grid3">
+      <div class="card prin"><h3>Bots, not chats</h3><p>The sidebar is a roster you scan by avatar. Conversations are pushed down; the bot is what you come back to.</p><p class="from">Mora: rooms hold people and bots; bots are recognizable by shape and color.</p></div>
+      <div class="card prin"><h3>Monochrome, bots in color</h3><p>Black, white and grey carry the interface. Avatars are the only saturated color.</p><p class="from">Mora: no brand accent at all. Purple only signals a bot at work.</p></div>
+      <div class="card prin"><h3>The avatar is the status</h3><p>Idle, thinking, working, waiting, blocked or done, shown by the avatar's motion rather than badges.</p><p class="from">Mora: waiting eyes look up; working bobs and scans.</p></div>
+      <div class="card prin"><h3>One mixed transcript</h3><p>Messages, system events, inline cards and widgets share one timeline. Prose when prose fits, structure when it does not.</p><p class="from">Mora: plans are inline cards; approvals are event lines.</p></div>
+      <div class="card prin"><h3>Glance, don't supervise</h3><p>The bot's computer stays its own workspace: an activity signal, then a pinned side panel, then full access.</p><p class="from">Mora: the details panel holds work and shared context.</p></div>
+      <div class="card prin"><h3>Take things away</h3><p>Late design work removed window controls, view options and agent metadata.</p><p class="from">Mora: no dividers, no per-message chrome until you hover.</p></div>
+    </div>
+  </div>
+</section>
+
 <section id="color">
   <div class="wrap">
     <div class="sec-head">
-      <div><div class="eyebrow">Color</div><h2>Paper, ink, jade, turmeric, lacquer</h2></div>
-      <p>Five materials from Vietnamese craft, used strictly as signals. Each accent has exactly one meaning, so a glance at the room tells you who acts next. Hover or focus a swatch to see where it lives; click it to copy the hex for the current theme.</p>
+      <div><div class="eyebrow">Color</div><h2>Black, white and grey</h2></div>
+      <p>Both themes side by side. There is no brand accent. Click any row to copy its hex.</p>
     </div>
-    <div class="meanings">
-      <div class="meaning panel"><div class="blob" style="background:var(--jade);color:var(--on-jade)">Ngọc · Jade</div><h3>A person acts or decides</h3><p>Primary buttons (Duyệt, Gửi), links, focus ring, your own bubbles, selection, success.</p></div>
-      <div class="meaning panel"><div class="blob" style="background:var(--turmeric-tint);color:var(--turmeric-ink)">Nghệ · Turmeric</div><h3>The AI is here, working or asking</h3><p>Agent avatars and messages, the AI label, "Chờ duyệt", "Đang chạy", the AI allowance.</p></div>
-      <div class="meaning panel"><div class="blob" style="background:var(--lacquer);color:var(--surface)">Sơn · Lacquer</div><h3>Stop, failure, irreversible</h3><p>The stop button, failed tasks, destructive confirmation. Rare by design.</p></div>
+    <div class="tokens" id="tokens"></div>
+    <div class="sub" style="margin-top:36px">The only color: bots</div>
+    <p class="note">Eight bot colors, assigned from each bot's id. Nothing else in the interface may use them.</p>
+    <div class="bot-colors" id="bot-colors"></div>
+    <div class="rules">
+      <div class="card"><h3>Purple means working</h3><p>The details icon turns purple while a bot in the room is replying or running a task. It is the only signal color.</p></div>
+      <div class="card"><h3>Readable greys</h3><p>Secondary text is 4.7:1 on the selected row in light and 5.1:1 in dark. Your black bubble is 19:1.</p></div>
+      <div class="card"><h3>Never color alone</h3><p>Every state also has words: "Chờ duyệt", "Đang làm", "Hoàn thành". Red is for errors only.</p></div>
     </div>
-    <div class="sub">How much of the screen</div>
-    <div class="ratio" aria-label="About 80% neutrals, 12% jade, 6% turmeric, 2% lacquer">
-      <i style="flex:80;background:var(--surface);color:var(--ink-2);border:1px solid var(--line)">Paper and ink · 80%</i>
-      <i style="flex:12;background:var(--jade);color:var(--on-jade)">Jade 12%</i>
-      <i style="flex:6;background:var(--turmeric);color:#1D1C19">6%</i>
-      <i style="flex:2;background:var(--lacquer)"></i>
-    </div>
-    <p class="note" style="margin-top:8px">Turmeric 6%, lacquer 2%. No feature gets its own accent. State always has an icon or text too, never color alone.</p>
-    <div class="color-layout" style="margin-top:36px">
-      <div class="swatches" id="swatches"></div>
-      <div class="panel specimen" aria-label="Where colors live">
-        <div class="hint" id="sp-hint">Hover a swatch. The parts of this room that use it get a dashed outline.</div>
-        <div class="sp-in" data-c="paper">
-          <div class="msg"><span class="av t1 sm" data-c="">LT</span><div class="body"><div class="who">Linh Trần <time data-c="ink-2">09:14</time></div><div class="bubble" data-c="surface line ink">Giữ nguyên API hiện tại nha.</div></div></div>
-          <div class="msg agent"><span class="av ai sm" data-arch data-c="turmeric-tint turmeric-ink"></span><div class="body"><div class="who">Mora <span class="ai-tag" data-c="turmeric-tint turmeric-ink">AI</span></div><div class="bubble" data-c="turmeric-soft turmeric-line">Kế hoạch sẵn sàng. <span class="chip attn" data-c="turmeric-tint turmeric-ink turmeric"><span class="dot" data-c="turmeric"></span>Chờ duyệt</span></div></div></div>
-          <div class="msg own"><div class="body"><div class="bubble" data-c="jade-tint">Ok, <span class="mention a" data-c="turmeric-tint turmeric-ink">@Mora</span> làm đi.</div></div></div>
-          <div class="row" style="margin-block:4px 12px"><button class="btn primary sm" type="button" tabindex="-1" data-c="jade on-jade">Duyệt kế hoạch</button><button class="btn secondary sm" type="button" tabindex="-1" data-c="control surface">Sửa</button><button class="btn stop sm" type="button" tabindex="-1" data-c="lacquer surface">Dừng</button></div>
-          <div class="composer" data-c="control surface"><div class="fake" data-c="ink-2">Nhắn #app-mobile</div><span class="send" data-c="jade on-jade"><span data-ic="up"></span></span></div>
-          <div class="row" style="margin-top:12px;gap:8px"><span class="chip ok" data-c="jade-tint jade-ink"><span data-ic="check" data-sm></span>Hoàn thành</span><span class="chip bad" data-c="lacquer-tint lacquer"><span data-ic="alert" data-sm></span>Cần thử lại</span><span class="chip neutral" data-c="sunken ink-2"><span data-ic="stop" data-sm></span>Đã dừng</span></div>
-          <div class="m-row sel" style="margin-top:12px" data-c="select"><span class="av room xs">#</span><span>app-mobile</span></div>
-        </div>
-      </div>
-    </div>
-    <p class="note" style="margin-top:24px">Contrast is WCAG 2.2, calculated for the theme you are viewing. Light turmeric is 2.3:1 on white, so it is decorative only: dots, bars and the logo, always beside text.</p>
   </div>
 </section>
 
-<!-- TYPE -->
+<section id="bots">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Bots, people, rooms</div><h2>A shape, a color, two eyes</h2></div>
+      <p>Every bot gets a flat shape and two capsule eyes, generated in code so the family stays consistent. Type a name to meet the bot it would become, and switch its state.</p>
+    </div>
+    <div class="maker">
+      <div class="stage" id="maker-stage"></div>
+      <div class="card ctl">
+        <div class="field"><label for="bot-name">Bot name</label><input id="bot-name" type="text" value="Báo giá" maxlength="40"></div>
+        <div><div class="note" style="margin-bottom:8px">State</div><div class="seg" role="group" aria-label="Bot state" id="bot-states"><button type="button" data-s="" aria-pressed="true">Idle</button><button type="button" data-s="waiting" aria-pressed="false">Waiting</button><button type="button" data-s="working" aria-pressed="false">Working</button></div></div>
+        <p class="note">In the app the seed is the bot's id, so two bots with the same name still look different. Motion stops under reduced motion; the status text carries the state.</p>
+      </div>
+    </div>
+    <div class="lineup" id="lineup"></div>
+    <div class="whois">
+      <div><span id="w-mora"></span><b>Mora</b><span>The arch is reserved for the default bot. Black in light, white in dark.</span></div>
+      <div><span id="w-bot"></span><b>Any other bot</b><span>Colored shape and eyes. Labelled AI in headers and group messages.</span></div>
+      <div><span class="avatar" style="width:44px;height:44px;font-size:15px">LT</span><b>Person</b><span>Grey circle with initials. People never get color.</span></div>
+      <div><span class="avatar group" style="width:44px;height:44px;font-size:15px">SP</span><b>Group room</b><span>Grey rounded square with initials.</span></div>
+    </div>
+  </div>
+</section>
+
 <section id="type">
   <div class="wrap">
     <div class="sec-head">
-      <div><div class="eyebrow">Typography</div><h2>A Vietnamese face for a Vietnamese product</h2></div>
-      <p>Be Vietnam Pro was designed in Vietnam, with diacritics drawn as part of each letter instead of bolted on. JetBrains Mono carries code, branches and file paths, because a draft PR is the product's first result.</p>
+      <div><div class="eyebrow">Type</div><h2>The system font, few sizes</h2></div>
+      <p>SF Pro on Apple, Segoe UI on Windows, Roboto on Android. All cover Vietnamese, with nothing to download. Sentence case, no all-caps Vietnamese.</p>
     </div>
-    <div class="grid2">
-      <div class="panel fam"><div class="eyebrow" style="margin:0">UI and marketing</div><div class="glyphs">Aa Ăă Ââ Đđ Êê Ôô Ơơ Ưư</div><p>Be Vietnam Pro · 400, 500, 600, 700. Self-host in the app. Fallback: Segoe UI, -apple-system, Roboto, Arial.</p></div>
-      <div class="panel fam m"><div class="eyebrow" style="margin:0">Code</div><div class="glyphs">fix/menu-375px<br>src/NavMenu.tsx +42 −18</div><p>JetBrains Mono · 400, 500. Paths, branches, diffs, tokens. Never for prose.</p></div>
-    </div>
-    <div class="tsample"><label for="type-in">Type your own sentence to see it at every step of the scale</label><input id="type-in" type="text" value="Huy làm tiếp phần tablet, giữ nguyên API như Linh đã chốt."></div>
-    <div class="scale" id="scale"></div>
-    <div class="grid2" style="margin-top:36px">
-      <div>
-        <div class="sub">Room for stacked marks</div>
-        <div class="lh-demo">
-          <div class="box"><div class="t" style="line-height:1.05;--lh:1.05em">Ặc Ẫn Ững Ỡm Ỷ</div><small><span class="verdict n"><span data-ic="x" data-sm></span>1.05</span>marks touch the line above</small></div>
-          <div class="box"><div class="t" style="line-height:1.5;--lh:1.5em">Ặc Ẫn Ững Ỡm Ỷ</div><small><span class="verdict y"><span data-ic="check" data-sm></span>1.5</span>minimum for Vietnamese text</small></div>
-        </div>
-      </div>
-      <div>
-        <div class="sub">Sentence case, always</div>
-        <div class="lh-demo">
-          <div class="box"><div style="font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1.2">Cập nhật kế hoạch</div><small><span class="verdict n"><span data-ic="x" data-sm></span>ALL CAPS</span>diacritics collide and it shouts</small></div>
-          <div class="box"><div style="font-size:18px;font-weight:600;line-height:1.5">Cập nhật kế hoạch</div><small><span class="verdict y"><span data-ic="check" data-sm></span>Sentence case</span>uppercase only for PR, AI, VND</small></div>
-        </div>
-      </div>
-    </div>
-    <div class="sub" style="margin-top:36px">Local formats</div>
-    <div class="tbl panel" style="padding:4px 8px">
-      <table class="fmt">
-        <thead><tr><th>What</th><th>Write</th><th>Not</th><th>Rule</th></tr></thead>
-        <tbody>
-          <tr><td>Money</td><td class="v">4.000.000 ₫</td><td class="x">4,000,000 VND · $160</td><td>Dot for thousands, ₫ after the number, no decimals.</td></tr>
-          <tr><td>Decimals</td><td class="v">2,4 MB · 12,5%</td><td class="x">2.4 MB</td><td>Comma for decimals.</td></tr>
-          <tr><td>Date</td><td class="v">26/09/2026</td><td class="x">09/26/2026 · Sep 26</td><td>Day/month/year. Short form 26/09.</td></tr>
-          <tr><td>Time</td><td class="v">14:05</td><td class="x">2:05 PM</td><td>24-hour clock.</td></tr>
-          <tr><td>Relative</td><td class="v">3 phút trước · hôm qua</td><td class="x">3m ago</td><td>Full words in the chat, exact time on hover.</td></tr>
-          <tr><td>Names</td><td class="v">Nguyễn Thị Hường</td><td class="x">Nguyen Thi Huong</td><td>Never strip diacritics. Search matches both.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <label class="sr" for="type-in">Sample text</label>
+    <input class="tin" id="type-in" type="text" value="Huy làm tiếp phần tablet, giữ nguyên API như Linh đã chốt.">
+    <div id="scale" style="border-top:1px solid var(--line)"></div>
   </div>
 </section>
 
-<!-- SHAPE -->
-<section id="shape">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">Shape, space, elevation</div><h2>Shape says who, before the name does</h2></div>
-      <p>People, AI coworkers and rooms each have one shape. Spacing runs on a 4&nbsp;px rhythm. The page is flat; only things that float above it get a shadow.</p>
-    </div>
-    <div class="shapes">
-      <div class="shape panel"><span class="av t0">MN</span><h3>Circle · a person</h3><p>Initials on one of three muted tones. The tones never use jade or turmeric.</p></div>
-      <div class="shape panel"><span class="av ai" data-arch></span><h3>Rounded square · an AI coworker</h3><p>30% radius on turmeric tint. The default agent shows the arch; custom agents show initials. Always with the <span class="ai-tag">AI</span> label.</p></div>
-      <div class="shape panel"><span class="av room">#</span><h3>Tile with # · a project room</h3><p>10&nbsp;px corners on sunken paper. Rooms are places, so they stay neutral.</p></div>
-    </div>
-    <div class="grid2" style="margin-top:20px">
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Radius</h3><p>Chips 6 · buttons and inputs 10 · cards and rows 14 · dialogs 20 · people and composer full.</p></div></div>
-        <div class="radii"><div><i style="border-radius:6px"></i>6</div><div><i style="border-radius:10px"></i>10</div><div><i style="border-radius:14px"></i>14</div><div><i style="border-radius:20px"></i>20</div><div><i style="border-radius:50%"></i>full</div></div>
-      </div>
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Spacing</h3><p>4 px base. Use only these steps.</p></div></div>
-        <div class="spacing" id="spacing"></div>
-      </div>
-    </div>
-    <div class="elev" style="margin-top:20px">
-      <div class="panel comp"><div class="comp-h"><div><h3>In the page: flat</h3><p>Borders separate panes and cards. No shadow.</p></div></div><div class="pad"><div class="task" style="margin:0"><div class="task-h"><span class="av ai xs" data-arch></span><strong>Sửa menu tràn</strong><span class="chip ok"><span data-ic="check" data-sm></span>Hoàn thành</span></div></div></div></div>
-      <div class="panel comp"><div class="comp-h"><div><h3>Above the page: one shadow</h3><p>Dialogs, menus, the @ picker. <code>0 12px 40px</code> ink at 16%.</p></div></div><div class="pad"><div class="menu"><div><span class="av ai xs" data-arch></span>Mora <span class="ai-tag">AI</span></div><div><span class="av t1 xs">LT</span>Linh Trần</div><div><span class="av t2 xs">HP</span>Huy Phạm</div></div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPONENTS -->
-<section id="components">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><div class="eyebrow">Components</div><h2>The pieces, live</h2></div>
-      <p>Every component below is interactive. They are built only from the tokens above, so they follow the theme switch too.</p>
-    </div>
-    <div class="grid2">
-      <div class="panel comp btn-state">
-        <div class="comp-h"><div><h3>Buttons</h3><p>Verb first, says exactly what happens.</p></div>
-          <div class="seg" role="group" aria-label="Button state" id="btn-states">
-            <button type="button" data-st="" aria-pressed="true">Rest</button><button type="button" data-st="is-hover" aria-pressed="false">Hover</button><button type="button" data-st="is-focus" aria-pressed="false">Focus</button><button type="button" data-st="disabled" aria-pressed="false">Off</button><button type="button" data-st="loading" aria-pressed="false">Busy</button>
-          </div>
-        </div>
-        <div class="demo row" id="btn-demo"></div>
-        <p class="note">Primary jade appears once per view. Dừng is an outline so it is always visible without shouting. Filled lacquer is only for irreversible confirmation.</p>
-      </div>
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Task status</h3><p>Six states. Icon plus text, color is the third signal.</p></div></div>
-        <div class="demo row" style="gap:8px">
-          <span class="chip neutral"><span class="spin" style="width:12px;height:12px;border-width:1.5px"></span>Đang lên kế hoạch</span>
-          <span class="chip attn"><span data-ic="clock" data-sm></span>Chờ duyệt</span>
-          <span class="chip attn"><span class="dot pulse"></span>Đang chạy</span>
-          <span class="chip ok"><span data-ic="check" data-sm></span>Hoàn thành</span>
-          <span class="chip bad"><span data-ic="alert" data-sm></span>Cần thử lại</span>
-          <span class="chip neutral"><span data-ic="stop" data-sm></span>Đã dừng</span>
-        </div>
-        <p class="note">Turmeric states are the AI asking or working. Jade means done and checked. Lacquer means a person needs to fix something.</p>
-      </div>
-
-      <div class="panel comp span2">
-        <div class="comp-h"><div><h3>Composer and @ picker</h3><p>Type <b>@</b> to call a teammate or an AI coworker. Arrow keys and Enter work. Mention an agent to see its reply.</p></div></div>
-        <div class="demo">
-          <div class="thread" id="c-thread">
-            <div class="msg"><span class="av t0 sm">MN</span><div class="body"><div class="who">Minh Nguyễn <time>09:12</time></div><div class="bubble"><span class="mention a">@Mora</span> menu trên mobile bị tràn ở màn 375px, sửa giúp mình nhé.</div></div></div>
-          </div>
-          <div class="typing" id="c-typing" aria-live="polite"></div>
-          <div class="cwrap">
-            <div class="picker" id="c-picker" role="listbox" aria-label="Mention" hidden></div>
-            <div class="composer"><button class="icon-btn" type="button" aria-label="Attach file"><span data-ic="clip"></span></button><label class="sr" for="c-input">Message</label><textarea id="c-input" rows="1" placeholder="Nhắn #app-mobile · gõ @ để gọi Mora" role="combobox" aria-expanded="false" aria-controls="c-picker" aria-autocomplete="list"></textarea><button class="send" type="button" id="c-send" aria-label="Send" disabled><span data-ic="up"></span></button></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Messages</h3><p>Theirs, yours, the agent's, and system lines.</p></div></div>
-        <div class="demo">
-          <div class="msg"><span class="av t1 sm">LT</span><div class="body"><div class="who">Linh Trần <time>09:14</time></div><div class="bubble">Giữ nguyên API hiện tại nha, app đối tác đang gọi.</div></div></div>
-          <div class="sys">Linh Trần đã ghim quyết định vào bối cảnh chung</div>
-          <div class="msg agent"><span class="av ai sm" data-arch></span><div class="body"><div class="who">Mora <span class="ai-tag">AI</span><time>09:15</time></div><div class="bubble">Mình đã đọc bối cảnh chung. Kế hoạch giữ nguyên API như <span class="mention p">@Linh Trần</span> chốt.</div></div></div>
-          <div class="msg own"><div class="body"><div class="who"><time>09:16</time></div><div class="bubble">Ok, duyệt nhé.</div></div></div>
-        </div>
-      </div>
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Failure card</h3><p>What failed, what did not change, what to do.</p></div></div>
-        <div class="demo">
-          <div class="fail">
-            <div class="fail-h"><span data-ic="alert"></span>Chưa tạo được PR</div>
-            <div class="fail-b"><b style="font-weight:500">GitHub từ chối quyền ghi vào <code>saigonlab/shop-app</code>.</b><p>Chưa có thay đổi nào được đẩy lên. Nhờ quản trị repo cấp quyền cho Mora, rồi bấm Thử lại.</p></div>
-            <div class="task-f"><span class="note">Lần thử 1 · 09:31</span><button class="btn secondary sm" type="button" id="retry-btn"><span data-ic="rotate" data-sm></span>Thử lại</button></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Shared context · Bối cảnh chung</h3><p>Anyone can pin a decision. Every item shows who and when.</p></div></div>
-        <div class="demo">
-          <ul class="dec" id="ctx-list"></ul>
-          <form class="ctx-add" id="ctx-form"><label class="sr" for="ctx-in">New decision</label><input id="ctx-in" type="text" placeholder="Thêm quyết định, ví dụ: Không đổi màu thương hiệu"><button class="btn primary sm" type="submit">Ghim</button></form>
-        </div>
-      </div>
-      <div class="panel comp">
-        <div class="comp-h"><div><h3>Room list</h3><p>Selected row is neutral. Unread count is ink, not an accent.</p></div></div>
-        <div class="room-rows">
-          <div class="m-row sel"><span class="av room sm">#</span><span>app-mobile</span></div>
-          <div class="m-row"><span class="av room sm">#</span><span style="font-weight:700">san-pham</span><em class="count" style="font-style:normal">3</em></div>
-          <div class="m-row"><span class="av ai sm" data-arch></span><span>Mora</span><span class="chip attn" style="flex:0 0 auto;font-size:12px;padding:1px 8px"><span class="dot pulse"></span>Đang chạy</span></div>
-          <div class="m-row"><span class="av t2 sm">HP</span><span>Huy Phạm</span></div>
-        </div>
-      </div>
-
-      <div class="panel comp span2">
-        <div class="comp-h"><div><h3>Team plan, AI allowance, e-invoice</h3><p>The local billing wedge. Drag the slider to spend the team's AI allowance.</p></div></div>
-        <div class="grid3" style="gap:16px">
-          <div class="demo plan">
-            <div class="eyebrow" style="margin:0">Gói Nhóm</div>
-            <div class="price">4.000.000 ₫<small> / tháng</small></div>
-            <ul class="mini-steps" style="font-size:14px">
-              <li><span data-ic="check" data-sm style="color:var(--jade)"></span>Tối đa 15 thành viên</li>
-              <li><span data-ic="check" data-sm style="color:var(--jade)"></span>Hạn mức AI chung 1.400.000 ₫</li>
-              <li><span data-ic="check" data-sm style="color:var(--jade)"></span>Hóa đơn điện tử bằng VND</li>
-            </ul>
-          </div>
-          <div class="demo plan">
-            <div class="allow-top"><span>Hạn mức AI của nhóm</span><b id="allow-num"></b></div>
-            <div class="meter" id="allow-meter" role="meter" aria-label="AI allowance used" aria-valuemin="0" aria-valuemax="100"><i id="allow-bar"></i></div>
-            <div class="allow-state" id="allow-state"></div>
-            <div class="slider-row"><label for="allow-in">Đã dùng</label><input id="allow-in" type="range" min="0" max="100" value="62"></div>
-          </div>
-          <div class="invoice">
-            <div class="invoice-h"><span data-ic="receipt"></span><b>Hóa đơn điện tử · kỳ 09/2026</b></div>
-            <div class="inv-row"><span>Gói Nhóm, 01/09–30/09</span><span>4.000.000 ₫</span></div>
-            <div class="inv-row"><span>Mua thêm hạn mức AI</span><span id="inv-top">0 ₫</span></div>
-            <div class="inv-row"><span>Tổng thanh toán</span><span id="inv-total">4.000.000 ₫</span></div>
-            <p class="note" style="margin-top:8px;font-size:12px">Issued by a Vietnamese entity, so the buyer does not withhold foreign-contractor tax. Tax lines follow the service's classification. Example figures.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VOICE -->
 <section id="voice">
   <div class="wrap">
     <div class="sec-head">
-      <div><div class="eyebrow">Voice</div><h2>Talk like a capable colleague in a work chat</h2></div>
-      <p>Short, direct, ordinary Vietnamese, mixed with the English words developers actually say. The agent shows its work instead of its enthusiasm.</p>
+      <div><div class="eyebrow">Voice</div><h2>Plain, first person, one question at a time</h2></div>
+      <p>Bots call themselves <i>mình</i>, address people by name and never guess <i>anh / chị / em</i>. They restate the request, ask one thing, and show evidence. No emoji.</p>
     </div>
-    <div class="principles">
-      <div class="principle panel"><h3>Vietnamese first, mixed where teams mix</h3><p>Keep PR, commit, branch, review, deploy, test. Nobody says "yêu cầu kéo".</p></div>
-      <div class="principle panel"><h3>Say it before doing it</h3><p>The agent states the plan and waits. Nothing runs before a person approves.</p></div>
-      <div class="principle panel"><h3>Evidence over excitement</h3><p>PR number, tests passed, what did not change. No emoji from the agent.</p></div>
-      <div class="principle panel"><h3>Errors that help</h3><p>What failed, what is safe, what to do next. No "Có lỗi xảy ra".</p></div>
-    </div>
-    <div class="row" style="justify-content:space-between;margin-bottom:12px">
-      <div class="sub" style="margin:0">Say this, not that</div>
-      <label class="switch"><input type="checkbox" id="gloss" checked> Show English gloss</label>
-    </div>
-    <div class="pairs" id="pairs"></div>
-    <div class="pronoun panel">
-      <div>
-        <div class="sub">The pronoun rule</div>
-        <p style="color:var(--ink-2)">Vietnamese pronouns encode age and seniority. An agent cannot know either, so it calls itself <b style="color:var(--ink)">mình</b> and addresses people <b style="color:var(--ink)">by name</b>. It never guesses <i>anh</i>, <i>chị</i> or <i>em</i>. A team can set its own house style in room settings.</p>
-      </div>
-      <div class="demo" style="background:var(--paper);border-radius:12px;padding:12px 16px;border:1px solid var(--line)">
-        <div class="msg agent" style="margin-block:6px"><span class="av ai sm" data-arch></span><div class="body"><div class="who">Mora <span class="ai-tag">AI</span></div><div class="bubble">Huy duyệt kế hoạch là <b>mình</b> bắt đầu nhé.</div></div></div>
-        <p class="verdict y" style="margin-left:38px"><span data-ic="check" data-sm></span>mình + name</p>
-        <div class="msg agent" style="margin-block:10px 6px;opacity:.75"><span class="av ai sm" data-arch></span><div class="body"><div class="who">Mora <span class="ai-tag">AI</span></div><div class="bubble"><b>Anh</b> Huy duyệt là <b>em</b> làm liền ạ!</div></div></div>
-        <p class="verdict n" style="margin-left:38px"><span data-ic="x" data-sm></span>guessed seniority, over-eager</p>
-      </div>
-    </div>
-    <div class="sub" style="margin-top:36px">Product words</div>
-    <div class="gloss">
-      <div class="gl"><b>Đồng đội AI</b><span>AI coworker</span><s>Trợ lý ảo, bot thông minh</s></div>
-      <div class="gl"><b>Bối cảnh chung</b><span>Shared context</span><s>Context, ngữ cảnh hệ thống</s></div>
-      <div class="gl"><b>Kế hoạch · Duyệt</b><span>Plan · Approve</span><s>Phê chuẩn, xác nhận thực thi</s></div>
-      <div class="gl"><b>PR nháp</b><span>Draft PR</span><s>Yêu cầu kéo bản nháp</s></div>
-      <div class="gl"><b>Làm tiếp</b><span>Continue, pick up</span><s>Tiếp quản phiên làm việc</s></div>
-      <div class="gl"><b>Hạn mức AI</b><span>AI allowance</span><s>Credit, token còn lại</s></div>
-      <div class="gl"><b>Phòng</b><span>Room</span><s>Kênh, channel</s></div>
-      <div class="gl"><b>Dừng</b><span>Stop</span><s>Hủy bỏ tác vụ đang thực thi</s></div>
-    </div>
+    <div id="pairs"></div>
   </div>
 </section>
 
-<!-- MOTION + ICONS -->
-<section id="motion">
+<section id="changes">
   <div class="wrap">
     <div class="sec-head">
-      <div><div class="eyebrow">Motion and icons</div><h2>One heartbeat, no fireworks</h2></div>
-      <p>The agent's working pulse is the only looping animation, and only while a task runs. Messages arrive without animation. Cards update in place. With reduced motion, the pulse becomes a still dot and the words carry the state.</p>
+      <div><div class="eyebrow">From v2 to v3</div><h2>What changed</h2></div>
+      <p>The v2 palette (jade, turmeric, lacquer on warm paper) is retired. The idea, the voice and the local formats stay.</p>
     </div>
-    <div class="grid2">
-      <div class="panel mo">
-        <div class="comp-h"><div><h3>Working pulse</h3><p>Turmeric dot, 1.6 s, ease-in-out.</p></div><label class="switch"><input type="checkbox" id="rm-sim"> Simulate reduced motion</label></div>
-        <div class="demo" id="rm-demo"><span class="av ai" data-arch></span><span class="chip attn"><span class="dot pulse"></span>Đang chạy · bước 2/4</span><button class="btn stop sm" type="button" tabindex="-1">Dừng</button></div>
-        <div class="dur">
-          <div><b>120 ms</b><span>Hover and press, ease-out</span></div>
-          <div><b>200 ms</b><span>Panels, sheets, the @ picker</span></div>
-          <div><b>1.6 s</b><span>Working pulse, loops only while running</span></div>
-          <div><b>0 ms</b><span>New messages. Never animate arrivals.</span></div>
-        </div>
-      </div>
-      <div class="panel mo">
-        <div class="comp-h"><div><h3>Icons</h3><p>Line icons, 1.75 stroke, round caps. 20 px in UI, 16 px in chips. The agent's symbol is the arch, never a robot or sparkle.</p></div></div>
-        <div class="icons" id="icons"></div>
-      </div>
-    </div>
+    <div class="tbl"><table class="chg">
+      <thead><tr><th>Area</th><th>v2</th><th>v3</th></tr></thead>
+      <tbody>
+        <tr><td>Color</td><td>Jade, turmeric and lacquer on warm paper</td><td>Black, white and grey; bots are the only color</td></tr>
+        <tr><td>Bots</td><td>Turmeric rounded square with an arch glyph</td><td>A generated character per bot, animated by state</td></tr>
+        <tr><td>Type</td><td>Be Vietnam Pro and JetBrains Mono</td><td>The platform system font</td></tr>
+        <tr><td>Layout</td><td>Three panes, colored plan cards</td><td>Grok-style sidebar with a rail mode, pill composer, details panel</td></tr>
+        <tr><td>Logo</td><td>Two-arch m on a jade tile</td><td>The Mora arch character</td></tr>
+      </tbody>
+    </table></div>
   </div>
 </section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <span class="lockup"><span id="foot-mark"></span><span class="wordmark" style="font-size:18px">mora</span></span>
-    <span>Source of truth: <code>docs/BRAND.md</code> in nguynking/mora · v2 draft, 26/09/2026. Every rule is a hypothesis for the 12-week pilot.</span>
-  </div>
-</footer>
+<footer><div class="wrap"><span class="lockup"><span id="foot-mark"></span><span class="wordmark" style="font-size:17px">mora</span></span><span>Source of truth: <code class="mono">docs/BRAND.md</code> in nguynking/mora · v3 · 26/09/2026</span></div></footer>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 (function(){
 "use strict";
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const P={
-  monitor:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
-  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
-  moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
-  check:'<path d="M20 6 9 17l-5-5"/>',
-  x:'<path d="M18 6 6 18M6 6l12 12"/>',
-  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
-  pr:'<circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7M6 9v12"/>',
-  at:'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>',
-  clip:'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
-  up:'<path d="m5 12 7-7 7 7M12 19V5"/>',
-  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
-  plus:'<path d="M5 12h14M12 5v14"/>',
-  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-  alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>',
-  hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
-  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
-  pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>',
-  file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M16 13H8M16 17H8"/>',
-  rotate:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
-  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
-  receipt:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 17.5v-11"/>',
-  chevron:'<path d="m9 18 6-6-6-6"/>',
-  'chevron-down':'<path d="m6 9 6 6 6-6"/>',
-  panel:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/>',
-  lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
-  branch:'<path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>',
-  pin:'<path d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
-  bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'
+  plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',up:'<path d="m5 12 7-7 7 7M12 19V5"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  panelL:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>',panelR:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',loader:'<path d="M21 12a9 9 0 1 1-6.22-8.56"/>',
+  circleCheck:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',square:'<rect x="6" y="6" width="12" height="12" rx="2"/>',pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>'
 };
-const ic=(n,sm)=>`<svg class="ic${sm?' sm':''}" viewBox="0 0 24 24" aria-hidden="true">${P[n]||''}</svg>`;
-const ARCH='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 13V8a4 4 0 0 1 8 0v5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
-const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function hydrate(root){
-  (root||document).querySelectorAll('[data-ic]').forEach(el=>{el.innerHTML=ic(el.dataset.ic,el.hasAttribute('data-sm'));el.style.display='inline-flex';el.removeAttribute('data-ic');});
-  (root||document).querySelectorAll('[data-arch]').forEach(el=>{el.innerHTML=ARCH;el.removeAttribute('data-arch');});
-}
+const ic=(n,sm,cls)=>`<svg class="ic${sm?' sm':''}${cls?' '+cls:''}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2200);}
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-let toastT;
-function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2400);}
 
-/* ---------- logo ---------- */
-const JADE='#0B6B57', TUR='#F0B45A', WHITE='#FFFFFF';
-function mark(o){
-  o=o||{};
-  const s=o.size||32, tile=o.tile!==false, mono=o.mono||(o.auto!==false&&s<24);
-  const l=o.left||WHITE, r=mono?l:(o.right||TUR), tf=o.tileFill||JADE, sw=o.sw||3.4;
-  let grid='';
-  if(o.grid){
-    let g='';for(let i=4;i<32;i+=4)g+=`<path d="M${i} 0V32M0 ${i}H32" stroke="#FFFFFF" stroke-opacity=".22" stroke-width=".12"/>`;
-    grid=g+`<circle cx="12" cy="14" r="4" fill="none" stroke="#FFFFFF" stroke-opacity=".8" stroke-width=".15" stroke-dasharray=".6 .5"/><circle cx="20" cy="14" r="4" fill="none" stroke="#FFFFFF" stroke-opacity=".8" stroke-width=".15" stroke-dasharray=".6 .5"/><path d="M0 23H32" stroke="#F0B45A" stroke-width=".18"/><rect x="8" y="8.3" width="16" height="16.4" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width=".12"/><text x="1" y="22.4" font-size="1.5" fill="#FFFFFF" fill-opacity=".85" font-family="monospace">baseline 23</text><text x="12.2" y="5.6" font-size="1.5" fill="#FFFFFF" fill-opacity=".85" font-family="monospace">r 4</text>`;
-  }
-  const extra=o.attrs||'';
-  return `<svg viewBox="0 0 32 32" width="${o.w||s}" height="${o.h||s}" ${extra} aria-hidden="true" style="display:block;${o.style||''}">${o.defs||''}${tile?`<rect width="32" height="32" rx="9" fill="${tf}"/>`:''}<path d="M16 14a4 4 0 0 1 8 0v9" fill="none" stroke="${r}" stroke-width="${sw}" stroke-linecap="round"/><path d="M8 23v-9a4 4 0 0 1 8 0v9" fill="none" stroke="${l}" stroke-width="${sw}" stroke-linecap="round"/>${grid}</svg>`;
-}
-$('#top-mark').innerHTML=mark({size:30});
-$('#foot-mark').innerHTML=mark({size:26});
-$('#ws-mark').innerHTML=mark({size:26});
-$('#v2-mark').innerHTML=mark({size:36});
-$('#v1-mark').innerHTML='<svg viewBox="0 0 32 32" width="36" height="36" aria-hidden="true" style="display:block"><rect width="32" height="32" rx="9" fill="#6254c8"/><path d="M7 23V13a4 4 0 0 1 8 0v10m0-10a4 4 0 0 1 8 0v10" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/></svg>';
-$('#hero-mark').insertAdjacentHTML('afterbegin',mark({size:240,style:'width:52%;height:auto'}));
-
-function stage(){
-  const s=+$('#lg-size').value, g=$('#lg-grid').checked, m=$('#lg-mono').checked;
-  $('#lg-size-out').textContent=s+' px'+(s<24&&!m?' · auto mono':'');
-  $('#stage-art').innerHTML=mark({size:s,grid:g&&s>=64,mono:m||s<24});
-}
-['input','change'].forEach(e=>{$('#lg-size').addEventListener(e,stage);});
-$('#lg-grid').addEventListener('change',stage);$('#lg-mono').addEventListener('change',stage);
-stage();
-
-$('#lockups').innerHTML=[
-  {bg:'var(--surface)',fg:'var(--ink)',art:`<span class="row" style="gap:12px">${mark({size:44})}<span class="wordmark" style="font-size:34px;color:#1D1C19">mora</span></span>`,cap:'Primary lockup on paper or white',fixed:'#FFFFFF',cc:'#5E5A51'},
-  {art:`<span class="row" style="gap:12px">${mark({size:44})}<span class="wordmark" style="font-size:34px;color:#F1EEE7">mora</span></span>`,cap:'On ink: wordmark in paper',fixed:'#1D1C19',cc:'#A8A294'},
-  {art:mark({size:64,tile:false}),cap:'On jade: arches only, no tile',fixed:JADE,cc:'#E4F1EC'},
-  {art:`<span class="row" style="gap:10px">${mark({size:40,mono:true,tileFill:'#1D1C19'})}${mark({size:22})}${mark({size:16})}</span>`,cap:'Mono ink tile · favicon sizes use mono',fixed:'#F5F4F0',cc:'#5E5A51'}
-].map(l=>`<div class="lk" style="background:${l.fixed}"><div class="art">${l.art}</div><small style="color:${l.cc}">${l.cap}</small></div>`).join('');
-
-const grad='<defs><linearGradient id="bad-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>';
-$('#donts').innerHTML=[
-  {a:mark({size:60,left:TUR,right:WHITE,auto:false}),t:'Swap who is who'},
-  {a:mark({size:60,defs:grad,tileFill:'url(#bad-g)'}),t:'Add a gradient'},
-  {a:mark({size:60,w:84,h:48,attrs:'preserveAspectRatio="none"'}),t:'Stretch or squash'},
-  {a:mark({size:60,style:'transform:rotate(-14deg)'}),t:'Rotate'},
-  {a:`<span style="background:#E0A032;padding:8px;border-radius:10px;display:block">${mark({size:48})}</span>`,t:'Put it on turmeric'},
-  {a:mark({size:60,style:'filter:drop-shadow(0 6px 6px rgb(0 0 0 / 45%));outline:3px solid #1D1C19;outline-offset:3px;border-radius:12px'}),t:'Add shadow or outline'}
-].map(d=>`<div class="dont panel"><div class="art">${d.a}</div><p>${ic('x',1)}${d.t}</p></div>`).join('');
-
-/* ---------- theme ---------- */
-const root=document.documentElement;
-function isDark(){const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;}
-function setTheme(t,save){
-  if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);
-  $$('[data-theme-btn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeBtn===t)));
-  if(save){try{localStorage.setItem('mora-bb-theme',t)}catch(e){}}
-  renderSwatches();
-}
-$$('[data-theme-btn]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.themeBtn,true)));
-try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>renderSwatches())}catch(e){}
-
-/* ---------- color ---------- */
-const C={
-  paper:['#F5F4F0','#141412'],surface:['#FFFFFF','#1C1B18'],sunken:['#EDEBE4','#25231F'],select:['#E7E4DC','#2A2824'],line:['#E2DED4','#35332D'],control:['#8C8578','#7C766A'],ink:['#1D1C19','#F1EEE7'],'ink-2':['#5E5A51','#A8A294'],
-  jade:['#0B6B57','#43C29E'],'jade-hover':['#08594A','#5FD0AF'],'on-jade':['#FFFFFF','#0B1F1A'],'jade-tint':['#E4F1EC','#15302A'],'jade-ink':['#0A5A49','#6FD6B6'],
-  turmeric:['#E0A032','#F0B45A'],'turmeric-tint':['#FBEED3','#352914'],'turmeric-soft':['#FFF8EB','#231E14'],'turmeric-line':['#EFD9AA','#4A3A1C'],'turmeric-ink':['#80480A','#F4C47A'],
-  lacquer:['#B42318','#F07A6E'],'lacquer-tint':['#FCEAE7','#3A1D1A']
+/* bot faces: same construction as app/workspace.tsx */
+const COLORS=['#FF5A4E','#FFB224','#22C55E','#3B82F6','#A855F7','#FF7A30','#14B8A6','#EC4899'];
+const SHAPES={
+  arch:{d:'M6 33V20a14 14 0 0 1 28 0v13a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z',eyeY:19,gap:5},
+  squircle:{d:'M16 4h8c8 0 12 4 12 12v8c0 8-4 12-12 12h-8C8 36 4 32 4 24v-8C4 8 8 4 16 4Z',eyeY:17,gap:5},
+  circle:{d:'M20 5a15 15 0 1 1 0 30 15 15 0 0 1 0-30Z',eyeY:17,gap:5},
+  pill:{d:'M13 10h14a10 10 0 0 1 0 20H13a10 10 0 0 1 0-20Z',eyeY:18,gap:5},
+  tri:{d:'M16.5 7.5c1.6-2.8 5.4-2.8 7 0l11 19.5c1.6 2.8-.4 6-3.5 6H9c-3.1 0-5.1-3.2-3.5-6Z',eyeY:23,gap:4.5},
+  tall:{d:'M20 3a10 10 0 0 1 10 10v14a10 10 0 0 1-20 0V13A10 10 0 0 1 20 3Z',eyeY:15,gap:4}
 };
-const GROUPS=[
-  {name:'Giấy và Mực · Paper and ink',items:[
-    ['paper','Giấy','Conversation canvas',['ink','paper']],['surface','Nền thẻ','Panels, cards, their bubbles',['ink-2','surface']],['sunken','Lõm','Search, code, hover',['ink-2','sunken']],['select','Chọn','Selected room row',['ink-2','select']],['line','Viền','Dividers, card borders',null],['control','Viền nhập','Inputs, composer outline',['control','surface']],['ink','Mực','Primary text',['ink','paper']],['ink-2','Mực nhạt','Timestamps, previews',['ink-2','paper']]]},
-  {name:'Ngọc · Jade',items:[
-    ['jade','Ngọc','Primary action, links, focus',['on-jade','jade']],['jade-hover','Ngọc đậm','Hover, pressed',['on-jade','jade-hover']],['jade-tint','Ngọc nhạt','Your bubbles, selected chips',['jade-ink','jade-tint']],['jade-ink','Chữ ngọc','Jade text on tint',['jade-ink','jade-tint']]]},
-  {name:'Nghệ · Turmeric',items:[
-    ['turmeric','Nghệ','Dots, bars, logo. Not text.',['turmeric','surface']],['turmeric-tint','Nghệ nhạt','Agent avatar, status chip',['turmeric-ink','turmeric-tint']],['turmeric-soft','Nghệ rất nhạt','Agent message background',['ink','turmeric-soft']],['turmeric-line','Viền nghệ','Agent message border',null],['turmeric-ink','Chữ nghệ','AI label, agent status text',['turmeric-ink','turmeric-tint']]]},
-  {name:'Sơn · Lacquer',items:[
-    ['lacquer','Sơn','Stop, errors',['lacquer','surface']],['lacquer-tint','Sơn nhạt','Error banner',['lacquer','lacquer-tint']]]}
-];
-function lum(h){const n=parseInt(h.slice(1),16),a=[n>>16&255,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2];}
-function ratio(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
-function renderSwatches(){
-  const d=isDark()?1:0;
-  $('#swatches').innerHTML=GROUPS.map(g=>`<div class="sw-group"><h4>${g.name}</h4><div class="sw-grid">${g.items.map(([k,vn,role,pair])=>{
-    const hex=C[k][d];let cr='';
-    if(pair){const r=ratio(C[pair[0]][d],C[pair[1]][d]);cr=`<span>${pair[0]===k?'on '+pair[1]:pair[0]} ${r.toFixed(1)}:1</span>`;}
-    return `<button type="button" class="sw" data-k="${k}" aria-label="${k} ${hex}, ${role}. Copy hex."><span class="chipc" style="background:var(--${k})">${cr}</span><span class="meta"><b>${vn} · <code style="color:var(--ink)">${k}</code></b><code>${C[k][0]} / ${C[k][1]}</code><small>${role}</small></span></button>`;}).join('')}</div></div>`).join('');
+const BOT_SHAPES=['squircle','circle','pill','tri','tall'];
+const seedOf=v=>Array.from(v).reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
+const shapeOf=id=>id==='mora'?'arch':BOT_SHAPES[seedOf(id)%BOT_SHAPES.length];
+const colorOf=id=>COLORS[(seedOf(id)>>>4)%COLORS.length];
+function face(id,size,state,forced){
+  const mora=id==='mora'&&!forced;
+  const s=SHAPES[forced?forced.shape:shapeOf(id)];
+  const color=forced?forced.color:(mora?'currentColor':colorOf(id));
+  const eye=mora?'var(--bg)':'#111111';
+  return `<svg class="bot-face${mora?' is-mora':''}${state?' is-'+state:''}" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><path d="${s.d}" fill="${color}"/><g class="eyes" style="fill:${eye}"><rect x="${20-s.gap-1.7}" y="${s.eyeY-3.5}" width="3.4" height="7" rx="1.7"/><rect x="${20+s.gap-1.7}" y="${s.eyeY-3.5}" width="3.4" height="7" rx="1.7"/></g></svg>`;
 }
-renderSwatches();
-function highlight(k){
-  $$('.hl').forEach(e=>e.classList.remove('hl'));
-  const hint=$('#sp-hint');
-  if(!k){hint.innerHTML='Hover a swatch. The parts of this room that use it get a dashed outline.';return;}
-  const els=$$('.specimen [data-c]').filter(e=>e.dataset.c.split(' ').includes(k));
-  els.forEach(e=>e.classList.add('hl'));
-  hint.innerHTML=els.length?`<b>${k}</b> is used by ${els.length} part${els.length>1?'s':''} of this room.`:`<b>${k}</b> is a state color (hover or pressed), not visible at rest.`;
-}
-const sws=$('#swatches');
-sws.addEventListener('mouseover',e=>{const b=e.target.closest('.sw');if(b)highlight(b.dataset.k);});
-sws.addEventListener('mouseleave',()=>highlight(''));
-sws.addEventListener('focusin',e=>{const b=e.target.closest('.sw');if(b)highlight(b.dataset.k);});
-sws.addEventListener('focusout',()=>highlight(''));
-sws.addEventListener('click',e=>{
-  const b=e.target.closest('.sw');if(!b)return;const hex=C[b.dataset.k][isDark()?1:0];
-  const done=()=>toast(`Copied ${hex} (${b.dataset.k}, ${isDark()?'dark':'light'})`);
-  try{navigator.clipboard.writeText(hex).then(done,()=>toast(`${b.dataset.k}: ${hex}`));}catch(err){toast(`${b.dataset.k}: ${hex}`);}
-});
+const person=(n,size)=>`<span class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.36)}px">${n}</span>`;
+const group=(n,size)=>`<span class="avatar group" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.34)}px">${n}</span>`;
+$('#top-mark').innerHTML=face('mora',28);$('#foot-mark').innerHTML=face('mora',24);
+$('#w-mora').innerHTML=face('mora',44);$('#w-bot').innerHTML=face('Kiểm thử',44);
+$('#hero-bots').innerHTML=[['mora'],['Kiểm thử','waiting'],['Hạnh'],['Báo giá'],['Tuyển dụng','working'],['Kho hàng']].map(([n,st])=>face(n,96,st)).join('');
 
-/* ---------- type scale ---------- */
-const SCALE=[
-  ['Display','40 / 48 · 700 · −2%','Marketing only','font-size:40px;line-height:48px;font-weight:700;letter-spacing:-.02em'],
-  ['Title','24 / 32 · 600','Dialogs, page titles','font-size:24px;line-height:32px;font-weight:600'],
-  ['Heading','18 / 28 · 600','Card titles, panel headings','font-size:18px;line-height:28px;font-weight:600'],
-  ['Body','16 / 26 · 400','Messages, inputs','font-size:16px;line-height:26px'],
-  ['UI','14 / 22 · 500','Rows, buttons, chips','font-size:14px;line-height:22px;font-weight:500'],
-  ['Meta','12 / 18 · 500','Timestamps, labels','font-size:12px;line-height:18px;font-weight:500;color:var(--ink-2)'],
-  ['Code','14 / 22 · mono','Paths, branches, diffs','font-family:var(--mono);font-size:14px;line-height:22px']
-];
-function renderScale(){
-  const t=esc($('#type-in').value||'Làm tiếp, không cần kể lại.');
-  $('#scale').innerHTML=SCALE.map(s=>`<div class="scale-row"><div class="spec"><b>${s[0]}</b>${s[1]}<br>${s[2]}</div><div class="txt" style="${s[3]}">${t}</div></div>`).join('');
-}
-$('#type-in').addEventListener('input',renderScale);renderScale();
-$('#spacing').innerHTML=[4,8,12,16,24,32,48].map(n=>`<div><span>${n}</span><i style="width:${n*4}px;max-width:100%"></i></div>`).join('');
+/* theme */
+const root=document.documentElement;
+function setTheme(t,save){if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));if(save){try{localStorage.setItem('mora-bb3-theme',t)}catch(e){}}}
+$$('[data-t]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.t,true)));
 
-/* ---------- buttons ---------- */
-const BTNS=[['primary','Duyệt kế hoạch'],['secondary','Sửa kế hoạch'],['quiet','Để sau'],['stop','Dừng'],['danger','Xóa phòng']];
-function renderBtns(st){
-  $('#btn-demo').innerHTML=BTNS.map(([c,l])=>{
-    const dis=st==='disabled'||st==='loading';
-    const inner=st==='loading'&&c==='primary'?'<span class="spin"></span>Đang duyệt…':(c==='stop'?ic('stop',1)+l:l);
-    const cls=st&&st!=='disabled'&&st!=='loading'?' '+st:'';
-    return `<button type="button" class="btn ${c}${cls}"${dis?' disabled':''}${st==='loading'&&c==='primary'?' aria-busy="true"':''}>${inner}</button>`;}).join('');
-}
-$('#btn-states').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('#btn-states button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderBtns(b.dataset.st);});
-renderBtns('');
-
-/* ---------- people ---------- */
-const PEOPLE=[
-  {n:'Minh Nguyễn',i:'MN',t:0,r:'Founder · dev'},{n:'Linh Trần',i:'LT',t:1,r:'Product'},{n:'Huy Phạm',i:'HP',t:2,r:'Dev'},
-  {n:'Mora',ai:1,r:'Đồng đội AI · code'},{n:'Kiểm thử',ai:1,i:'KT',r:'Đồng đội AI · QA'}
+/* live app */
+const ROOMS=[
+  {id:'product',name:'Nhóm sản phẩm',kind:'group',init:'SP',sub:'4 thành viên'},
+  {id:'mora',name:'Mora',kind:'bot',role:'Đồng đội AI mặc định: lên kế hoạch, soạn nội dung, bàn giao.'},
+  {id:'Kiểm thử',name:'Kiểm thử',kind:'bot',role:'Chạy checklist kiểm thử và báo lỗi giao diện.'},
+  {id:'Hạnh',name:'Hạnh',kind:'bot',role:'Tổng hợp ghi chú họp và gửi tóm tắt cho cả nhóm.'},
+  {id:'linh',name:'Linh Trần',kind:'person',init:'LT'},
+  {id:'Báo giá',name:'Báo giá',kind:'bot',role:'Soạn báo giá bằng VND cho khách hàng.'}
 ];
-const avatar=(p,sz)=>p.ai?`<span class="av ai ${sz||'sm'}">${p.i?p.i:ARCH}</span>`:`<span class="av t${p.t} ${sz||'sm'}">${p.i}</span>`;
-const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
-const nameRe=new RegExp('@('+PEOPLE.map(p=>p.n).sort((a,b)=>b.length-a.length).join('|')+')','g');
-const withMentions=html=>html.replace(nameRe,(m,n)=>{const p=PEOPLE.find(x=>x.n===n);return `<span class="mention ${p&&p.ai?'a':'p'}">@${n}</span>`;});
-
-/* ---------- mock story ---------- */
-const mockTimes=['09:12','09:14','09:15','09:16','09:31'];
-const PLAN=['Tìm phần tử gây tràn trong <code>NavMenu.tsx</code> ở màn 375px','Thu gọn menu dưới 480px, không đổi API','Thêm test hiển thị cho 375px và 414px, chạy toàn bộ test','Mở PR nháp để cả nhóm review'];
-const PLAN2=['Kiểm tra menu ở 768px và 1024px trên nhánh của PR #48','Dùng lại breakpoint mới, không đổi API','Thêm test cho tablet, mở PR nháp nối tiếp #48'];
-let step=0,prog=0,stopped=false,timer=null;
-const CAPS=[
-  '<b>Minh mentions @Mora.</b> People are circles; the agent is a turmeric rounded square with an <b>AI</b> label. You can tell them apart before reading a name.',
-  '<b>Linh adds a constraint.</b> It lands in the shared context on the right, with her name and time. Nobody will need to repeat it.',
-  '<b>The agent proposes a plan and waits.</b> Turmeric chip: the AI is asking. Jade button: a person decides. Press <b>Duyệt kế hoạch</b> in the card.',
-  '<b>The same card updates in place.</b> The turmeric pulse is the only looping animation. <b>Dừng</b> stays one click away. Try it.',
-  '<b>Result with evidence.</b> Draft PR, files changed, tests passed, API unchanged. People review and merge in GitHub.',
-  '<b>Next morning, Huy continues without asking anyone.</b> The agent restates the context it used. That handoff is what Mora is built for.'
-];
-function msg(p,text,time,extra){
-  const own=false;
-  return `<div class="msg${p.ai?' agent':''}${own?' own':''}">${avatar(p)}<div class="body"><div class="who">${p.n}${p.ai?' <span class="ai-tag">AI</span>':''}<time>${time}</time></div><div class="bubble">${withMentions(text)}</div>${extra||''}</div></div>`;
+const T={
+  product:[{d:'Hôm nay 09:12'},{a:'Minh Nguyễn',i:'MN',t:'@Mora menu trên mobile bị tràn ở màn 375px, lên kế hoạch sửa giúp nhóm nhé.',time:'09:12'},{a:'Linh Trần',i:'LT',t:'Giữ nguyên API hiện tại nha, app đối tác đang gọi.',time:'09:14'},{e:'<b>Linh Trần</b> đã cập nhật bối cảnh chung'},{a:'Mora',bot:'mora',t:'Mình đã đọc bối cảnh chung. Kế hoạch 3 bước bên dưới, giữ nguyên API như Linh chốt.',time:'09:15'},{plan:1},{own:1,t:'Để mình xem rồi duyệt.',time:'09:16'}],
+  mora:[{d:'Hôm qua 17:40'},{own:1,t:'Tóm tắt giúp mình các việc còn mở trong tuần này.',time:'17:40'},{bot:'mora',t:'Còn 3 việc: sửa menu mobile (chờ duyệt), checklist ra mắt (Huy đang làm), báo giá cho An Phát (chờ khách phản hồi).',time:'17:40'},{bot:'mora',t:'Mình đã ghim danh sách này vào bối cảnh chung của Nhóm sản phẩm.',time:'17:41'}],
+  'Kiểm thử':[{d:'Hôm nay 08:30'},{own:1,t:'Kiểm tra giúp mình màn hình đăng nhập trên iPhone SE nhé.',time:'08:30'},{bot:'Kiểm thử',t:'Mình chạy 12 bước trên iPhone SE (375 × 667). 11 đạt. Nút "Quên mật khẩu" bị bàn phím che khi mở ô mật khẩu.',time:'08:34'},{e:'<b>Kiểm thử</b> đã tạo báo cáo · Đăng nhập trên iPhone SE'}],
+  'Hạnh':[{d:'Hôm nay 11:05'},{own:1,t:'Tóm tắt buổi họp thiết kế sáng nay giúp mình.',time:'11:05'},{bot:'Hạnh',t:'Ba ý chính: luồng onboarding gần xong, trạng thái trống cần minh họa mới, và thanh tiến trình sẽ nằm ở header.',time:'11:06'},{bot:'Hạnh',t:'Chưa chốt: ngày review roadmap Q4. Linh sẽ gửi lịch trước thứ Sáu.',time:'11:06'}],
+  linh:[{d:'Hôm nay 10:02'},{a:'Linh Trần',t:'Chiều nay mình review PR #48 nhé.',time:'10:02'},{own:1,t:'Ok, cảm ơn Linh.',time:'10:03'}],
+  'Báo giá':[{d:'24/09 15:20'},{own:1,t:'Soạn báo giá gói Nhóm cho An Phát.',time:'15:20'},{bot:'Báo giá',t:'Gói Nhóm 15 thành viên: 4.000.000 ₫/tháng, hóa đơn điện tử bằng VND. Mình để bản nháp trong bối cảnh chung để Minh xem trước khi gửi.',time:'15:22'}]
+};
+let cur='product',planState='pending',working=false,railOn=false,panelOn=true,workT=null;
+function roomFace(r,size,state){return r.kind==='bot'?face(r.id,size,state):r.kind==='group'?group(r.init,size):person(r.init,size);}
+const faceState=r=>r.kind==='bot'&&working&&r.id===cur?'working':undefined;
+function renderRows(){
+  $('#a-rows').innerHTML=ROOMS.map(r=>{
+    const last=[...T[r.id]].reverse().find(m=>m.t);
+    const prev=last?(last.own?'Bạn: ':r.kind==='group'&&last.a?last.a.split(' ').slice(-1)[0]+': ':'')+last.t:'';
+    return `<button type="button" class="a-row${r.id===cur?' sel':''}" data-room="${esc(r.id)}" title="${esc(r.name)}"${r.id===cur?' aria-current="page"':''}>${roomFace(r,36,faceState(r))}<span class="a-copy"><span class="a-top"><b>${esc(r.name)}</b><time>${last?last.time:''}</time></span><span class="a-prev">${esc(prev)}</span></span></button>`;
+  }).join('');
 }
-function stepIcon(state,i){
-  if(state==='done')return `<span class="step-i done">${ic('check',1).replace('class="ic sm"','class="ic sm" style="width:12px;height:12px;stroke-width:2.5"')}</span>`;
-  if(state==='now')return `<span class="step-i now"><span class="dot${stopped?'':' pulse'}"></span></span>`;
-  return `<span class="step-i">${i+1}</span>`;
+function planCard(){
+  const st={pending:['clock','Chờ duyệt · Mẫu',1],working:['loader','Đang làm',1],done:['circleCheck','Hoàn thành',0]}[planState];
+  const acts=planState==='pending'?`<button class="btn primary" type="button" data-act="approve">${ic('check',1)}Duyệt</button><button class="btn outline" type="button" data-act="edit">${ic('pencil',1)}Chỉnh kế hoạch</button>`:planState==='working'?`<button class="btn outline" type="button" data-act="stop">${ic('square',1)}Dừng</button>`:`<button class="btn outline" type="button" data-act="take">Tiếp nhận</button>`;
+  return `<div class="plan"><header><span class="kicker">Kế hoạch</span><span class="status${st[2]?' on':''}">${ic(st[0],1,planState==='working'?'spin':'')}${st[1]}</span></header><h4>Sửa menu tràn trên mobile</h4><ol><li>Xác định phần tử gây tràn ở màn 375px.</li><li>Thu gọn menu dưới 480px, giữ nguyên API.</li><li>Soạn checklist kiểm tra và ghi chú bàn giao.</li></ol><div class="actions">${acts}</div></div>`;
 }
-function taskCard(o){
-  // o: {title, steps, status:'pending'|'running'|'done', prog, approver, id}
-  let chip,foot='',pr='';
-  if(o.status==='pending'){chip='<span class="chip attn">'+ic('clock',1)+'Chờ duyệt</span>';
-    foot=`<div class="task-f"><span class="note">Chưa có gì chạy trước khi ${o.approver} duyệt.</span><button class="btn secondary sm" type="button" data-act="edit">${ic('pencil',1)}Sửa kế hoạch</button><button class="btn primary sm" type="button" data-act="approve${o.id||''}">Duyệt kế hoạch</button></div>`;}
-  else if(o.status==='running'){
-    chip=stopped?'<span class="chip neutral">'+ic('stop',1)+'Đã dừng</span>':'<span class="chip attn"><span class="dot pulse"></span>Đang chạy</span>';
-    foot=`<div class="task-f"><span class="note">${stopped?'Đã dừng ở bước '+(o.prog+1)+'/'+o.steps.length+'. Chưa có gì được đẩy lên.':'Bước '+Math.min(o.prog+1,o.steps.length)+'/'+o.steps.length+' · '+o.approver+' đã duyệt lúc 09:16'}</span>${stopped?'<button class="btn primary sm" type="button" data-act="resume">Chạy tiếp</button>':'<button class="btn stop sm" type="button" data-act="stop">'+ic('stop',1)+'Dừng</button>'}</div>`;}
-  else {chip='<span class="chip ok">'+ic('check',1)+'Hoàn thành</span>';
-    pr=`<div class="pr">${ic('pr')}<div style="flex:1;min-width:0"><b>PR nháp #48 · Sửa menu tràn trên màn hình nhỏ</b><small><span class="mono">fix/menu-375px</span> · 3 tệp · +42 −18 · 12/12 test đạt</small></div><button class="btn secondary sm" type="button" data-act="gh">Mở trên GitHub</button></div>`;}
-  const bar=o.status==='running'?`<div style="padding:0 14px"><div class="bar"><i style="width:${Math.round(o.prog/o.steps.length*100)}%"></i></div></div>`:'';
-  const steps=o.steps.map((s,i)=>{const st=o.status==='done'||i<o.prog?'done':(o.status==='running'&&i===o.prog?'now':'todo');return `<li class="${st==='done'?'is-done':''}">${stepIcon(st,i)}<span>${s}</span></li>`;}).join('');
-  return `<div class="task"><div class="task-h">${ic('file',1)}<strong>${o.title}</strong>${chip}</div><div class="task-ctx">Dùng bối cảnh: giữ nguyên API · repo <span class="mono">saigonlab/shop-app</span></div>${bar}<ol>${steps}</ol>${pr}${foot}</div>`;
-}
-const MINH=PEOPLE[0],LINH=PEOPLE[1],HUY=PEOPLE[2],MORA=PEOPLE[3];
-function renderMock(){
-  let h='<div class="day">Hôm nay · 26/09</div>';
-  h+=msg(MINH,'@Mora menu trên mobile bị tràn ở màn 375px, sửa giúp mình nhé.','09:12');
-  if(step>=1){h+=msg(LINH,'Giữ nguyên API hiện tại nha, app đối tác đang gọi. Mình ghim vào bối cảnh chung rồi.','09:14');h+='<div class="sys">Linh Trần đã ghim: Giữ nguyên API hiện tại</div>';}
-  if(step>=2){
-    const status=step===2?'pending':(step===3?'running':'done');
-    h+=msg(MORA,'Mình đã đọc bối cảnh chung. Kế hoạch 4 bước bên dưới, giữ nguyên API như @Linh Trần chốt. @Minh Nguyễn duyệt là mình bắt đầu.','09:15',taskCard({title:'Sửa menu tràn trên mobile',steps:PLAN,status,prog,approver:'Minh'}));
+function renderChat(){
+  const r=ROOMS.find(x=>x.id===cur);let prev=null,h='';
+  for(const m of T[cur]){
+    if(m.d){h+=`<div class="divider">${m.d}</div>`;prev=null;continue;}
+    if(m.e){h+=`<p class="event">${m.e}</p>`;prev=null;continue;}
+    if(m.plan){h+=planCard();prev=null;continue;}
+    const who=m.own?'me':(m.a||m.bot);const run=who!==prev;prev=who;
+    let author='';
+    if(!m.own&&run&&r.kind==='group'){const av=m.bot?face(m.bot,20):person(m.i,20);author=`<div class="author">${av}${esc(m.a||'Mora')}${m.bot?'<span class="ai-label">AI</span>':''}</div>`;}
+    h+=`<div class="msg${m.own?' own':''}${run?' run':''}">${author}<div class="bubble">${esc(m.t)}</div></div>`;
   }
-  if(step>=3)h+='<div class="sys">Minh Nguyễn đã duyệt kế hoạch · 09:16</div>';
-  if(step>=4)h+=msg(MORA,'Đã mở PR nháp #48. 3 tệp thay đổi, 12/12 test đạt, API không đổi. Chưa merge, nhờ mọi người review trên GitHub.','09:31');
-  if(step>=5){
-    h+='<div class="day">Hôm qua → hôm nay · 27/09</div>';
-    h+=msg(HUY,'@Mora mình làm tiếp phần tablet nhé, nối từ PR #48.','08:47');
-    h+=msg(MORA,'Mình nắm rồi: giữ nguyên API (Linh chốt hôm qua), PR #48 đang chờ review. Kế hoạch cho tablet bên dưới, @Huy Phạm duyệt là mình bắt đầu.','08:48',taskCard({title:'Menu cho tablet',steps:PLAN2,status:'pending',prog:0,approver:'Huy',id:'2'}));
-  }
-  const sc=$('#m-scroll');sc.innerHTML=h;sc.scrollTop=sc.scrollHeight;
-  renderPanel();
-  $('#story-cap').innerHTML=CAPS[step];
-  $('#pips').innerHTML=CAPS.map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join('');
-  $('#st-back').disabled=step===0;
-  const nx=$('#st-next');
-  nx.disabled=step===5;
-  nx.textContent=step===2?'Approve as Minh':(step===3&&prog<4?'Skip to result':'Next');
+  if(working)h+='<div class="msg run" aria-hidden="true"><div class="bubble typing"><i></i><i></i><i></i></div></div>';
+  const sc=$('#a-scroll');sc.innerHTML=h;sc.scrollTop=sc.scrollHeight;
+  $('#a-who').innerHTML=`${roomFace(r,24,faceState(r))}<span>${esc(r.name)}</span>${r.kind==='bot'?'<span class="ai-label">AI</span>':''}`;
+  $('#a-input').placeholder='Nhắn '+r.name;
+  $('#panel-btn').classList.toggle('is-active',working);
+  $('#panel-btn').setAttribute('aria-label',working?'Details, a bot is working':'Details');
 }
 function renderPanel(){
-  const decs=[{t:'Ưu tiên màn hình 375px trước',w:'Minh Nguyễn · 24/09'}];
-  if(step>=1)decs.push({t:'Giữ nguyên API hiện tại',w:'Linh Trần · 09:14',fresh:step===1});
-  let plan;
-  if(step<2)plan='<div class="empty-note">Chưa có kế hoạch. Gọi @Mora trong phòng để bắt đầu.</div>';
-  else if(step<5){
-    const status=step===2?'pending':(step===3?'running':'done');
-    const chip=status==='pending'?'<span class="chip attn">'+ic('clock',1)+'Chờ duyệt</span>':status==='running'?(stopped?'<span class="chip neutral">'+ic('stop',1)+'Đã dừng</span>':'<span class="chip attn"><span class="dot pulse"></span>Đang chạy</span>'):'<span class="chip ok">'+ic('check',1)+'Hoàn thành</span>';
-    plan=`<div class="stack" style="gap:10px"><div class="row" style="justify-content:space-between;gap:8px"><b style="font-size:14px">Sửa menu tràn trên mobile</b>${chip}</div><ul class="mini-steps">${PLAN.map((s,i)=>{const st=status==='done'||i<prog?'done':(status==='running'&&i===prog?'now':'todo');return `<li>${stepIcon(st,i)}<span>${s}</span></li>`;}).join('')}</ul>${status==='done'?`<div class="p-repo">${ic('pr',1)}<span>PR nháp #48 · 12/12 test đạt</span></div>`:''}</div>`;
-  } else {
-    plan=`<div class="stack" style="gap:10px"><div class="row" style="justify-content:space-between;gap:8px"><b style="font-size:14px">Menu cho tablet</b><span class="chip attn">${ic('clock',1)}Chờ duyệt</span></div><ul class="mini-steps">${PLAN2.map((s,i)=>`<li>${stepIcon('todo',i)}<span>${s}</span></li>`).join('')}</ul><div class="p-repo">${ic('pr',1)}<span>Việc trước: PR #48 đang chờ review</span></div></div>`;
+  const r=ROOMS.find(x=>x.id===cur);
+  const sub=r.kind==='bot'?'Đồng đội AI':r.kind==='group'?r.sub:'Trò chuyện riêng';
+  let h=`<div class="p-id">${roomFace(r,72,faceState(r))}<h4>${esc(r.name)}</h4><p>${sub}</p>${r.role?`<p style="color:var(--fg);margin-top:6px">${esc(r.role)}</p>`:''}</div>`;
+  if(cur==='product'){
+    const st={pending:'Chờ duyệt · Mẫu',working:'Đang làm',done:'Hoàn thành'}[planState];
+    h+=`<div class="p-sec"><h5>Công việc</h5><ul class="p-list"><li><b>Sửa menu tràn trên mobile</b><span class="status${planState!=='done'?' on':''}">${ic(planState==='done'?'circleCheck':planState==='working'?'loader':'clock',1,planState==='working'?'spin':'')}${st}</span></li><li><b>Checklist ra mắt bản mobile</b><span class="status">${ic('circleCheck',1)}Hoàn thành · Huy tiếp nhận</span></li></ul></div>`;
+    h+=`<div class="p-sec"><h5>Bối cảnh chung</h5><dl class="p-ctx"><dt>Mục tiêu</dt><dd>Ra mắt bản mobile gọn gàng trước 30/09.</dd><dt>Kho mã</dt><dd class="mono">saigonlab/shop-app</dd><dt>Quyết định</dt><dd>Giữ nguyên API hiện tại.</dd></dl></div>`;
+    h+=`<div class="p-sec"><h5>Thành viên</h5><div style="display:flex;flex-direction:column;gap:10px;font-size:14px">${[['MN','Minh Nguyễn'],['LT','Linh Trần'],['HP','Huy Phạm']].map(([i,n])=>`<span style="display:flex;align-items:center;gap:10px">${person(i,28)}${n}</span>`).join('')}<span style="display:flex;align-items:center;gap:10px">${face('mora',28)}Mora <span class="ai-label">AI</span></span></div></div>`;
+  } else if(r.kind==='bot'){
+    h+=`<div class="p-sec"><h5>Công việc</h5><p class="note">Chưa có kế hoạch nào.</p></div>`;
   }
-  const who=step>=5?[HUY,MORA]:step>=2?[MINH,MORA]:[MINH];
-  $('#m-panel').innerHTML=`
-    <div class="p-sec"><h4>Repo</h4><div class="p-repo">${ic('branch',1)}<span class="mono">saigonlab/shop-app</span><span class="chip neutral" style="font-size:12px;padding:0 8px">${ic('lock',1)}Riêng tư</span></div></div>
-    <div class="p-sec"><h4>${ic('pin',1)}Quyết định đã chốt</h4><ul class="dec">${decs.map(d=>`<li class="${d.fresh?'fresh':''}"><div>${d.t}<small>${d.w}</small></div></li>`).join('')}</ul></div>
-    <div class="p-sec"><h4>Kế hoạch hiện tại</h4>${plan}</div>
-    <div class="p-sec"><h4>Đang làm</h4><div class="row" style="gap:8px">${who.map(p=>`<span class="row" style="gap:6px;font-size:13px">${avatar(p,'xs')}${p.n}</span>`).join('')}</div></div>
-    ${step>=5?`<div class="p-sec"><div class="empty-note" style="background:var(--jade-tint);color:var(--jade-ink)"><b>Bàn giao không cần kể lại.</b> Huy tiếp tục từ phòng, không hỏi ai. Tuần này: 1 lần bàn giao.</div></div>`:''}`;
+  $('#a-panel').innerHTML=h;
 }
-function tick(){
-  clearInterval(timer);
-  if(stopped||step!==3)return;
-  if(reduced()){prog=4;renderMock();return;}
-  timer=setInterval(()=>{
-    if(stopped||step!==3){clearInterval(timer);return;}
-    prog++;
-    if(prog>=4){clearInterval(timer);prog=4;step=4;}
-    renderMock();
-  },1100);
-}
-function go(n){
-  step=Math.max(0,Math.min(5,n));
-  if(step<3){prog=0;stopped=false;}
-  if(step>=4){prog=4;stopped=false;}
-  if(step===3&&prog>=4){step=4;}
-  renderMock();
-  if(step===3)tick();
-}
-$('#st-next').addEventListener('click',()=>{
-  if(step===3){clearInterval(timer);prog=4;stopped=false;go(4);return;}
-  if(step===2){prog=0;stopped=false;go(3);return;}
-  go(step+1);
-});
-$('#st-back').addEventListener('click',()=>{clearInterval(timer);if(step===4||step===3){prog=0;stopped=false;go(2);}else go(step-1);});
-$('#st-reset').addEventListener('click',()=>{clearInterval(timer);prog=0;stopped=false;go(0);});
-$('#m-scroll').addEventListener('click',e=>{
+function renderApp(){renderRows();renderChat();renderPanel();}
+$('#a-rows').addEventListener('click',e=>{const b=e.target.closest('[data-room]');if(!b)return;cur=b.dataset.room;working=false;clearTimeout(workT);renderApp();});
+$('#rail-btn').addEventListener('click',()=>{railOn=!railOn;$('#app').classList.toggle('rail',railOn);$('#rail-btn').setAttribute('aria-pressed',String(railOn));$('#rail-btn').setAttribute('aria-label',railOn?'Expand sidebar':'Collapse sidebar');});
+function setPanel(on){panelOn=on;$('#app').classList.toggle('no-panel',!on);$('#panel-btn').setAttribute('aria-pressed',String(on));}
+$('#panel-btn').addEventListener('click',()=>setPanel(!panelOn));
+$('#panel-close').addEventListener('click',()=>{setPanel(false);$('#panel-btn').focus();});
+$('#app').addEventListener('click',e=>{const d=e.target.closest('[data-demo]');if(d)toast(d.dataset.demo==='plus'?'In the app: upload a file, mention a bot, create a plan.':'In the app: find a member, create a bot, create a group.');});
+$('#a-scroll').addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
-  if(a==='approve'){prog=0;stopped=false;go(3);}
-  else if(a==='approve2'){toast('Demo ends here. In the product, Huy approves and the agent starts.');}
-  else if(a==='stop'){stopped=true;clearInterval(timer);renderMock();}
-  else if(a==='resume'){stopped=false;renderMock();tick();}
-  else if(a==='edit'){toast('In the product, the plan opens for editing. Anyone in the room can change it.');}
-  else if(a==='gh'){toast('In the product, this opens PR #48 on GitHub.');}
+  if(a==='approve'){
+    planState='working';working=true;T.product.push({e:'<b>Minh Nguyễn</b> đã duyệt kế hoạch “Sửa menu tràn trên mobile”'});renderApp();clearTimeout(workT);
+    workT=setTimeout(()=>{planState='done';working=false;T.product.push({a:'Mora',bot:'mora',t:'Xong. Checklist và ghi chú bàn giao đã có trong kế hoạch. Chưa có thay đổi nào trong mã.',time:'09:31'});if(cur==='product')renderApp();else renderRows();},reduced()?300:2600);
+  } else if(a==='stop'){clearTimeout(workT);planState='pending';working=false;T.product.push({e:'<b>Minh Nguyễn</b> đã dừng tác vụ'});renderApp();}
+  else if(a==='edit')toast('In the app: the plan opens for editing.');
+  else if(a==='take'){T.product.push({e:'<b>Minh Nguyễn</b> tiếp nhận công việc. Bối cảnh và kế hoạch được giữ lại.'});renderApp();}
 });
-go(0);
-
-/* ---------- composer ---------- */
-const input=$('#c-input'),picker=$('#c-picker'),send=$('#c-send');
-let matches=[],sel=0,mctx=null;
-function nowTime(){return new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});}
-function findMention(){
-  const v=input.value.slice(0,input.selectionStart);
-  const m=/(^|\s)@([^\s@]{0,20})$/.exec(v);
-  return m?{start:v.length-m[2].length-1,q:m[2]}:null;
-}
-function openPicker(){
-  mctx=findMention();
-  if(!mctx){closePicker();return;}
-  const q=norm(mctx.q);
-  matches=PEOPLE.filter(p=>norm(p.n).split(' ').some(w=>w.startsWith(q))||norm(p.n).startsWith(q));
-  if(!matches.length){closePicker();return;}
-  sel=Math.min(sel,matches.length-1);
-  const ppl=matches.filter(p=>!p.ai),ais=matches.filter(p=>p.ai);
-  const row=p=>{const i=matches.indexOf(p);return `<button type="button" role="option" id="opt-${i}" aria-selected="${i===sel}" data-i="${i}">${avatar(p,'xs')}<span>${p.n}${p.ai?' <span class="ai-tag" style="display:inline;margin-left:4px">AI</span>':''}<small>${p.r}</small></span></button>`;};
-  picker.innerHTML=(ppl.length?'<div class="pk-h">Người</div>'+ppl.map(row).join(''):'')+(ais.length?'<div class="pk-h">Đồng đội AI</div>'+ais.map(row).join(''):'');
-  picker.hidden=false;input.setAttribute('aria-expanded','true');input.setAttribute('aria-activedescendant','opt-'+sel);
-}
-function closePicker(){picker.hidden=true;matches=[];sel=0;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');}
-function choose(i){
-  const p=matches[i];if(!p||!mctx)return;
-  const before=input.value.slice(0,mctx.start),after=input.value.slice(input.selectionStart);
-  input.value=before+'@'+p.n+' '+after.replace(/^\S*/,'');
-  const pos=(before+'@'+p.n+' ').length;input.focus();input.setSelectionRange(pos,pos);
-  closePicker();sync();
-}
-function sync(){send.disabled=!input.value.trim();input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';}
-input.addEventListener('input',()=>{sel=0;openPicker();sync();});
-input.addEventListener('click',openPicker);
-input.addEventListener('keydown',e=>{
-  if(!picker.hidden&&matches.length){
-    if(e.key==='ArrowDown'){e.preventDefault();sel=(sel+1)%matches.length;openPicker();return;}
-    if(e.key==='ArrowUp'){e.preventDefault();sel=(sel-1+matches.length)%matches.length;openPicker();return;}
-    if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();choose(sel);return;}
-    if(e.key==='Escape'){e.preventDefault();closePicker();return;}
-  }
-  if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();post();}
+const inp=$('#a-input'),sendBtn=$('#a-send');
+inp.addEventListener('input',()=>{sendBtn.disabled=!inp.value.trim();inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,120)+'px';});
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('#a-form').requestSubmit();}});
+$('#a-form').addEventListener('submit',e=>{
+  e.preventDefault();const v=inp.value.trim();if(!v)return;
+  const now=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
+  T[cur].push({own:1,t:v,time:now});inp.value='';sendBtn.disabled=true;inp.style.height='auto';
+  const r=ROOMS.find(x=>x.id===cur);
+  const botId=r.kind==='bot'?r.id:(r.kind==='group'&&/@mora/i.test(v)?'mora':null);
+  if(!botId){renderApp();return;}
+  working=true;renderApp();clearTimeout(workT);
+  const room=cur;
+  workT=setTimeout(()=>{working=false;T[room].push({bot:botId,a:botId==='mora'?'Mora':botId,t:'Mình nhận rồi. Mình sẽ đề xuất kế hoạch trong phòng để mọi người duyệt; chưa có gì chạy trước khi được duyệt.',time:now});if(cur===room)renderApp();else renderRows();},reduced()?300:2200);
 });
-picker.addEventListener('mousedown',e=>{const b=e.target.closest('button[data-i]');if(b){e.preventDefault();choose(+b.dataset.i);}});
-input.addEventListener('blur',()=>setTimeout(closePicker,120));
-send.addEventListener('click',post);
-function post(){
-  const v=input.value.trim();if(!v)return;
-  const th=$('#c-thread');
-  th.insertAdjacentHTML('beforeend',`<div class="msg own"><div class="body"><div class="who"><time>${nowTime()}</time></div><div class="bubble">${withMentions(esc(v))}</div></div></div>`);
-  input.value='';sync();closePicker();th.scrollTop=th.scrollHeight;
-  const ai=PEOPLE.filter(p=>p.ai&&v.includes('@'+p.n));
-  if(ai.length){
-    const a=ai[0];$('#c-typing').innerHTML=`<span class="dot pulse"></span>${a.n} đang soạn…`;
-    setTimeout(()=>{
-      $('#c-typing').innerHTML='';
-      const reply=a.n==='Mora'?'Mình nhận rồi. Mình sẽ đọc bối cảnh chung và đề xuất kế hoạch ở bảng bên phải để mọi người duyệt. Chưa có gì chạy trước khi được duyệt.':'Mình sẽ chạy bộ test trên nhánh hiện tại và báo kết quả tại đây. Không thay đổi code.';
-      th.insertAdjacentHTML('beforeend',`<div class="msg agent">${avatar(a)}<div class="body"><div class="who">${a.n} <span class="ai-tag">AI</span><time>${nowTime()}</time></div><div class="bubble">${reply}</div></div></div>`);
-      th.scrollTop=th.scrollHeight;
-    },reduced()?200:1400);
-  }
-}
+renderApp();
 
-/* ---------- context ---------- */
-let decs=[{t:'Giữ nguyên API hiện tại',w:'Linh Trần · 26/09 09:14'},{t:'Ưu tiên màn hình 375px trước',w:'Minh Nguyễn · 24/09'}];
-function renderCtx(){
-  $('#ctx-list').innerHTML=decs.map((d,i)=>`<li class="${d.fresh?'fresh':''}"><div>${esc(d.t)}<small>${d.w}</small></div>${d.mine?`<button class="rm" type="button" data-i="${i}" aria-label="Bỏ ghim: ${esc(d.t)}">${ic('x',1)}</button>`:''}</li>`).join('');
-}
-$('#ctx-form').addEventListener('submit',e=>{
-  e.preventDefault();const v=$('#ctx-in').value.trim();if(!v)return;
-  decs.forEach(d=>d.fresh=false);
-  decs.unshift({t:v,w:'Bạn · '+nowTime(),mine:true,fresh:true});$('#ctx-in').value='';renderCtx();
-  toast('Đã ghim. Mora và cả nhóm sẽ thấy quyết định này.');
-});
-$('#ctx-list').addEventListener('click',e=>{const b=e.target.closest('.rm');if(!b)return;decs.splice(+b.dataset.i,1);renderCtx();});
-renderCtx();
-$('#retry-btn').addEventListener('click',e=>{const b=e.currentTarget;b.disabled=true;b.innerHTML='<span class="spin"></span>Đang thử lại…';setTimeout(()=>{b.disabled=false;b.innerHTML=ic('rotate',1)+'Thử lại';toast('Demo: in the product the card updates in place with the new result.');},1500);});
+/* tokens */
+const TOK=[['background','Conversation, dialogs','#FFFFFF','#141414'],['sidebar','Room list, details panel','#F7F7F7','#1B1B1B'],['field','Search field','#EBEBEB','#262626'],['selected','Selected room','#E8E8E8','#2C2C2C'],['bubble','Others’ messages, cards','#F0F0F0','#262626'],['bubble-own','Your messages','#0A0A0A','#3F3F3F'],['foreground','Text, primary buttons','#0A0A0A','#EDEDED'],['muted-foreground','Previews, timestamps','#666666','#9B9B9B'],['border','Dividers, composer','#EBEBEB','#2A2A2A'],['working','Bot is working','#8B5CF6','#A78BFA'],['destructive','Errors only','#D92D20','#F97066']];
+function tokCol(dark){const bg=dark?'#141414':'#FFFFFF',fg=dark?'#EDEDED':'#0A0A0A';return `<div class="theme-col${dark?' dk':''}" style="background:${bg};color:${fg}"><h3>${dark?'Dark':'Light'}</h3>${TOK.map(t=>{const hex=t[dark?3:2];return `<button type="button" class="tok" data-hex="${hex}" data-name="${t[0]}"><i style="background:${hex};box-shadow:inset 0 0 0 1px ${dark?'#333333':'#E0E0E0'}"></i><span><b>${t[0]}</b><small>${t[1]}</small></span><code>${hex}</code></button>`;}).join('')}</div>`;}
+$('#tokens').innerHTML=tokCol(false)+tokCol(true);
+$('#bot-colors').innerHTML=COLORS.map(c=>`<button type="button" data-hex="${c}" data-name="bot color"><i style="background:${c}"></i>${c}</button>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('[data-hex]');if(!b)return;const hex=b.dataset.hex;try{navigator.clipboard.writeText(hex).then(()=>toast('Copied '+hex),()=>toast(b.dataset.name+': '+hex));}catch(err){toast(b.dataset.name+': '+hex);}});
 
-/* ---------- allowance ---------- */
-const TOTAL=1400000,TOPUP=500000;
-const vnd=n=>n.toLocaleString('vi-VN')+' ₫';
-function allow(){
-  const pct=+$('#allow-in').value, used=Math.round(TOTAL*pct/100/1000)*1000, left=TOTAL-used;
-  $('#allow-num').textContent=`${vnd(used)} / ${vnd(TOTAL)}`;
-  $('#allow-bar').style.width=pct+'%';
-  const m=$('#allow-meter');m.setAttribute('aria-valuenow',pct);m.setAttribute('aria-valuetext',pct+'%');
-  m.classList.toggle('attn',pct>=80);
-  const st=$('#allow-state');st.classList.toggle('attn',pct>=80);
-  if(pct>=100)st.innerHTML=`${ic('alert',1)}<span>Đã dùng hết hạn mức. Tác vụ đang chạy vẫn hoàn tất; tác vụ mới chờ mua thêm. <button class="btn quiet sm" type="button" id="buy">Mua thêm ${vnd(TOPUP)}</button></span>`;
-  else if(pct>=80)st.innerHTML=`${ic('clock',1)}<span>Sắp hết hạn mức · còn ${vnd(left)} đến 30/09. <button class="btn quiet sm" type="button" id="buy">Mua thêm ${vnd(TOPUP)}</button></span>`;
-  else st.innerHTML=`${ic('check',1)}<span>Còn ${vnd(left)} đến 30/09 · ${pct}% đã dùng</span>`;
-  $('#mock-allow').textContent=pct+'%';$('#mock-allow-bar').style.width=pct+'%';
-  $('#mock-allow-bar').parentElement.classList.toggle('attn',pct>=80);
+/* bot maker */
+let makerState='';
+function renderMaker(){
+  const n=($('#bot-name').value||'').trim()||'Bot';const isMora=n.toLowerCase()==='mora';const id=isMora?'mora':n;
+  const desc=isMora?'arch · black / white':`${shapeOf(id)} · ${colorOf(id)}`;
+  $('#maker-stage').innerHTML=face(id,160,makerState||undefined)+`<span class="cap">${esc(n)} · ${desc}${makerState?' · '+(makerState==='working'?'Đang làm':'Chờ duyệt'):''}</span>`;
 }
-let topups=0;
-$('#allow-in').addEventListener('input',allow);
-$('#allow-state').addEventListener('click',e=>{if(e.target.closest('#buy')){topups++;$('#inv-top').textContent=vnd(topups*TOPUP);$('#inv-total').textContent=vnd(4000000+topups*TOPUP);$('#allow-in').value=Math.max(0,+$('#allow-in').value-36);allow();toast('Đã thêm '+vnd(TOPUP)+' vào hạn mức. Ghi vào hóa đơn kỳ này.');}});
-allow();
+$('#bot-name').addEventListener('input',renderMaker);
+$('#bot-states').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;makerState=b.dataset.s;$$('#bot-states button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderMaker();});
+renderMaker();
+const LINE=[['squircle',0],['circle',3],['pill',1],['tri',2],['tall',4],['squircle',5],['circle',6],['pill',7]];
+$('#lineup').innerHTML=`<div>${face('mora',56)}<span>Mora</span><small>arch</small></div>`+LINE.map(([s,c])=>`<div>${face('x',56,undefined,{shape:s,color:COLORS[c]})}<span>${s}</span><small>${COLORS[c]}</small></div>`).join('');
 
-/* ---------- voice ---------- */
+/* type */
+const SCALE=[['Display','44 px · 600 · −4%','Marketing only','font-family:var(--display);font-size:44px;line-height:1.15;font-weight:600;letter-spacing:-.04em'],['Message','16 px · 400 · 1.5','Bubbles, composer','font-size:16px;line-height:1.5'],['Title','15 px · 600','Chat and panel headers','font-size:15px;font-weight:600'],['Row','14 px · 600','Room names','font-size:14px;font-weight:600'],['Preview','13 px · 400','Previews, events','font-size:13px;color:var(--fg-2)'],['Meta','12 px · 400','Timestamps','font-size:12px;color:var(--fg-2)']];
+function renderScale(){const t=esc($('#type-in').value||'Làm tiếp, không cần kể lại.');$('#scale').innerHTML=SCALE.map(s=>`<div class="scale-row"><div class="spec"><b>${s[0]}</b>${s[1]} · ${s[2]}</div><div class="t" style="${s[3]}">${t}</div></div>`).join('');}
+$('#type-in').addEventListener('input',renderScale);renderScale();
+
+/* voice */
 const PAIRS=[
-  {say:'Mình sẽ sửa menu trong <code>NavMenu.tsx</code>, giữ nguyên API. Minh duyệt là mình bắt đầu.',sayEn:'I will fix the menu in NavMenu.tsx and keep the API. Once Minh approves, I start.',avoid:'Đã hiểu! Mình sẽ xử lý ngay nhé 🚀',avoidEn:'Got it! On it right away!',why:'Plan first, then wait for a person. No emoji, no rush.'},
-  {say:'Đã mở PR nháp #48 · 12/12 test đạt · chưa merge.',sayEn:'Opened draft PR #48 · 12/12 tests pass · not merged.',avoid:'Xong rồi! Mọi thứ hoạt động hoàn hảo.',avoidEn:'Done! Everything works perfectly.',why:'Evidence instead of adjectives. Say what is still left for people.'},
-  {say:'Chưa tạo được PR: GitHub từ chối quyền ghi. Chưa có thay đổi nào được đẩy lên. Nhờ quản trị repo cấp quyền rồi bấm Thử lại.',sayEn:'Could not create the PR: GitHub denied write access. Nothing was pushed. Ask a repo admin for access, then press Retry.',avoid:'Đã có lỗi xảy ra. Vui lòng thử lại sau.',avoidEn:'An error occurred. Please try again later.',why:'What failed, what is safe, what to do next.'},
-  {say:'Mở PR nháp · Review · Deploy lên staging',sayEn:'Keep the words developers already use.',avoid:'Mở yêu cầu kéo bản nháp · Đánh giá mã · Triển khai',avoidEn:'Literal translations nobody says at work.',why:'Vietnamese first, mixed where teams mix.'},
-  {say:'Hạn mức AI của nhóm còn 532.000 ₫ đến 30/09.',sayEn:'The team has 532,000 ₫ of AI allowance left until 30/09.',avoid:'Bạn còn 13.300 credits (≈ $21.28).',avoidEn:'You have 13,300 credits left (≈ $21.28).',why:'Money in VND, in the local format. No invented units.'}
+  ['Mình hiểu là: mỗi thứ Hai, đếm người mới ở TP.HCM rồi đặt thiết bị theo số đó. Một câu hỏi trước khi bắt đầu.','I understood: every Monday, count new hires in HCMC and order equipment for that many. One question first.','Đã rõ! Mình xử lý ngay nhé 🚀','Got it! On it!'],
+  ['Đã tạo PR nháp #48 · 12/12 test đạt · chưa merge.','Draft PR #48 · 12/12 tests pass · not merged.','Xong rồi, mọi thứ hoàn hảo.','Done, everything is perfect.'],
+  ['Ước tính tiết kiệm 45.000.000 ₫/năm. Mình đang nhờ Huy xác nhận số ghế trước khi dùng con số này.','Estimated savings of 45,000,000 ₫ a year. I’m asking Huy to confirm the seat count before relying on it.','Chắc chắn tiết kiệm được rất nhiều.','This will definitely save a lot.'],
+  ['Huy duyệt là mình bắt đầu.','Once Huy approves, I start.','Anh Huy duyệt là em làm liền ạ!','Guesses seniority and pronouns.']
 ];
-$('#pairs').innerHTML=PAIRS.map(p=>`<div class="pair"><div class="avoid"><span class="lab">${ic('x',1)}Tránh</span><span class="vi">${p.avoid}</span><span class="en">${p.avoidEn}</span></div><div class="say"><span class="lab">${ic('check',1)}Nói</span><span class="vi">${p.say}</span><span class="en">${p.sayEn}</span></div><div class="why">${p.why}</div></div>`).join('');
-$('#gloss').addEventListener('change',e=>$('#pairs').classList.toggle('gloss-off',!e.target.checked));
+$('#pairs').innerHTML=PAIRS.map(p=>`<div class="pair"><div class="no"><span class="lab">${ic('x',1)}Avoid</span><span class="v">${esc(p[2])}</span><span class="en">${esc(p[3])}</span></div><div class="yes"><span class="lab">${ic('check',1)}Say</span><span class="v">${esc(p[0])}</span><span class="en">${esc(p[1])}</span></div></div>`).join('');
 
-/* ---------- motion + icons ---------- */
-$('#rm-sim').addEventListener('change',e=>$('#rm-demo').classList.toggle('rm-sim',e.target.checked));
-const ICONS=[['at','Nhắc tên'],['clip','Đính kèm'],['up','Gửi'],['search','Tìm'],['hash','Phòng'],['users','Thành viên'],['pr','PR nháp'],['branch','Nhánh'],['check','Hoàn thành'],['clock','Chờ duyệt'],['stop','Dừng'],['alert','Cần thử lại'],['pin','Ghim'],['panel','Bảng công việc'],['receipt','Hóa đơn'],['lock','Riêng tư']];
-$('#icons').innerHTML=`<div class="agent"><span class="av ai sm">${ARCH}</span>Đồng đội AI</div>`+ICONS.map(([n,l])=>`<div>${ic(n)}${l}</div>`).join('');
-
-/* ---------- boot ---------- */
-hydrate();
-let saved=null;try{saved=localStorage.getItem('mora-bb-theme')}catch(e){}
-const hostTheme=root.getAttribute('data-theme');
+/* icons + boot */
+$$('[data-ic]').forEach(el=>{el.outerHTML=ic(el.dataset.ic,el.hasAttribute('data-sm'));});
+let saved=null;try{saved=localStorage.getItem('mora-bb3-theme')}catch(e){}
 if(saved&&saved!=='auto')setTheme(saved,false);
-else if(hostTheme)$$('[data-theme-btn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeBtn===hostTheme)));
+else if(root.getAttribute('data-theme'))$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===root.getAttribute('data-theme'))));
 })();
 </script>
