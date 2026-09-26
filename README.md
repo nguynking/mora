@@ -9,7 +9,7 @@ A minimal Vietnamese messenger for coworkers and AI coworkers.
 - Existing project context, plans and handoffs remain available through chat information.
 - Responsive two-pane desktop layout and list-to-chat mobile navigation.
 
-[Brand guidelines](docs/BRAND.md) describe the identity, palette, typography and interaction rules.
+[Brand guidelines](docs/BRAND.md) describe the identity, palette, typography and interaction rules. Open [the interactive brand book](docs/brand/brand-book.html) to see them applied.
 
 ## Data and access
 
