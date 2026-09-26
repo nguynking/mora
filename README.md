@@ -1,70 +1,17 @@
 # Mora
 
-A minimal Vietnamese messenger for coworkers and AI coworkers.
+A minimal workspace for direct messages, group chats, and named AI coworkers.
 
-- One recent-conversation list, search, direct messages and groups.
-- Create a named bot with a role. Talk to it directly or add it to an ordinary group.
-- In groups, mention a bot by name or use the @ picker.
-- Shared messages, replies, reactions and file attachments up to 5 MB.
-- Plans appear as inline cards in the conversation and in the details panel, with approve, stop, edit and continue.
-- Grok Bot-style layout: a room list that collapses to an avatar rail, the conversation, and a details panel for work, shared context and members. One pane at a time on mobile.
-- Monochrome light and dark themes; bots are the only color, and their avatars show when they are working or waiting.
-
-[Brand guidelines](docs/BRAND.md) describe the identity, palette, typography and interaction rules, based on the [Grok Bot design reference](docs/reference/GROK_BOT_DESIGN.md). Open [the interactive brand book](docs/brand/brand-book.html) to see them applied.
-
-## Data and access
-
-Messages, bots and membership are stored in Cloudflare D1; attachments in R2.
-Clients synchronize every four seconds. ChatGPT identity is supplied by Sites.
-New direct messages and groups are restricted to their explicit members. Reads,
-mutations and file downloads check conversation access on the server. Legacy
-project rooms retain their existing workspace-wide visibility and saved data.
-Sample conversations remain labelled “Mẫu”; they are not real member accounts.
-
-The member picker lists people who have already been granted Site access and
-signed in, plus saved bots. Copying the URL does not itself grant Site access.
-The Site remains owner-private until its owner changes sharing. All admitted
-users share the member and bot directory. This remains a single-team pilot.
-Hosting must replace incoming identity headers. Do not expose the Worker directly
-with client-trusted identity headers.
-
-## AI behavior
-
-Bots send ordinary replies through the server-side OpenAI Responses integration.
-Name and role are included in the instruction, together with the current chat's
-last 40 messages. A group bot only replies when mentioned in a sent message.
-Bots cannot execute code, send emails, inspect repositories or read attachments.
-
-`OPENAI_API_KEY` must be configured as a hosting secret for actual replies.
-Without it, the message is saved and the UI says the bot is not connected. It
-never substitutes a canned response for a real AI answer. `OPENAI_MODEL` is
-optional and defaults to the existing `gpt-4.1-mini` configuration. Live provider
-calls were not exercised by local verification. Legacy plan/handoff demo mode
-remains explicitly labelled as sample output.
-
-## Development
-
-React 19, Vinext, TypeScript, Tailwind, Radix dialogs, Cloudflare Workers, D1, R2
-and Drizzle migrations. Use Node 22.13+ and the committed pnpm lockfile.
+The current app uses **Next.js** for both its frontend and API routes and is configured for **Vercel**. See [Vercel setup, CI, and data cutover](docs/VERCEL.md) before deployment.
 
 ```sh
-pnpm install
-pnpm run db:generate
-pnpm run build
-node tests/verify-api.mjs
+pnpm install --frozen-lockfile
+pnpm lint
+pnpm test
+pnpm build
+pnpm test:layout
 ```
 
-Migrations are additive. Apply every committed SQL migration in order to an
-existing local database. Sites applies committed migrations during deployment.
-No production authentication fallback is provided for local development.
+For local authenticated development, configure `.env.local` from `.env.example`, provision a separate development Supabase project, apply migrations with `pnpm db:migrate`, then run `pnpm dev`. Load local environment values into the migration process using your shell or `node --env-file=.env.local scripts/migrate.mjs`.
 
-The integration script builds on a disposable local database, applies all
-migrations, and tests messages, old task flows, DM isolation, private attachments,
-concurrent DM creation, bot roles, mixed groups and membership. It verifies that
-an unconnected bot reports an error instead of fabricating an answer.
-
-The browser automation capability was unavailable for this update. Visual
-rendering, touch interaction and screen-reader behavior have not been checked in
-a live browser. TypeScript, production compilation and local Worker integration
-are checked separately. The pilot loads the latest 1,500 accessible messages and
-100 tasks; search covers conversation names and their latest message previews.
+The merged monochrome interface and brand documentation remain in [docs/BRAND.md](docs/BRAND.md). Old Sites build scripts and D1 migrations are retained for reference and data recovery, and are not used by Vercel.
