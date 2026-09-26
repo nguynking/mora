@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, Download, FileText, MessageCircle, MoreHorizontal, Paperclip, Plus, Search, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
@@ -192,12 +191,13 @@ export default function Workspace() {
   }
   const titles: Record<Exclude<Modal, ''>, string> = { new: 'Cuộc trò chuyện mới', connect: 'Tìm thành viên', bot: 'Tạo bot', group: 'Tạo nhóm', members: activeRoom ? roomName(activeRoom) : 'Thành viên', add: 'Thêm thành viên', thread: 'Trả lời', work: 'Bối cảnh và công việc', context: 'Chỉnh bối cảnh', plan: 'Chỉnh kế hoạch', mention: 'Nhắc đến bot' };
 
-  return <div className={`mora-app ${mobileChat ? 'show-chat' : ''}`}>
+  return <>
     <Toaster position="bottom-center" />
-    <a className="skip-link" href="#conversation">Đến cuộc trò chuyện</a>
+    <a className="skip-link" href="#conversation" onClick={() => setMobileChat(true)}>Đến cuộc trò chuyện</a>
+    <div className={`mora-app ${mobileChat ? 'show-chat' : ''}`}>
     <aside className="chat-list" aria-label="Cuộc trò chuyện">
-      <header className="list-header"><Link className="wordmark" href="/" aria-label="Mora">mora<span aria-hidden="true">.</span></Link><button className="icon-button new-chat" aria-label="Cuộc trò chuyện mới" title="Cuộc trò chuyện mới" onClick={() => openModal('new')}><Plus size={22} /></button></header>
-      <div className="search-field"><Search size={18} aria-hidden="true" /><label className="sr-only" htmlFor="chat-search">Tìm cuộc trò chuyện</label><input id="chat-search" type="search" placeholder="Tìm cuộc trò chuyện" value={search} onChange={event => setSearch(event.target.value)} /></div>
+      <header className="list-header"><button className="icon-button new-chat" aria-label="Cuộc trò chuyện mới" title="Cuộc trò chuyện mới" onClick={() => openModal('new')}><Plus size={22} /></button></header>
+      <div className="search-field"><Search size={18} aria-hidden="true" /><label className="sr-only" htmlFor="chat-search">Tìm cuộc trò chuyện</label><input id="chat-search" type="search" placeholder="Tìm kiếm" value={search} onChange={event => setSearch(event.target.value)} /></div>
       {loadError && <div className="error-banner list-error" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => window.location.reload()}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>}
       <nav className="conversation-list" aria-label="Tin nhắn gần đây">
         {!data && !loadError && <p className="list-empty" role="status">Đang tải tin nhắn…</p>}
@@ -208,13 +208,13 @@ export default function Workspace() {
       </nav>
     </aside>
     <main className="conversation" id="conversation" tabIndex={-1}>
-      {activeRoom && <header className="chat-header"><button className="icon-button mobile-back" aria-label="Về danh sách trò chuyện" onClick={() => setMobileChat(false)}><ArrowLeft size={21} /></button><button className="chat-identity" onClick={() => openModal('members')}><Avatar name={roomName(activeRoom)} group={activeRoom.kind === 'group'} /><span><h1>{roomName(activeRoom)}</h1><span className="chat-subtitle">{other?.role ? `AI · ${data?.aiConnected ? other.role : 'Chưa kết nối'}` : activeRoom.kind === 'group' ? `${members.length} thành viên` : 'Tin nhắn riêng'}</span></span></button><button className="icon-button" aria-label={activeRoom.kind === 'group' ? 'Thêm thành viên' : 'Thông tin cuộc trò chuyện'} title={activeRoom.kind === 'group' ? 'Thêm thành viên' : 'Thông tin cuộc trò chuyện'} onClick={() => openModal(activeRoom.kind === 'group' ? 'add' : 'members')}>{activeRoom.kind === 'group' ? <UserPlus size={20} /> : <MoreHorizontal size={22} />}</button></header>}
+      {activeRoom && <header className="chat-header"><button className="icon-button mobile-back" aria-label="Về danh sách trò chuyện" onClick={() => setMobileChat(false)}><ArrowLeft size={21} /></button><button className="chat-identity" onClick={() => openModal('members')}><Avatar name={roomName(activeRoom)} group={activeRoom.kind === 'group'} /><span className="chat-title"><h1>{roomName(activeRoom)}</h1>{other?.role && <span className="ai-label">AI</span>}</span></button><button className="icon-button" aria-label={activeRoom.kind === 'group' ? 'Thêm thành viên' : 'Thông tin cuộc trò chuyện'} title={activeRoom.kind === 'group' ? 'Thêm thành viên' : 'Thông tin cuộc trò chuyện'} onClick={() => openModal(activeRoom.kind === 'group' ? 'add' : 'members')}>{activeRoom.kind === 'group' ? <UserPlus size={20} /> : <MoreHorizontal size={22} />}</button></header>}
       {loadError && <div className="error-banner" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => window.location.reload()}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>}
       {activeRoom ? <>
         <div className="chat-scroll" ref={scroll} onScroll={() => { const element = scroll.current; if (element) nearBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 160; }}>
           <div className="message-list" role="log" aria-label={`Tin nhắn trong ${roomName(activeRoom)}`} aria-live="polite" aria-relevant="additions">
             {messages.filter(message => !message.parent_id).map((message, index, array) => <div key={message.id}>{(index === 0 || new Date(array[index - 1].created).toDateString() !== new Date(message.created).toDateString()) && <div className="date-divider">{new Date(message.created).toLocaleDateString('vi-VN', { day: 'numeric', month: 'long' })}</div>}{messageView(message)}</div>)}
-            {messages.length === 0 && <div className="conversation-empty"><Avatar name={roomName(activeRoom)} group={activeRoom.kind === 'group'} /><h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Bắt đầu cuộc trò chuyện.'}</p></div>}
+            {messages.length === 0 && <div className="conversation-empty"><p>Chưa có tin nhắn</p></div>}
           </div>
         </div>
         <div className="composer-area">
@@ -228,8 +228,9 @@ export default function Workspace() {
             <button className="send-button" type="submit" aria-label={busy ? 'Đang gửi' : 'Gửi tin nhắn'} disabled={busy || !draft.trim()}><ArrowUp size={21} /></button>
           </form>
         </div>
-      </> : <div className="no-conversation"><span className="empty-wordmark" aria-hidden="true">mora.</span><h1>{data ? 'Bắt đầu một cuộc trò chuyện' : 'Mora'}</h1>{data && <button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button>}</div>}
+      </> : <div className="no-conversation"><h1>{data ? 'Chọn một cuộc trò chuyện' : ''}</h1>{data && <button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button>}</div>}
     </main>
+    </div>
     <Dialog open={!!modal} onOpenChange={open => { if (!open) setModal(''); }}>
       <DialogContent className={`mora-dialog ${modal === 'thread' || modal === 'work' ? 'wide-dialog' : ''}`} showCloseButton={false} onCloseAutoFocus={event => { event.preventDefault(); if (mobileChat && window.innerWidth < 700) composer.current?.focus(); else modalTrigger.current?.focus(); }}>
         <DialogHeader><DialogTitle>{modal ? titles[modal] : ''}</DialogTitle><DialogDescription className="sr-only">{modal === 'bot' ? 'Đặt tên và vai trò cho đồng đội AI.' : 'Quản lý cuộc trò chuyện của bạn.'}</DialogDescription></DialogHeader>
@@ -251,5 +252,5 @@ export default function Workspace() {
         {modal === 'work' && <div className="saved-work"><div className="work-context"><h2>Bối cảnh chung</h2><p>{data?.contexts.find(context => context.room_id === activeId)?.goal || 'Chưa có bối cảnh.'}</p><button className="text-button" onClick={() => { setEditingContext(data?.contexts.find(context => context.room_id === activeId) || null); setModal('context'); }}>Chỉnh bối cảnh</button></div><button className="outlined" onClick={() => { const text = window.prompt('Bạn muốn lên kế hoạch cho việc gì?'); if (text?.trim()) void act('propose', { text }, activeId); }}>Tạo kế hoạch</button>{tasks.map(task => <section className="saved-task" key={task.id}><p className="meta">{statusText[task.status]}{task.mode === 'demo' ? ' · Mẫu' : ''}</p><h2>{task.title}</h2><ol>{(JSON.parse(task.plan) as string[]).map((step, index) => <li key={index}>{step}</li>)}</ol>{task.error && <p role="alert">{task.error}</p>}{task.output && <pre>{task.output}</pre>}<div className="task-actions">{task.status === 'pending' && <button className="primary" onClick={() => void act('approve', { id: task.id, expectedUpdated: task.updated, expectedPlan: task.plan }, activeId)}><Check size={16} />Duyệt</button>}{['pending', 'running', 'generating'].includes(task.status) && <button className="outlined" onClick={() => void act('stop', { id: task.id }, activeId)}>Dừng</button>}{!['running', 'generating'].includes(task.status) && <button className="outlined" onClick={() => { setEditingTask(task); setPlan((JSON.parse(task.plan) as string[]).join('\n')); setModal('plan'); }}>Chỉnh kế hoạch</button>}{task.status === 'done' && <button className="outlined" onClick={() => void act('continue', { id: task.id }, activeId)}>Tiếp nhận</button>}</div></section>)}</div>}
       </DialogContent>
     </Dialog>
-  </div>;
+  </>;
 }

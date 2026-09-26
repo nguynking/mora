@@ -6,8 +6,7 @@ always the main activity.
 
 ## Identity
 
-- Write **Mora** in sentences and use **mora.** for the wordmark.
-- Use a lowercase wordmark with an iris dot. The favicon uses a white m on iris.
+- Use **Mora** in documentation and browser metadata. Do not display a wordmark or app name in the messaging surface. The favicon remains a white m on iris.
 - No tagline, promotional badge, workspace banner or decorative AI imagery inside chat.
 - Human and AI participants use the same avatar scale, message bubbles, conversation list and member picker. Identify AI with a small text label, never disguise a bot as a real person.
 
@@ -23,7 +22,8 @@ always the main activity.
 | Input outline | `#928E9E` | Form and composer boundaries |
 | Iris | `#6254C8` | Primary action and focus |
 | Iris hover | `#5143B1` | Hover and selected name |
-| Selection | `#F1EFFB` | Selected chat and sent bubbles |
+| Selected chat | `#EFEFF2` | Restrained neutral row highlight |
+| Sent bubble | `#F1EFFB` | Your messages |
 
 Keep color functional. White-on-iris is approximately 5.8:1. Secondary text is
 at least 4.5:1 on each intended light surface, including selection. Use text or
@@ -44,7 +44,8 @@ the chat list from the conversation. Shadows are reserved for overlays.
 ## Interaction and voice
 
 - One list of recent conversations, sorted by latest message. Do not separate bots into another navigation section.
-- Desktop has a chat list and conversation. Mobile shows one at a time, with a back button.
+- Desktop has a fixed-width 304px chat list on the left and the active conversation beside it. The 56px headers, compact rows and pill composer follow the supplied messenger reference. Notifications and dialogs are outside the two-pane layout.
+- Mobile shows one at a time, with a back button.
 - New conversation exposes three actions: Tìm thành viên, Tạo bot, Tạo nhóm.
 - A bot needs only a name and role. Its role guides server-side replies.
 - In a direct conversation the bot replies naturally. In a group it replies when mentioned by name; the @ picker avoids typing long names.

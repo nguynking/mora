@@ -49,11 +49,25 @@ verification of a rendered application.
 - ESLint on changed application components, API routes and schema.
 - Production build through the Sites build helper.
 - Disposable local Worker integration: authenticated shared chat, deduplicated sends,
-  threads, reactions and task invariants; private DM and attachment isolation;
+  threads and task invariants; private DM and attachment isolation;
   concurrent DM starts; named bot roles; mixed groups and member additions;
   honest missing-AI failure; server-rendered application shell.
 - Not verified: live OpenAI response quality, rendered browser layout, keyboard/touch
   flows, 200% zoom, screen reader announcements and optional WebMCP runtime.
+
+## Screenshot correction
+
+The supplied screenshot revealed an actual desktop regression: Sonner's in-flow
+notification `section` occupied the first auto-placed CSS grid cell. The chat
+list consequently appeared in column two and the conversation on a second row.
+The notification component now renders outside the grid; the grid has named
+areas, explicit pane assignments and a single constrained row. The app surface
+contains no wordmark. Headers and rows are compact, with a neutral selection and
+pill composer matching the reference structure.
+
+`node tests/verify-layout.mjs` checks the actual production-rendered shell for
+adjacent chat-list and conversation panes, absence of the wordmark, and retained
+search/new-chat controls. This is a DOM regression check, not browser visual QA.
 
 ## Verdict
 
