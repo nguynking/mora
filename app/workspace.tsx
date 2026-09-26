@@ -1,4 +1,6 @@
 'use client';
+import { uploadFile } from '@/lib/upload-file';
+import { useRouter } from 'next/navigation';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, CircleAlert, CircleCheck, CirclePause, Clock, Download, FileText, LoaderCircle, MessageCircle, PanelLeft, PanelRight, Paperclip, Pencil, Plus, Search, Square, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
@@ -67,6 +69,7 @@ function Face({ person, name, size, state }: { person?: Person; name: string; si
 }
 
 export default function Workspace() {
+  const router = useRouter();
   const [data, setData] = useState<State | null>(null);
   const [loadError, setLoadError] = useState('');
   const [needsLogin, setNeedsLogin] = useState(false);
@@ -255,7 +258,7 @@ export default function Workspace() {
   async function upload(file: File) {
     if (file.size > 5 * 1024 * 1024) { toast.error('Tệp tối đa 5 MB.'); return; }
     setBusy(true); const targetRoom = activeId;
-    try { const form = new FormData(); form.append('file', file); form.append('room', targetRoom); const response = await fetch('/api/files', { method: 'POST', body: form }); const result = await response.json() as { error?: string }; if (!response.ok) throw Error(result.error); await refresh(); }
+    try { await uploadFile(file, targetRoom); await refresh(); }
     catch (error) { toast.error(error instanceof Error ? error.message : 'Chưa tải được tệp.', { duration: Infinity, closeButton: true }); }
     finally { setBusy(false); if (fileInput.current) fileInput.current.value = ''; }
   }
@@ -303,7 +306,7 @@ export default function Workspace() {
     </article>;
   }
   const titles: Record<Exclude<Modal, ''>, string> = { new: 'Cuộc trò chuyện mới', connect: 'Tìm thành viên', bot: 'Tạo bot', group: 'Tạo nhóm', add: 'Thêm thành viên', thread: 'Trả lời', context: 'Chỉnh bối cảnh', plan: 'Chỉnh kế hoạch', mention: 'Nhắc đến bot' };
-  const errorBanner = loadError && <div className="error-banner" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => window.location.reload()}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>;
+  const errorBanner = loadError && <div className="error-banner" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => router.push('/signin')}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>;
 
   return <>
     <Toaster position="bottom-center" />

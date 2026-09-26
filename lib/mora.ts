@@ -1,13 +1,13 @@
-import { env } from 'cloudflare:workers';
+import { getDatabase } from './database';
 import { getChatGPTUser } from '@/app/chatgpt-auth';
-export function database() { if (!env.DB) throw new Error('Kho dữ liệu tạm thời không khả dụng.'); return env.DB; }
+export const database = getDatabase;
 export async function identity() { const user=await getChatGPTUser(); if(!user) throw new HttpError(401,'Vui lòng đăng nhập để mở không gian làm việc.'); return user; }
 export class HttpError extends Error { constructor(public status:number,message:string){super(message)} }
 export function json(data:unknown,status=200){return Response.json(data,{status,headers:{'Cache-Control':'no-store'}})}
 export function failure(e:unknown){console.error('Mora request failed', e instanceof Error?e.message:'Unknown');return json({error:e instanceof HttpError?e.message:'Chưa thể lưu thay đổi. Vui lòng thử lại.'},e instanceof HttpError?e.status:503)}
 export function clean(value:unknown,max=6000){if(typeof value!=='string'||!value.trim()||value.length>max)throw new HttpError(400,'Nội dung không hợp lệ hoặc quá dài.');return value.trim()}
 export function sameOrigin(request:Request){const origin=request.headers.get('origin');if(origin&&origin!==new URL(request.url).origin)throw new HttpError(403,'Yêu cầu không hợp lệ.');}
-export function runtime(){return env as typeof env & {OPENAI_API_KEY?:string;OPENAI_MODEL?:string}}
+export function runtime(){return process.env}
 export async function roomExists(id:string){const user=await identity();if(!await database().prepare('SELECT id FROM rooms WHERE id=? AND (restricted=0 OR EXISTS (SELECT 1 FROM room_members WHERE room_id=rooms.id AND member_id=?))').bind(id,user.userId).first())throw new HttpError(404,'Không tìm thấy cuộc trò chuyện.');}
 export async function ensureWorkspace(user:{userId:string;displayName:string;email:string}){
  const db=database();const now=Date.now();

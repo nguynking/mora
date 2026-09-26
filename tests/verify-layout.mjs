@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
 const state = mkdtempSync(join(tmpdir(), 'mora-layout-'));
-const server = spawn(process.execPath, ['--import', './scripts/sites-env.mjs', './node_modules/wrangler/bin/wrangler.js', 'dev', '--config', 'dist/server/wrangler.json', '--local', '--persist-to', state, '--ip', '127.0.0.1', '--port', '8790', '--inspector-port', '0'], { stdio: 'pipe' });
+const server = spawn(process.execPath, ['./node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', '8790'], { stdio: 'pipe' });
 let logs = '';
 server.stdout.on('data', data => logs += data);
 server.stderr.on('data', data => logs += data);
