@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mora · Không gian làm việc chung",
-  description: "Đội nhóm và trợ lý AI, cùng một cuộc trò chuyện.",
+  title: "Mora",
+  description: "Trò chuyện cùng đồng đội và AI.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
