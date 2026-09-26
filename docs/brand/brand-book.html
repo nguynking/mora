@@ -1,0 +1,610 @@
+<title>Mora Brand Book</title>
+<meta name="description" content="Mora brand guideline v3: a monochrome, Grok Bot-style work chat where bots are the only color.">
+<style>
+:root{
+  --bg:#FFFFFF; --sidebar:#F7F7F7; --field:#EBEBEB; --hover:#EFEFEF; --selected:#E8E8E8;
+  --bubble:#F0F0F0; --own:#0A0A0A; --own-fg:#FFFFFF; --fg:#0A0A0A; --fg-2:#666666; --line:#EBEBEB; --input:#CFCFCF;
+  --primary:#0A0A0A; --primary-hover:#333333; --on-primary:#FFFFFF; --composer:#FFFFFF; --working:#8B5CF6; --danger:#D92D20;
+  --page:#FAFAFA; --shadow:0 12px 40px rgb(0 0 0 / 12%); --composer-shadow:0 2px 14px rgb(0 0 0 / 6%);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#141414; --sidebar:#1B1B1B; --field:#262626; --hover:#242424; --selected:#2C2C2C;
+    --bubble:#262626; --own:#3F3F3F; --own-fg:#FFFFFF; --fg:#EDEDED; --fg-2:#9B9B9B; --line:#2A2A2A; --input:#4A4A4A;
+    --primary:#EDEDED; --primary-hover:#FFFFFF; --on-primary:#0A0A0A; --composer:#232323; --working:#A78BFA; --danger:#F97066;
+    --page:#0E0E0E; --shadow:0 12px 40px rgb(0 0 0 / 50%); --composer-shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141414; --sidebar:#1B1B1B; --field:#262626; --hover:#242424; --selected:#2C2C2C;
+  --bubble:#262626; --own:#3F3F3F; --own-fg:#FFFFFF; --fg:#EDEDED; --fg-2:#9B9B9B; --line:#2A2A2A; --input:#4A4A4A;
+  --primary:#EDEDED; --primary-hover:#FFFFFF; --on-primary:#0A0A0A; --composer:#232323; --working:#A78BFA; --danger:#F97066;
+  --page:#0E0E0E; --shadow:0 12px 40px rgb(0 0 0 / 50%); --composer-shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--page);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default}
+svg{flex-shrink:0}
+h1,h2,h3,h4,h5{margin:0;text-wrap:balance;line-height:1.2}
+p{margin:0}
+:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ic.sm{width:16px;height:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:.875em}
+
+/* top */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--page);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:56px}
+.lockup{display:flex;align-items:center;gap:8px;color:var(--fg);text-decoration:none;flex-shrink:0}
+.wordmark{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.02em}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:6px 10px;border-radius:999px;color:var(--fg-2);text-decoration:none;font-size:14px;white-space:nowrap}
+.nav a:hover{background:var(--hover);color:var(--fg)}
+.seg{display:inline-flex;background:var(--field);border-radius:999px;padding:3px;gap:2px;flex-shrink:0}
+.seg button{border:0;background:none;border-radius:999px;padding:4px 12px;font-size:13px;color:var(--fg-2);min-height:30px}
+.seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 2px rgb(0 0 0 / 10%)}
+@media (max-width:760px){.top .wrap{flex-wrap:wrap;padding-block:8px;gap:8px}.nav{order:3;flex-basis:100%}.lockup{margin-right:auto}}
+
+section{padding-block:72px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:13px;color:var(--fg-2);margin-bottom:10px}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px 56px;align-items:end;margin-bottom:36px}
+.sec-head h2{font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.025em}
+.sec-head p{color:var(--fg-2);max-width:60ch}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr}}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid3{grid-template-columns:1fr}}
+.note{font-size:14px;color:var(--fg-2)}
+.sub{font-size:17px;font-weight:600;margin-bottom:8px}
+
+/* hero */
+.hero{padding-block:80px 64px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:center}
+.hero h1{font-family:var(--display);font-size:clamp(40px,7vw,76px);font-weight:600;letter-spacing:-.04em;line-height:1.15}
+.hero .en{font-size:clamp(18px,2.4vw,24px);color:var(--fg-2);margin-top:16px;letter-spacing:-.01em}
+.hero .lede{font-size:17px;color:var(--fg-2);max-width:54ch;margin-top:24px}
+.hero-bots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;justify-items:center;align-items:center;max-width:360px;width:100%;justify-self:center}
+.hero-bots svg{width:100%;max-width:96px;height:auto}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-bots{max-width:300px}}
+
+/* shared chat components (mirror app/globals.css) */
+.avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600;line-height:1;background:var(--field);color:var(--fg-2)}
+.avatar.group{border-radius:30%}
+.bot-face{display:block;flex-shrink:0;overflow:visible}
+.bot-face.is-mora{color:var(--fg)}
+.bot-face .eyes{transform-box:fill-box;transform-origin:center}
+.bot-face.is-waiting .eyes{transform:translateY(-8%);animation:bot-blink 4.5s ease-in-out infinite}
+.bot-face.is-working{animation:bot-bob .9s ease-in-out infinite}
+.bot-face.is-working .eyes{animation:bot-scan 1.8s ease-in-out infinite}
+@keyframes bot-bob{50%{transform:translateY(-7%)}}
+@keyframes bot-scan{0%,100%{transform:translateX(-10%)}50%{transform:translateX(10%)}}
+@keyframes bot-blink{0%,92%,100%{transform:translateY(-8%) scaleY(1)}96%{transform:translateY(-8%) scaleY(.15)}}
+.ai-label{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--fg-2);border:1px solid var(--line);border-radius:6px;padding:0 5px;line-height:1.45;flex-shrink:0}
+.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;border:0;background:none;color:var(--fg-2);border-radius:10px;flex-shrink:0}
+.icon-btn:hover{background:var(--hover);color:var(--fg)}
+.icon-btn.is-active{color:var(--working)}
+.msg{display:flex;flex-direction:column;align-items:flex-start;margin-top:4px}
+.msg.run{margin-top:14px}
+.msg.own{align-items:flex-end}
+.author{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--fg-2);margin:0 0 6px 2px}
+.bubble{max-width:min(520px,80%);background:var(--bubble);border-radius:18px;padding:10px 16px;font-size:15.5px;line-height:1.5;overflow-wrap:anywhere}
+.own .bubble{background:var(--own);color:var(--own-fg)}
+.event{text-align:center;font-size:13px;color:var(--fg-2);margin:16px auto;max-width:36rem}
+.event b{font-weight:400;color:var(--fg)}
+.divider{text-align:center;font-size:12px;color:var(--fg-2);padding:18px 0 6px;font-variant-numeric:tabular-nums}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--fg-2);opacity:.5;animation:typing 1.2s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes typing{30%{opacity:1;transform:translateY(-2px)}}
+.plan{max-width:min(520px,92%);margin-top:14px;background:var(--bubble);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.plan header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-inline:4px}
+.plan .kicker{font-size:12px;font-weight:600;color:var(--fg-2)}
+.plan h4{font-size:16px;font-weight:600;padding-inline:4px}
+.plan ol{margin:0;padding:12px 14px 12px 34px;background:var(--bg);border-radius:12px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--fg-2);white-space:nowrap}
+.status.on{color:var(--fg)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;min-height:36px;padding:6px 14px;font-size:14px;font-weight:500;border:1px solid transparent}
+.btn.primary{background:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover)}
+.btn.outline{border-color:var(--input);background:transparent}
+.btn.outline:hover{background:var(--hover)}
+.composer{display:flex;align-items:flex-end;gap:6px;background:var(--composer);border:1px solid var(--line);border-radius:26px;padding:6px;box-shadow:var(--composer-shadow)}
+.composer:focus-within{border-color:var(--input)}
+.composer textarea{flex:1;border:0;background:none;resize:none;min-height:40px;max-height:120px;padding:8px 4px;font-size:16px;line-height:1.5;min-width:0}
+.composer textarea:focus-visible{outline:none}
+.plus,.send{width:40px;height:40px;border-radius:50%;border:0;display:inline-grid;place-items:center;flex-shrink:0}
+.plus{background:var(--bubble);color:var(--fg)}
+.send{background:var(--primary);color:var(--on-primary)}
+.send:disabled{background:var(--bubble);color:var(--fg-2)}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* live app */
+.app{display:grid;grid-template-columns:272px minmax(0,1fr) 300px;height:640px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--bg);box-shadow:var(--shadow)}
+.app.rail{grid-template-columns:72px minmax(0,1fr) 300px}
+.app.no-panel{grid-template-columns:272px minmax(0,1fr)}
+.app.rail.no-panel{grid-template-columns:72px minmax(0,1fr)}
+.app.no-panel .a-panel{display:none}
+.a-side{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;padding:0 10px}
+.a-side-h{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.a-search{display:flex;align-items:center;gap:8px;background:var(--field);border-radius:10px;padding:0 12px;min-height:36px;color:var(--fg-2);font-size:14px;margin-bottom:10px}
+.a-rows{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin}
+.a-row{width:100%;display:flex;align-items:center;gap:12px;padding:8px;border:0;border-radius:12px;background:none;text-align:left;margin-bottom:2px}
+.a-row:hover{background:var(--hover)}
+.a-row.sel{background:var(--selected)}
+.a-copy{flex:1;min-width:0}
+.a-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.a-top b{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-top time{font-size:12px;color:var(--fg-2);flex-shrink:0}
+.a-prev{display:block;font-size:13px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-foot{display:flex;align-items:center;gap:10px;padding:12px 8px 14px;font-size:14px;font-weight:500}
+.rail .a-side{padding-inline:8px}
+.rail .a-side-h{flex-direction:column;gap:4px;padding-top:8px}
+.rail .a-search{display:none}
+.rail .a-row{justify-content:center;padding:8px 0}
+.rail .a-copy,.rail .a-foot span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.rail .a-foot{justify-content:center}
+.a-conv{display:flex;flex-direction:column;min-width:0;min-height:0}
+.a-head{display:flex;align-items:center;gap:4px;min-height:52px;padding:0 10px 0 14px}
+.a-head .who{display:flex;align-items:center;gap:8px;margin-right:auto;min-width:0;font-weight:600;font-size:15px}
+.a-head .who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.a-scroll{flex:1;overflow-y:auto;min-height:0;padding:0 22px 12px;scrollbar-width:thin}
+.a-compose{padding:4px 22px 18px}
+.a-panel{background:var(--sidebar);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.a-panel-h{display:flex;justify-content:space-between;align-items:center;min-height:52px;padding:0 8px 0 18px;font-weight:600;font-size:15px}
+.a-panel-b{flex:1;overflow-y:auto;min-height:0;padding:4px 18px 24px;display:flex;flex-direction:column;gap:24px}
+.p-id{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding-top:10px}
+.p-id h4{font-size:16px;margin-top:10px}
+.p-id p{font-size:13px;color:var(--fg-2)}
+.p-sec h5{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--fg-2)}
+.p-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.p-list li{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.p-list li b{font-weight:600}
+.p-ctx{font-size:14px;margin:0}
+.p-ctx dt{font-size:12px;color:var(--fg-2);margin-top:10px}
+.p-ctx dt:first-child{margin-top:0}
+.p-ctx dd{margin:2px 0 0}
+@media (max-width:1040px){
+  .app,.app.rail{grid-template-columns:72px minmax(0,1fr) 280px}
+  .app.no-panel,.app.rail.no-panel{grid-template-columns:72px minmax(0,1fr)}
+  .app .a-side{padding-inline:8px}
+  .app .a-search,.rail-btn{display:none}
+  .app .a-row{justify-content:center;padding:8px 0}
+  .app .a-copy,.app .a-foot span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .app .a-side-h{flex-direction:column;gap:4px;padding-top:8px}
+  .app .a-foot{justify-content:center}
+}
+@media (max-width:720px){.app,.app.rail,.app.no-panel,.app.rail.no-panel{display:flex;flex-direction:column;height:auto}.a-side{display:none}.a-conv{height:560px}.a-panel{border-left:0;border-top:1px solid var(--line)}.a-scroll,.a-compose{padding-inline:12px}}
+.app-note{margin-top:18px}
+
+/* reference principles */
+.prin{padding:22px;display:flex;flex-direction:column;gap:8px}
+.prin h3{font-size:17px;font-weight:600}
+.prin p{font-size:14px;color:var(--fg-2)}
+.prin .from{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);color:var(--fg)}
+.quote{font-family:var(--display);font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.3;padding:28px;margin-bottom:16px}
+.quote span{display:block;font-family:var(--font);font-size:14px;color:var(--fg-2);margin-top:12px;letter-spacing:0}
+
+/* color */
+.tokens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.theme-col{border-radius:20px;overflow:hidden;border:1px solid #E0E0E0;padding-bottom:8px}
+.theme-col.dk{border-color:#2A2A2A}
+.theme-col h3{font-size:14px;font-weight:600;padding:14px 18px 6px}
+.tok{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 18px;border:0;width:100%;background:none;text-align:left;color:inherit}
+.tok i{width:44px;height:30px;border-radius:8px;display:block}
+.tok b{font-size:13px;font-weight:600;display:block}
+.tok small{font-size:12px;opacity:.72;display:block;line-height:1.35}
+.tok code{font-family:var(--mono);font-size:12px;opacity:.8}
+.tok:hover{background:rgb(128 128 128 / 10%)}
+@media (max-width:760px){.tokens{grid-template-columns:1fr}}
+.bot-colors{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.bot-colors button{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 10px 8px;font-family:var(--mono);font-size:11px;color:var(--fg-2);min-width:84px}
+.bot-colors button i{width:48px;height:32px;border-radius:8px;display:block}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.rules .card{padding:20px}
+.rules h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.rules p{font-size:14px;color:var(--fg-2)}
+@media (max-width:760px){.rules{grid-template-columns:1fr}}
+
+/* bots */
+.maker{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+@media (max-width:820px){.maker{grid-template-columns:1fr}}
+.stage{display:grid;place-items:center;min-height:300px;background:var(--bg);border-radius:20px;border:1px solid var(--line);position:relative;padding-bottom:28px}
+.stage .cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:13px;color:var(--fg-2)}
+.ctl{padding:22px;display:flex;flex-direction:column;gap:16px}
+.field label{display:block;font-size:13px;color:var(--fg-2);margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--input);background:var(--bg);border-radius:12px;padding:10px 14px;font-size:16px}
+.lineup{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:16px}
+.lineup div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border:1px solid var(--line);border-radius:16px;background:var(--bg);font-size:13px;text-align:center}
+.lineup small{color:var(--fg-2);font-size:12px;font-family:var(--mono)}
+.whois{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.whois div{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
+.whois b{font-size:15px}
+.whois div>span:last-child{font-size:13px;color:var(--fg-2)}
+@media (max-width:820px){.whois{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.whois{grid-template-columns:1fr}}
+
+/* type */
+.scale-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.scale-row .spec{font-size:12px;color:var(--fg-2)}
+.scale-row .spec b{display:block;font-size:14px;color:var(--fg);font-weight:600}
+.scale-row .t{overflow-wrap:anywhere;min-width:0}
+@media (max-width:640px){.scale-row{grid-template-columns:1fr;gap:4px}}
+.tin{width:100%;border:1px solid var(--input);background:var(--bg);border-radius:12px;padding:10px 14px;font-size:16px;margin-bottom:12px}
+
+/* voice */
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg);margin-bottom:12px}
+.pair>div{padding:16px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pair .yes{border-left:1px solid var(--line)}
+.pair .lab{font-size:12px;font-weight:600;color:var(--fg-2);display:flex;gap:6px;align-items:center}
+.pair .no .v{text-decoration:line-through;text-decoration-color:var(--fg-2);color:var(--fg-2)}
+.pair .v{font-size:15px}
+.pair .en{font-size:13px;color:var(--fg-2)}
+@media (max-width:640px){.pair{grid-template-columns:1fr}.pair .yes{border-left:0;border-top:1px solid var(--line)}}
+
+/* changes */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--bg)}
+.chg{width:100%;border-collapse:collapse;font-size:14px}
+.chg th{text-align:left;font-size:12px;font-weight:600;color:var(--fg-2);padding:12px 16px;border-bottom:1px solid var(--line)}
+.chg td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.chg td:first-child{font-weight:600}
+.chg tr:last-child td{border-bottom:0}
+
+footer{padding-block:40px 56px;color:var(--fg-2);font-size:14px}
+footer .wrap{display:flex;gap:12px 28px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--primary);color:var(--on-primary);padding:10px 16px;border-radius:999px;font-size:14px;z-index:50;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="lockup" href="#top" aria-label="Mora, back to top"><span id="top-mark"></span><span class="wordmark">mora</span></a>
+    <nav class="nav" aria-label="Sections"><a href="#live">Live</a><a href="#reference">Grok Bot reference</a><a href="#color">Color</a><a href="#bots">Bots</a><a href="#type">Type</a><a href="#voice">Voice</a><a href="#changes">What changed</a></nav>
+    <div class="seg" role="group" aria-label="Theme"><button type="button" data-t="auto" aria-pressed="true">Auto</button><button type="button" data-t="light" aria-pressed="false">Light</button><button type="button" data-t="dark" aria-pressed="false">Dark</button></div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Mora brand guideline · v3 · 26/09/2026</div>
+      <h1>Làm tiếp, không cần kể lại.</h1>
+      <p class="en">Pick up the work. No re-explaining.</p>
+      <p class="lede">Mora is a work chat for Vietnamese teams and their AI coworkers. v3 follows the Grok Bot design language: black, white and grey everywhere, so the only color on screen is the bots themselves.</p>
+    </div>
+    <div class="hero-bots" id="hero-bots" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section id="live">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Live</div><h2>The interface, working</h2></div>
+      <p>A working copy of the new Mora app. Switch rooms, collapse the sidebar to a rail, close the details panel, and send a message: the bot's avatar starts working and the details icon turns purple until it answers. Approve the plan to see the card update in place.</p>
+    </div>
+    <div class="app" id="app">
+      <aside class="a-side" aria-label="Rooms">
+        <div class="a-side-h"><button class="icon-btn rail-btn" type="button" id="rail-btn" aria-label="Collapse sidebar" aria-pressed="false"><span data-ic="panelL"></span></button><button class="icon-btn" type="button" aria-label="New chat" data-demo="new"><span data-ic="plus"></span></button></div>
+        <div class="a-search"><span data-ic="search" data-sm></span>Tìm kiếm</div>
+        <div class="a-rows" id="a-rows"></div>
+        <div class="a-foot"><span class="avatar" style="width:28px;height:28px;font-size:10px">MN</span><span>Minh Nguyễn</span></div>
+      </aside>
+      <div class="a-conv">
+        <div class="a-head"><div class="who" id="a-who"></div><button class="icon-btn" type="button" id="panel-btn" aria-label="Details" aria-pressed="true"><span data-ic="panelR"></span></button></div>
+        <div class="a-scroll" id="a-scroll" aria-live="polite"></div>
+        <div class="a-compose">
+          <form class="composer" id="a-form"><button class="plus" type="button" aria-label="More" data-demo="plus"><span data-ic="plus"></span></button><label class="sr" for="a-input">Message</label><textarea id="a-input" rows="1" placeholder="Nhắn Mora"></textarea><button class="send" type="submit" id="a-send" aria-label="Send" disabled><span data-ic="up"></span></button></form>
+        </div>
+      </div>
+      <aside class="a-panel" aria-label="Details">
+        <div class="a-panel-h">Chi tiết<button class="icon-btn" type="button" id="panel-close" aria-label="Close details"><span data-ic="x"></span></button></div>
+        <div class="a-panel-b" id="a-panel"></div>
+      </aside>
+    </div>
+    <p class="note app-note">Try: approve the plan in <b>Nhóm sản phẩm</b>, or message <b>Kiểm thử</b>. Everything here is sample data.</p>
+  </div>
+</section>
+
+<section id="reference">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Reference</div><h2>What we take from Grok Bot</h2></div>
+      <p>Reconstructed from xAI's "Designing Grok Bot for a world of persistent agents" and three product screenshots. Full notes and sources: <code class="mono">docs/reference/GROK_BOT_DESIGN.md</code>.</p>
+    </div>
+    <div class="card quote">Did this help someone delegate, or did it give them one more thing to manage?<span>The question every Grok Bot design decision came back to. Mora uses it as its design test.</span></div>
+    <div class="grid3">
+      <div class="card prin"><h3>Bots, not chats</h3><p>The sidebar is a roster you scan by avatar. Conversations are pushed down; the bot is what you come back to.</p><p class="from">Mora: rooms hold people and bots; bots are recognizable by shape and color.</p></div>
+      <div class="card prin"><h3>Monochrome, bots in color</h3><p>Black, white and grey carry the interface. Avatars are the only saturated color.</p><p class="from">Mora: no brand accent at all. Purple only signals a bot at work.</p></div>
+      <div class="card prin"><h3>The avatar is the status</h3><p>Idle, thinking, working, waiting, blocked or done, shown by the avatar's motion rather than badges.</p><p class="from">Mora: waiting eyes look up; working bobs and scans.</p></div>
+      <div class="card prin"><h3>One mixed transcript</h3><p>Messages, system events, inline cards and widgets share one timeline. Prose when prose fits, structure when it does not.</p><p class="from">Mora: plans are inline cards; approvals are event lines.</p></div>
+      <div class="card prin"><h3>Glance, don't supervise</h3><p>The bot's computer stays its own workspace: an activity signal, then a pinned side panel, then full access.</p><p class="from">Mora: the details panel holds work and shared context.</p></div>
+      <div class="card prin"><h3>Take things away</h3><p>Late design work removed window controls, view options and agent metadata.</p><p class="from">Mora: no dividers, no per-message chrome until you hover.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="color">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Color</div><h2>Black, white and grey</h2></div>
+      <p>Both themes side by side. There is no brand accent. Click any row to copy its hex.</p>
+    </div>
+    <div class="tokens" id="tokens"></div>
+    <div class="sub" style="margin-top:36px">The only color: bots</div>
+    <p class="note">Eight bot colors, assigned from each bot's id. Nothing else in the interface may use them.</p>
+    <div class="bot-colors" id="bot-colors"></div>
+    <div class="rules">
+      <div class="card"><h3>Purple means working</h3><p>The details icon turns purple while a bot in the room is replying or running a task. It is the only signal color.</p></div>
+      <div class="card"><h3>Readable greys</h3><p>Secondary text is 4.7:1 on the selected row in light and 5.1:1 in dark. Your black bubble is 19:1.</p></div>
+      <div class="card"><h3>Never color alone</h3><p>Every state also has words: "Chờ duyệt", "Đang làm", "Hoàn thành". Red is for errors only.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="bots">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Bots, people, rooms</div><h2>A shape, a color, two eyes</h2></div>
+      <p>Every bot gets a flat shape and two capsule eyes, generated in code so the family stays consistent. Type a name to meet the bot it would become, and switch its state.</p>
+    </div>
+    <div class="maker">
+      <div class="stage" id="maker-stage"></div>
+      <div class="card ctl">
+        <div class="field"><label for="bot-name">Bot name</label><input id="bot-name" type="text" value="Báo giá" maxlength="40"></div>
+        <div><div class="note" style="margin-bottom:8px">State</div><div class="seg" role="group" aria-label="Bot state" id="bot-states"><button type="button" data-s="" aria-pressed="true">Idle</button><button type="button" data-s="waiting" aria-pressed="false">Waiting</button><button type="button" data-s="working" aria-pressed="false">Working</button></div></div>
+        <p class="note">In the app the seed is the bot's id, so two bots with the same name still look different. Motion stops under reduced motion; the status text carries the state.</p>
+      </div>
+    </div>
+    <div class="lineup" id="lineup"></div>
+    <div class="whois">
+      <div><span id="w-mora"></span><b>Mora</b><span>The arch is reserved for the default bot. Black in light, white in dark.</span></div>
+      <div><span id="w-bot"></span><b>Any other bot</b><span>Colored shape and eyes. Labelled AI in headers and group messages.</span></div>
+      <div><span class="avatar" style="width:44px;height:44px;font-size:15px">LT</span><b>Person</b><span>Grey circle with initials. People never get color.</span></div>
+      <div><span class="avatar group" style="width:44px;height:44px;font-size:15px">SP</span><b>Group room</b><span>Grey rounded square with initials.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="type">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Type</div><h2>The system font, few sizes</h2></div>
+      <p>SF Pro on Apple, Segoe UI on Windows, Roboto on Android. All cover Vietnamese, with nothing to download. Sentence case, no all-caps Vietnamese.</p>
+    </div>
+    <label class="sr" for="type-in">Sample text</label>
+    <input class="tin" id="type-in" type="text" value="Huy làm tiếp phần tablet, giữ nguyên API như Linh đã chốt.">
+    <div id="scale" style="border-top:1px solid var(--line)"></div>
+  </div>
+</section>
+
+<section id="voice">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Voice</div><h2>Plain, first person, one question at a time</h2></div>
+      <p>Bots call themselves <i>mình</i>, address people by name and never guess <i>anh / chị / em</i>. They restate the request, ask one thing, and show evidence. No emoji.</p>
+    </div>
+    <div id="pairs"></div>
+  </div>
+</section>
+
+<section id="changes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">From v2 to v3</div><h2>What changed</h2></div>
+      <p>The v2 palette (jade, turmeric, lacquer on warm paper) is retired. The idea, the voice and the local formats stay.</p>
+    </div>
+    <div class="tbl"><table class="chg">
+      <thead><tr><th>Area</th><th>v2</th><th>v3</th></tr></thead>
+      <tbody>
+        <tr><td>Color</td><td>Jade, turmeric and lacquer on warm paper</td><td>Black, white and grey; bots are the only color</td></tr>
+        <tr><td>Bots</td><td>Turmeric rounded square with an arch glyph</td><td>A generated character per bot, animated by state</td></tr>
+        <tr><td>Type</td><td>Be Vietnam Pro and JetBrains Mono</td><td>The platform system font</td></tr>
+        <tr><td>Layout</td><td>Three panes, colored plan cards</td><td>Grok-style sidebar with a rail mode, pill composer, details panel</td></tr>
+        <tr><td>Logo</td><td>Two-arch m on a jade tile</td><td>The Mora arch character</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span class="lockup"><span id="foot-mark"></span><span class="wordmark" style="font-size:17px">mora</span></span><span>Source of truth: <code class="mono">docs/BRAND.md</code> in nguynking/mora · v3 · 26/09/2026</span></div></footer>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const P={
+  plus:'<path d="M5 12h14M12 5v14"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',up:'<path d="m5 12 7-7 7 7M12 19V5"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  panelL:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>',panelR:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',loader:'<path d="M21 12a9 9 0 1 1-6.22-8.56"/>',
+  circleCheck:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',square:'<rect x="6" y="6" width="12" height="12" rx="2"/>',pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>'
+};
+const ic=(n,sm,cls)=>`<svg class="ic${sm?' sm':''}${cls?' '+cls:''}" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2200);}
+const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* bot faces: same construction as app/workspace.tsx */
+const COLORS=['#FF5A4E','#FFB224','#22C55E','#3B82F6','#A855F7','#FF7A30','#14B8A6','#EC4899'];
+const SHAPES={
+  arch:{d:'M6 33V20a14 14 0 0 1 28 0v13a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z',eyeY:19,gap:5},
+  squircle:{d:'M16 4h8c8 0 12 4 12 12v8c0 8-4 12-12 12h-8C8 36 4 32 4 24v-8C4 8 8 4 16 4Z',eyeY:17,gap:5},
+  circle:{d:'M20 5a15 15 0 1 1 0 30 15 15 0 0 1 0-30Z',eyeY:17,gap:5},
+  pill:{d:'M13 10h14a10 10 0 0 1 0 20H13a10 10 0 0 1 0-20Z',eyeY:18,gap:5},
+  tri:{d:'M16.5 7.5c1.6-2.8 5.4-2.8 7 0l11 19.5c1.6 2.8-.4 6-3.5 6H9c-3.1 0-5.1-3.2-3.5-6Z',eyeY:23,gap:4.5},
+  tall:{d:'M20 3a10 10 0 0 1 10 10v14a10 10 0 0 1-20 0V13A10 10 0 0 1 20 3Z',eyeY:15,gap:4}
+};
+const BOT_SHAPES=['squircle','circle','pill','tri','tall'];
+const seedOf=v=>Array.from(v).reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
+const shapeOf=id=>id==='mora'?'arch':BOT_SHAPES[seedOf(id)%BOT_SHAPES.length];
+const colorOf=id=>COLORS[(seedOf(id)>>>4)%COLORS.length];
+function face(id,size,state,forced){
+  const mora=id==='mora'&&!forced;
+  const s=SHAPES[forced?forced.shape:shapeOf(id)];
+  const color=forced?forced.color:(mora?'currentColor':colorOf(id));
+  const eye=mora?'var(--bg)':'#111111';
+  return `<svg class="bot-face${mora?' is-mora':''}${state?' is-'+state:''}" width="${size}" height="${size}" viewBox="0 0 40 40" aria-hidden="true"><path d="${s.d}" fill="${color}"/><g class="eyes" style="fill:${eye}"><rect x="${20-s.gap-1.7}" y="${s.eyeY-3.5}" width="3.4" height="7" rx="1.7"/><rect x="${20+s.gap-1.7}" y="${s.eyeY-3.5}" width="3.4" height="7" rx="1.7"/></g></svg>`;
+}
+const person=(n,size)=>`<span class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.36)}px">${n}</span>`;
+const group=(n,size)=>`<span class="avatar group" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.34)}px">${n}</span>`;
+$('#top-mark').innerHTML=face('mora',28);$('#foot-mark').innerHTML=face('mora',24);
+$('#w-mora').innerHTML=face('mora',44);$('#w-bot').innerHTML=face('Kiểm thử',44);
+$('#hero-bots').innerHTML=[['mora'],['Kiểm thử','waiting'],['Hạnh'],['Báo giá'],['Tuyển dụng','working'],['Kho hàng']].map(([n,st])=>face(n,96,st)).join('');
+
+/* theme */
+const root=document.documentElement;
+function setTheme(t,save){if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));if(save){try{localStorage.setItem('mora-bb3-theme',t)}catch(e){}}}
+$$('[data-t]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.t,true)));
+
+/* live app */
+const ROOMS=[
+  {id:'product',name:'Nhóm sản phẩm',kind:'group',init:'SP',sub:'4 thành viên'},
+  {id:'mora',name:'Mora',kind:'bot',role:'Đồng đội AI mặc định: lên kế hoạch, soạn nội dung, bàn giao.'},
+  {id:'Kiểm thử',name:'Kiểm thử',kind:'bot',role:'Chạy checklist kiểm thử và báo lỗi giao diện.'},
+  {id:'Hạnh',name:'Hạnh',kind:'bot',role:'Tổng hợp ghi chú họp và gửi tóm tắt cho cả nhóm.'},
+  {id:'linh',name:'Linh Trần',kind:'person',init:'LT'},
+  {id:'Báo giá',name:'Báo giá',kind:'bot',role:'Soạn báo giá bằng VND cho khách hàng.'}
+];
+const T={
+  product:[{d:'Hôm nay 09:12'},{a:'Minh Nguyễn',i:'MN',t:'@Mora menu trên mobile bị tràn ở màn 375px, lên kế hoạch sửa giúp nhóm nhé.',time:'09:12'},{a:'Linh Trần',i:'LT',t:'Giữ nguyên API hiện tại nha, app đối tác đang gọi.',time:'09:14'},{e:'<b>Linh Trần</b> đã cập nhật bối cảnh chung'},{a:'Mora',bot:'mora',t:'Mình đã đọc bối cảnh chung. Kế hoạch 3 bước bên dưới, giữ nguyên API như Linh chốt.',time:'09:15'},{plan:1},{own:1,t:'Để mình xem rồi duyệt.',time:'09:16'}],
+  mora:[{d:'Hôm qua 17:40'},{own:1,t:'Tóm tắt giúp mình các việc còn mở trong tuần này.',time:'17:40'},{bot:'mora',t:'Còn 3 việc: sửa menu mobile (chờ duyệt), checklist ra mắt (Huy đang làm), báo giá cho An Phát (chờ khách phản hồi).',time:'17:40'},{bot:'mora',t:'Mình đã ghim danh sách này vào bối cảnh chung của Nhóm sản phẩm.',time:'17:41'}],
+  'Kiểm thử':[{d:'Hôm nay 08:30'},{own:1,t:'Kiểm tra giúp mình màn hình đăng nhập trên iPhone SE nhé.',time:'08:30'},{bot:'Kiểm thử',t:'Mình chạy 12 bước trên iPhone SE (375 × 667). 11 đạt. Nút "Quên mật khẩu" bị bàn phím che khi mở ô mật khẩu.',time:'08:34'},{e:'<b>Kiểm thử</b> đã tạo báo cáo · Đăng nhập trên iPhone SE'}],
+  'Hạnh':[{d:'Hôm nay 11:05'},{own:1,t:'Tóm tắt buổi họp thiết kế sáng nay giúp mình.',time:'11:05'},{bot:'Hạnh',t:'Ba ý chính: luồng onboarding gần xong, trạng thái trống cần minh họa mới, và thanh tiến trình sẽ nằm ở header.',time:'11:06'},{bot:'Hạnh',t:'Chưa chốt: ngày review roadmap Q4. Linh sẽ gửi lịch trước thứ Sáu.',time:'11:06'}],
+  linh:[{d:'Hôm nay 10:02'},{a:'Linh Trần',t:'Chiều nay mình review PR #48 nhé.',time:'10:02'},{own:1,t:'Ok, cảm ơn Linh.',time:'10:03'}],
+  'Báo giá':[{d:'24/09 15:20'},{own:1,t:'Soạn báo giá gói Nhóm cho An Phát.',time:'15:20'},{bot:'Báo giá',t:'Gói Nhóm 15 thành viên: 4.000.000 ₫/tháng, hóa đơn điện tử bằng VND. Mình để bản nháp trong bối cảnh chung để Minh xem trước khi gửi.',time:'15:22'}]
+};
+let cur='product',planState='pending',working=false,railOn=false,panelOn=true,workT=null;
+function roomFace(r,size,state){return r.kind==='bot'?face(r.id,size,state):r.kind==='group'?group(r.init,size):person(r.init,size);}
+const faceState=r=>r.kind==='bot'&&working&&r.id===cur?'working':undefined;
+function renderRows(){
+  $('#a-rows').innerHTML=ROOMS.map(r=>{
+    const last=[...T[r.id]].reverse().find(m=>m.t);
+    const prev=last?(last.own?'Bạn: ':r.kind==='group'&&last.a?last.a.split(' ').slice(-1)[0]+': ':'')+last.t:'';
+    return `<button type="button" class="a-row${r.id===cur?' sel':''}" data-room="${esc(r.id)}" title="${esc(r.name)}"${r.id===cur?' aria-current="page"':''}>${roomFace(r,36,faceState(r))}<span class="a-copy"><span class="a-top"><b>${esc(r.name)}</b><time>${last?last.time:''}</time></span><span class="a-prev">${esc(prev)}</span></span></button>`;
+  }).join('');
+}
+function planCard(){
+  const st={pending:['clock','Chờ duyệt · Mẫu',1],working:['loader','Đang làm',1],done:['circleCheck','Hoàn thành',0]}[planState];
+  const acts=planState==='pending'?`<button class="btn primary" type="button" data-act="approve">${ic('check',1)}Duyệt</button><button class="btn outline" type="button" data-act="edit">${ic('pencil',1)}Chỉnh kế hoạch</button>`:planState==='working'?`<button class="btn outline" type="button" data-act="stop">${ic('square',1)}Dừng</button>`:`<button class="btn outline" type="button" data-act="take">Tiếp nhận</button>`;
+  return `<div class="plan"><header><span class="kicker">Kế hoạch</span><span class="status${st[2]?' on':''}">${ic(st[0],1,planState==='working'?'spin':'')}${st[1]}</span></header><h4>Sửa menu tràn trên mobile</h4><ol><li>Xác định phần tử gây tràn ở màn 375px.</li><li>Thu gọn menu dưới 480px, giữ nguyên API.</li><li>Soạn checklist kiểm tra và ghi chú bàn giao.</li></ol><div class="actions">${acts}</div></div>`;
+}
+function renderChat(){
+  const r=ROOMS.find(x=>x.id===cur);let prev=null,h='';
+  for(const m of T[cur]){
+    if(m.d){h+=`<div class="divider">${m.d}</div>`;prev=null;continue;}
+    if(m.e){h+=`<p class="event">${m.e}</p>`;prev=null;continue;}
+    if(m.plan){h+=planCard();prev=null;continue;}
+    const who=m.own?'me':(m.a||m.bot);const run=who!==prev;prev=who;
+    let author='';
+    if(!m.own&&run&&r.kind==='group'){const av=m.bot?face(m.bot,20):person(m.i,20);author=`<div class="author">${av}${esc(m.a||'Mora')}${m.bot?'<span class="ai-label">AI</span>':''}</div>`;}
+    h+=`<div class="msg${m.own?' own':''}${run?' run':''}">${author}<div class="bubble">${esc(m.t)}</div></div>`;
+  }
+  if(working)h+='<div class="msg run" aria-hidden="true"><div class="bubble typing"><i></i><i></i><i></i></div></div>';
+  const sc=$('#a-scroll');sc.innerHTML=h;sc.scrollTop=sc.scrollHeight;
+  $('#a-who').innerHTML=`${roomFace(r,24,faceState(r))}<span>${esc(r.name)}</span>${r.kind==='bot'?'<span class="ai-label">AI</span>':''}`;
+  $('#a-input').placeholder='Nhắn '+r.name;
+  $('#panel-btn').classList.toggle('is-active',working);
+  $('#panel-btn').setAttribute('aria-label',working?'Details, a bot is working':'Details');
+}
+function renderPanel(){
+  const r=ROOMS.find(x=>x.id===cur);
+  const sub=r.kind==='bot'?'Đồng đội AI':r.kind==='group'?r.sub:'Trò chuyện riêng';
+  let h=`<div class="p-id">${roomFace(r,72,faceState(r))}<h4>${esc(r.name)}</h4><p>${sub}</p>${r.role?`<p style="color:var(--fg);margin-top:6px">${esc(r.role)}</p>`:''}</div>`;
+  if(cur==='product'){
+    const st={pending:'Chờ duyệt · Mẫu',working:'Đang làm',done:'Hoàn thành'}[planState];
+    h+=`<div class="p-sec"><h5>Công việc</h5><ul class="p-list"><li><b>Sửa menu tràn trên mobile</b><span class="status${planState!=='done'?' on':''}">${ic(planState==='done'?'circleCheck':planState==='working'?'loader':'clock',1,planState==='working'?'spin':'')}${st}</span></li><li><b>Checklist ra mắt bản mobile</b><span class="status">${ic('circleCheck',1)}Hoàn thành · Huy tiếp nhận</span></li></ul></div>`;
+    h+=`<div class="p-sec"><h5>Bối cảnh chung</h5><dl class="p-ctx"><dt>Mục tiêu</dt><dd>Ra mắt bản mobile gọn gàng trước 30/09.</dd><dt>Kho mã</dt><dd class="mono">saigonlab/shop-app</dd><dt>Quyết định</dt><dd>Giữ nguyên API hiện tại.</dd></dl></div>`;
+    h+=`<div class="p-sec"><h5>Thành viên</h5><div style="display:flex;flex-direction:column;gap:10px;font-size:14px">${[['MN','Minh Nguyễn'],['LT','Linh Trần'],['HP','Huy Phạm']].map(([i,n])=>`<span style="display:flex;align-items:center;gap:10px">${person(i,28)}${n}</span>`).join('')}<span style="display:flex;align-items:center;gap:10px">${face('mora',28)}Mora <span class="ai-label">AI</span></span></div></div>`;
+  } else if(r.kind==='bot'){
+    h+=`<div class="p-sec"><h5>Công việc</h5><p class="note">Chưa có kế hoạch nào.</p></div>`;
+  }
+  $('#a-panel').innerHTML=h;
+}
+function renderApp(){renderRows();renderChat();renderPanel();}
+$('#a-rows').addEventListener('click',e=>{const b=e.target.closest('[data-room]');if(!b)return;cur=b.dataset.room;working=false;clearTimeout(workT);renderApp();});
+$('#rail-btn').addEventListener('click',()=>{railOn=!railOn;$('#app').classList.toggle('rail',railOn);$('#rail-btn').setAttribute('aria-pressed',String(railOn));$('#rail-btn').setAttribute('aria-label',railOn?'Expand sidebar':'Collapse sidebar');});
+function setPanel(on){panelOn=on;$('#app').classList.toggle('no-panel',!on);$('#panel-btn').setAttribute('aria-pressed',String(on));}
+$('#panel-btn').addEventListener('click',()=>setPanel(!panelOn));
+$('#panel-close').addEventListener('click',()=>{setPanel(false);$('#panel-btn').focus();});
+$('#app').addEventListener('click',e=>{const d=e.target.closest('[data-demo]');if(d)toast(d.dataset.demo==='plus'?'In the app: upload a file, mention a bot, create a plan.':'In the app: find a member, create a bot, create a group.');});
+$('#a-scroll').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+  if(a==='approve'){
+    planState='working';working=true;T.product.push({e:'<b>Minh Nguyễn</b> đã duyệt kế hoạch “Sửa menu tràn trên mobile”'});renderApp();clearTimeout(workT);
+    workT=setTimeout(()=>{planState='done';working=false;T.product.push({a:'Mora',bot:'mora',t:'Xong. Checklist và ghi chú bàn giao đã có trong kế hoạch. Chưa có thay đổi nào trong mã.',time:'09:31'});if(cur==='product')renderApp();else renderRows();},reduced()?300:2600);
+  } else if(a==='stop'){clearTimeout(workT);planState='pending';working=false;T.product.push({e:'<b>Minh Nguyễn</b> đã dừng tác vụ'});renderApp();}
+  else if(a==='edit')toast('In the app: the plan opens for editing.');
+  else if(a==='take'){T.product.push({e:'<b>Minh Nguyễn</b> tiếp nhận công việc. Bối cảnh và kế hoạch được giữ lại.'});renderApp();}
+});
+const inp=$('#a-input'),sendBtn=$('#a-send');
+inp.addEventListener('input',()=>{sendBtn.disabled=!inp.value.trim();inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,120)+'px';});
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('#a-form').requestSubmit();}});
+$('#a-form').addEventListener('submit',e=>{
+  e.preventDefault();const v=inp.value.trim();if(!v)return;
+  const now=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',hour12:false});
+  T[cur].push({own:1,t:v,time:now});inp.value='';sendBtn.disabled=true;inp.style.height='auto';
+  const r=ROOMS.find(x=>x.id===cur);
+  const botId=r.kind==='bot'?r.id:(r.kind==='group'&&/@mora/i.test(v)?'mora':null);
+  if(!botId){renderApp();return;}
+  working=true;renderApp();clearTimeout(workT);
+  const room=cur;
+  workT=setTimeout(()=>{working=false;T[room].push({bot:botId,a:botId==='mora'?'Mora':botId,t:'Mình nhận rồi. Mình sẽ đề xuất kế hoạch trong phòng để mọi người duyệt; chưa có gì chạy trước khi được duyệt.',time:now});if(cur===room)renderApp();else renderRows();},reduced()?300:2200);
+});
+renderApp();
+
+/* tokens */
+const TOK=[['background','Conversation, dialogs','#FFFFFF','#141414'],['sidebar','Room list, details panel','#F7F7F7','#1B1B1B'],['field','Search field','#EBEBEB','#262626'],['selected','Selected room','#E8E8E8','#2C2C2C'],['bubble','Others’ messages, cards','#F0F0F0','#262626'],['bubble-own','Your messages','#0A0A0A','#3F3F3F'],['foreground','Text, primary buttons','#0A0A0A','#EDEDED'],['muted-foreground','Previews, timestamps','#666666','#9B9B9B'],['border','Dividers, composer','#EBEBEB','#2A2A2A'],['working','Bot is working','#8B5CF6','#A78BFA'],['destructive','Errors only','#D92D20','#F97066']];
+function tokCol(dark){const bg=dark?'#141414':'#FFFFFF',fg=dark?'#EDEDED':'#0A0A0A';return `<div class="theme-col${dark?' dk':''}" style="background:${bg};color:${fg}"><h3>${dark?'Dark':'Light'}</h3>${TOK.map(t=>{const hex=t[dark?3:2];return `<button type="button" class="tok" data-hex="${hex}" data-name="${t[0]}"><i style="background:${hex};box-shadow:inset 0 0 0 1px ${dark?'#333333':'#E0E0E0'}"></i><span><b>${t[0]}</b><small>${t[1]}</small></span><code>${hex}</code></button>`;}).join('')}</div>`;}
+$('#tokens').innerHTML=tokCol(false)+tokCol(true);
+$('#bot-colors').innerHTML=COLORS.map(c=>`<button type="button" data-hex="${c}" data-name="bot color"><i style="background:${c}"></i>${c}</button>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('[data-hex]');if(!b)return;const hex=b.dataset.hex;try{navigator.clipboard.writeText(hex).then(()=>toast('Copied '+hex),()=>toast(b.dataset.name+': '+hex));}catch(err){toast(b.dataset.name+': '+hex);}});
+
+/* bot maker */
+let makerState='';
+function renderMaker(){
+  const n=($('#bot-name').value||'').trim()||'Bot';const isMora=n.toLowerCase()==='mora';const id=isMora?'mora':n;
+  const desc=isMora?'arch · black / white':`${shapeOf(id)} · ${colorOf(id)}`;
+  $('#maker-stage').innerHTML=face(id,160,makerState||undefined)+`<span class="cap">${esc(n)} · ${desc}${makerState?' · '+(makerState==='working'?'Đang làm':'Chờ duyệt'):''}</span>`;
+}
+$('#bot-name').addEventListener('input',renderMaker);
+$('#bot-states').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;makerState=b.dataset.s;$$('#bot-states button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderMaker();});
+renderMaker();
+const LINE=[['squircle',0],['circle',3],['pill',1],['tri',2],['tall',4],['squircle',5],['circle',6],['pill',7]];
+$('#lineup').innerHTML=`<div>${face('mora',56)}<span>Mora</span><small>arch</small></div>`+LINE.map(([s,c])=>`<div>${face('x',56,undefined,{shape:s,color:COLORS[c]})}<span>${s}</span><small>${COLORS[c]}</small></div>`).join('');
+
+/* type */
+const SCALE=[['Display','44 px · 600 · −4%','Marketing only','font-family:var(--display);font-size:44px;line-height:1.15;font-weight:600;letter-spacing:-.04em'],['Message','16 px · 400 · 1.5','Bubbles, composer','font-size:16px;line-height:1.5'],['Title','15 px · 600','Chat and panel headers','font-size:15px;font-weight:600'],['Row','14 px · 600','Room names','font-size:14px;font-weight:600'],['Preview','13 px · 400','Previews, events','font-size:13px;color:var(--fg-2)'],['Meta','12 px · 400','Timestamps','font-size:12px;color:var(--fg-2)']];
+function renderScale(){const t=esc($('#type-in').value||'Làm tiếp, không cần kể lại.');$('#scale').innerHTML=SCALE.map(s=>`<div class="scale-row"><div class="spec"><b>${s[0]}</b>${s[1]} · ${s[2]}</div><div class="t" style="${s[3]}">${t}</div></div>`).join('');}
+$('#type-in').addEventListener('input',renderScale);renderScale();
+
+/* voice */
+const PAIRS=[
+  ['Mình hiểu là: mỗi thứ Hai, đếm người mới ở TP.HCM rồi đặt thiết bị theo số đó. Một câu hỏi trước khi bắt đầu.','I understood: every Monday, count new hires in HCMC and order equipment for that many. One question first.','Đã rõ! Mình xử lý ngay nhé 🚀','Got it! On it!'],
+  ['Đã tạo PR nháp #48 · 12/12 test đạt · chưa merge.','Draft PR #48 · 12/12 tests pass · not merged.','Xong rồi, mọi thứ hoàn hảo.','Done, everything is perfect.'],
+  ['Ước tính tiết kiệm 45.000.000 ₫/năm. Mình đang nhờ Huy xác nhận số ghế trước khi dùng con số này.','Estimated savings of 45,000,000 ₫ a year. I’m asking Huy to confirm the seat count before relying on it.','Chắc chắn tiết kiệm được rất nhiều.','This will definitely save a lot.'],
+  ['Huy duyệt là mình bắt đầu.','Once Huy approves, I start.','Anh Huy duyệt là em làm liền ạ!','Guesses seniority and pronouns.']
+];
+$('#pairs').innerHTML=PAIRS.map(p=>`<div class="pair"><div class="no"><span class="lab">${ic('x',1)}Avoid</span><span class="v">${esc(p[2])}</span><span class="en">${esc(p[3])}</span></div><div class="yes"><span class="lab">${ic('check',1)}Say</span><span class="v">${esc(p[0])}</span><span class="en">${esc(p[1])}</span></div></div>`).join('');
+
+/* icons + boot */
+$$('[data-ic]').forEach(el=>{el.outerHTML=ic(el.dataset.ic,el.hasAttribute('data-sm'));});
+let saved=null;try{saved=localStorage.getItem('mora-bb3-theme')}catch(e){}
+if(saved&&saved!=='auto')setTheme(saved,false);
+else if(root.getAttribute('data-theme'))$$('[data-t]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===root.getAttribute('data-theme'))));
+})();
+</script>

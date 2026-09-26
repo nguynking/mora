@@ -6,10 +6,11 @@ A minimal Vietnamese messenger for coworkers and AI coworkers.
 - Create a named bot with a role. Talk to it directly or add it to an ordinary group.
 - In groups, mention a bot by name or use the @ picker.
 - Shared messages, replies, reactions and file attachments up to 5 MB.
-- Existing project context, plans and handoffs remain available through chat information.
-- Responsive two-pane desktop layout and list-to-chat mobile navigation.
+- Plans appear as inline cards in the conversation and in the details panel, with approve, stop, edit and continue.
+- Grok Bot-style layout: a room list that collapses to an avatar rail, the conversation, and a details panel for work, shared context and members. One pane at a time on mobile.
+- Monochrome light and dark themes; bots are the only color, and their avatars show when they are working or waiting.
 
-[Brand guidelines](docs/BRAND.md) describe the identity, palette, typography and interaction rules.
+[Brand guidelines](docs/BRAND.md) describe the identity, palette, typography and interaction rules, based on the [Grok Bot design reference](docs/reference/GROK_BOT_DESIGN.md). Open [the interactive brand book](docs/brand/brand-book.html) to see them applied.
 
 ## Data and access
 

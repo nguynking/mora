@@ -1,5 +1,14 @@
 # Interface review
 
+> **v3 update (26/09/2026).** The interface now follows `docs/BRAND.md` v3: a
+> monochrome Grok Bot-style layout with a collapsible room rail, generated bot
+> avatars that show working and waiting states, inline plan cards, and a details
+> panel that replaces the members and work dialogs. Verified with TypeScript,
+> ESLint, the production build, `tests/verify-api.mjs`, `tests/verify-layout.mjs`
+> and Chromium screenshots of a seeded local instance in light and dark at 1440,
+> 1280 and 390 px. Screen readers and real touch devices were not tested. The
+> review below describes the earlier two-pane version.
+
 ## Scope and coverage
 
 Full review of the requested messenger flow: recent conversations, searching,

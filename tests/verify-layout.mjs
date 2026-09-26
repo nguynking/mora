@@ -21,6 +21,7 @@ try {
   assert.doesNotMatch(html, /class="(?:empty-)?wordmark"/, 'No wordmark in the app surface.');
   assert.match(html, /aria-label="Cuộc trò chuyện mới"/);
   assert.match(html, /id="chat-search"/);
+  assert.match(html, /aria-label="Thu gọn danh sách"/, 'The sidebar can collapse to an avatar rail.');
   console.log('PASS production shell: exactly adjacent chat panes, no intervening overlay, no wordmark, search and new-chat controls present.');
 } finally {
   server.kill('SIGTERM');
