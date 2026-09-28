@@ -1,5 +1,14 @@
 # Interface review
 
+> **v4 update (28/09/2026).** The interface now follows `docs/BRAND.md` v4:
+> paper and ink tones, Newsreader titles, the flourish mark, white cards on a
+> dotted paper canvas, and CC0 paintings for the signed-out welcome, sign-in,
+> empty states and room covers. Layout, behavior and copy are otherwise
+> unchanged, plus a sign-out button. Verified with TypeScript, ESLint, the
+> vitest suite, the production build, `tests/verify-layout.mjs` and Chromium
+> screenshots against a mocked workspace API in light and dark at 1440, 1280,
+> 1100 and 390 px. Screen readers and real touch devices were not tested.
+
 > **v3 update (26/09/2026).** The interface now follows `docs/BRAND.md` v3: a
 > monochrome Grok Bot-style layout with a collapsible room rail, generated bot
 > avatars that show working and waiting states, inline plan cards, and a details
