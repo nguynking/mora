@@ -3,9 +3,9 @@ import { uploadFile } from '@/lib/upload-file';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArtFrame, Mark } from './brand';
-import { ART, coverFor, credit } from '@/lib/art';
+import { ART, coverFor } from '@/lib/art';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, CircleAlert, CircleCheck, CirclePause, Clock, Download, FileText, LoaderCircle, LogOut, MessageCircle, PanelLeft, PanelRight, Paperclip, Pencil, Plus, Search, Square, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -21,54 +21,51 @@ type State = { user: Person; rooms: Room[]; messages: Message[]; members: Person
 type Modal = '' | 'new' | 'connect' | 'bot' | 'group' | 'add' | 'thread' | 'context' | 'plan' | 'mention';
 type BotState = 'working' | 'waiting' | undefined;
 type Entry = { type: 'message'; at: number; message: Message } | { type: 'task'; at: number; task: Task };
-const time = (value: number) => new Date(value).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-const initials = (name: string) => name.replace(/@.*/, '').split(/\s+/).filter(Boolean).slice(-2).map(word => word[0]).join('').toUpperCase();
-const normalize = (text: string) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
-const recentTime = (value: number) => new Date(value).toDateString() === new Date().toDateString() ? time(value) : new Date(value).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
-const dayLabel = (value: number) => {
-  const date = new Date(value), today = new Date(), yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
-  const day = date.toDateString() === today.toDateString() ? 'Hôm nay' : date.toDateString() === yesterday.toDateString() ? 'Hôm qua' : date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: date.getFullYear() === today.getFullYear() ? undefined : 'numeric' });
-  return `${day} ${time(value)}`;
-};
+const pad = (value: number) => String(value).padStart(2, '0');
+const time = (value: number) => { const date = new Date(value); return `${pad(date.getHours())}:${pad(date.getMinutes())}`; };
+const daysAgo = (value: number) => { const day = new Date(value), today = new Date(); day.setHours(0, 0, 0, 0); today.setHours(0, 0, 0, 0); return Math.round((today.getTime() - day.getTime()) / 86400000); };
+const shortDate = (value: number) => { const date = new Date(value); return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}${date.getFullYear() === new Date().getFullYear() ? '' : `/${date.getFullYear()}`}`; };
+const WEEKDAYS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+const WEEKDAY_NAMES = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+// Room list: time today, then "Hôm qua", the weekday within a week, then the date.
+const recentTime = (value: number) => { const days = daysAgo(value); return days <= 0 ? time(value) : days === 1 ? 'Hôm qua' : days < 7 ? WEEKDAYS[new Date(value).getDay()] : shortDate(value); };
+const dayLabel = (value: number) => { const days = daysAgo(value); return `${days <= 0 ? 'Hôm nay' : days === 1 ? 'Hôm qua' : days < 7 ? WEEKDAY_NAMES[new Date(value).getDay()] : shortDate(value)} ${time(value)}`; };
+const plain = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+const normalize = (text: string) => plain(text).toLowerCase();
+// First and last word, without diacritics: "Thanh Ý" → TY, "Nguyễn Văn An" → NA.
+const initials = (name: string) => { const words = plain(name.replace(/@.*/, '')).split(/[\s._-]+/).filter(Boolean); return (words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0]?.[0] || '').toUpperCase(); };
+// Seeded contexts carry a "· dữ liệu mẫu" suffix on the editor's name.
+const editorName = (name: string) => name.replace(/\s*·\s*(?:dữ liệu\s+)?mẫu$/iu, '');
 const parsePlan = (plan: string) => { try { const steps = JSON.parse(plan); return Array.isArray(steps) ? steps.map(String) : []; } catch { return []; } };
 const statusText: Record<string, string> = { pending: 'Chờ duyệt', running: 'Đã duyệt', generating: 'Đang làm', stopped: 'Đã dừng', done: 'Hoàn thành', failed: 'Cần thử lại' };
 const statusIcon: Record<string, typeof Clock> = { pending: Clock, running: LoaderCircle, generating: LoaderCircle, stopped: CirclePause, done: CircleCheck, failed: CircleAlert };
 const store = { get: (key: string) => { try { return localStorage.getItem(key); } catch { return null; } }, set: (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* storage unavailable */ } } };
 
-// Bot characters: one simple shape, two capsule eyes, in oil-paint pigments. Mora itself is the ink arch.
+// Every avatar is a circle. Bots are a pigment disc with two eyes; Mora is the ink one.
 const BOT_COLORS = ['#C4553A', '#D09A3B', '#6E8A4B', '#3E8C80', '#4A67A6', '#C7727C', '#9C5F33', '#8FA3AD'];
-const SHAPES = {
-  arch: { d: 'M6 33V20a14 14 0 0 1 28 0v13a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z', eyeY: 19, gap: 5 },
-  squircle: { d: 'M16 4h8c8 0 12 4 12 12v8c0 8-4 12-12 12h-8C8 36 4 32 4 24v-8C4 8 8 4 16 4Z', eyeY: 17, gap: 5 },
-  circle: { d: 'M20 5a15 15 0 1 1 0 30 15 15 0 0 1 0-30Z', eyeY: 17, gap: 5 },
-  pill: { d: 'M13 10h14a10 10 0 0 1 0 20H13a10 10 0 0 1 0-20Z', eyeY: 18, gap: 5 },
-  tri: { d: 'M16.5 7.5c1.6-2.8 5.4-2.8 7 0l11 19.5c1.6 2.8-.4 6-3.5 6H9c-3.1 0-5.1-3.2-3.5-6Z', eyeY: 23, gap: 4.5 },
-  tall: { d: 'M20 3a10 10 0 0 1 10 10v14a10 10 0 0 1-20 0V13A10 10 0 0 1 20 3Z', eyeY: 15, gap: 4 },
-};
-const BOT_SHAPES = ['squircle', 'circle', 'pill', 'tri', 'tall'] as const;
 const seedOf = (value: string) => Array.from(value).reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 7);
+const sized = (size?: number) => size ? { '--size': `${size}px` } as CSSProperties : undefined;
 
-function BotFace({ id, size = 36, state }: { id: string; size?: number; state?: BotState }) {
-  const mora = id === 'mora', seed = seedOf(id);
-  const shape = mora ? SHAPES.arch : SHAPES[BOT_SHAPES[seed % BOT_SHAPES.length]];
-  const color = mora ? 'currentColor' : BOT_COLORS[(seed >>> 4) % BOT_COLORS.length];
-  return <svg className={`bot-face${mora ? ' is-mora' : ''}${state ? ` is-${state}` : ''}`} width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
-    <path d={shape.d} fill={color} />
+function BotFace({ id, size, state }: { id: string; size?: number; state?: BotState }) {
+  const mora = id === 'mora', seed = seedOf(id), gap = mora ? 5 : [4.6, 5.2, 5.8][seed % 3];
+  return <svg className={`bot-face${mora ? ' is-mora' : ''}${state ? ` is-${state}` : ''}`} style={sized(size)} viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="20" r="20" fill={mora ? 'currentColor' : BOT_COLORS[(seed >>> 4) % BOT_COLORS.length]} />
     <g className="eyes" style={{ fill: mora ? 'var(--background)' : 'var(--bot-eye)' }}>
-      <rect x={20 - shape.gap - 1.7} y={shape.eyeY - 3.5} width="3.4" height="7" rx="1.7" />
-      <rect x={20 + shape.gap - 1.7} y={shape.eyeY - 3.5} width="3.4" height="7" rx="1.7" />
+      <rect x={20 - gap - 1.7} y="14.5" width="3.4" height="7" rx="1.7" />
+      <rect x={20 + gap - 1.7} y="14.5" width="3.4" height="7" rx="1.7" />
     </g>
   </svg>;
 }
-function PersonAvatar({ name, size = 36 }: { name: string; size?: number }) {
-  return <span className="avatar" style={{ width: size, height: size, fontSize: Math.round(size * .36) }} aria-hidden="true">{initials(name)}</span>;
-}
-function GroupAvatar({ name, size = 36 }: { name: string; size?: number }) {
-  return <span className="avatar group" style={{ width: size, height: size, fontSize: Math.round(size * .34) }} aria-hidden="true">{initials(name) || <Users size={Math.round(size * .48)} />}</span>;
+function PersonAvatar({ name, size }: { name: string; size?: number }) {
+  return <span className="avatar" style={sized(size)} aria-hidden="true">{initials(name)}</span>;
 }
 function Face({ person, name, size, state }: { person?: Person; name: string; size?: number; state?: BotState }) {
   return person?.role ? <BotFace id={person.id} size={size} state={state} /> : <PersonAvatar name={name} size={size} />;
+}
+// A group is shown by two of its members, overlapping on the diagonal.
+function GroupAvatar({ faces, name, size }: { faces: Person[]; name: string; size?: number }) {
+  if (faces.length < 2) return <PersonAvatar name={name} size={size} />;
+  return <span className="avatar-stack" style={sized(size)} aria-hidden="true">{faces.slice(0, 2).map(person => <span className="avatar-slot" key={person.id}><Face person={person} name={person.name} /></span>)}</span>;
 }
 
 export default function Workspace() {
@@ -158,9 +155,18 @@ export default function Workspace() {
     if (roomTasks.some(task => task.status === 'running' || task.status === 'generating')) return 'working';
     if (roomTasks.some(task => task.status === 'pending')) return 'waiting';
   };
-  const roomFace = (room: Room, size: number) => {
+  // The two most recent speakers (then other people, then bots), most recent in front.
+  // In a room of two, you sit behind the other member.
+  const groupFaces = (room: Room) => {
+    const inRoom = roomPeople(room), me = data?.user.id;
+    const recent = (data?.messages || []).filter(message => message.room_id === room.id && message.kind !== 'system').map(message => message.author_id).reverse();
+    const others = inRoom.filter(person => person.id !== me);
+    const ordered = [...new Set([...recent, ...others.filter(person => !person.role).map(person => person.id), ...others.map(person => person.id)])].map(id => others.find(person => person.id === id)).filter((person): person is Person => !!person);
+    return ordered.length > 1 ? [ordered[1], ordered[0]] : [...inRoom.filter(person => person.id === me), ...ordered];
+  };
+  const roomFace = (room: Room, size?: number) => {
     const other = counterpart(room);
-    if (room.kind === 'group') return <GroupAvatar name={roomName(room)} size={size} />;
+    if (room.kind === 'group') return <GroupAvatar faces={groupFaces(room)} name={roomName(room)} size={size} />;
     return <Face person={other} name={roomName(room)} size={size} state={other?.role ? botState(room, other) : undefined} />;
   };
   const rooms = useMemo(() => {
@@ -192,6 +198,7 @@ export default function Workspace() {
     if (previousRoom.current !== activeId || nearBottom.current) scroll.current.scrollTop = scroll.current.scrollHeight;
     previousRoom.current = activeId;
   }, [activeId, messages.length, tasks.length, typing]);
+  useEffect(() => { document.title = activeRoom && data ? `${roomName(activeRoom)} · Mora` : 'Mora'; });
   useEffect(() => { if (composer.current) { composer.current.style.height = 'auto'; composer.current.style.height = `${Math.min(composer.current.scrollHeight, 160)}px`; } }, [draft, activeId]);
   useEffect(() => {
     for (const task of data?.tasks || []) if (task.status === 'running' && !runningTasks.current.has(task.id)) {
@@ -271,17 +278,19 @@ export default function Workspace() {
   // Runs once the + menu has closed, so its focus return does not fight the next target.
   function afterMenuClose(event: Event) { const next = afterMenu.current; if (!next) return; event.preventDefault(); afterMenu.current = null; next(); }
 
-  function taskActions(task: Task) {
-    return <div className="task-actions">
+  // In the narrow details panel, the secondary actions are icons with their names as labels.
+  function taskActions(task: Task, compact = false) {
+    const label = (text: string) => compact ? { 'aria-label': text, title: text } : {};
+    return <div className={`task-actions${compact ? ' compact' : ''}`}>
       {task.status === 'pending' && <button className="primary" onClick={() => void act('approve', { id: task.id, expectedUpdated: task.updated, expectedPlan: task.plan }, activeId)}><Check size={16} />Duyệt</button>}
-      {['pending', 'running', 'generating'].includes(task.status) && <button className="outlined" onClick={() => void act('stop', { id: task.id }, activeId)}><Square size={13} />Dừng</button>}
-      {!['running', 'generating'].includes(task.status) && <button className="outlined" onClick={() => editPlan(task)}><Pencil size={14} />Chỉnh kế hoạch</button>}
+      {['pending', 'running', 'generating'].includes(task.status) && <button className="outlined" {...label('Dừng')} onClick={() => void act('stop', { id: task.id }, activeId)}><Square size={13} />{!compact && 'Dừng'}</button>}
+      {!['running', 'generating'].includes(task.status) && <button className="outlined" {...label('Chỉnh kế hoạch')} onClick={() => editPlan(task)}><Pencil size={14} />{!compact && 'Chỉnh kế hoạch'}</button>}
       {task.status === 'done' && <button className="outlined" onClick={() => void act('continue', { id: task.id }, activeId)}>Tiếp nhận</button>}
     </div>;
   }
   function taskStatus(task: Task) {
     const Icon = statusIcon[task.status] || Clock;
-    return <span className={`task-status status-${task.status}`}><Icon size={15} className={task.status === 'running' || task.status === 'generating' ? 'spin' : undefined} />{statusText[task.status] || task.status}{task.mode === 'demo' ? ' · Mẫu' : ''}</span>;
+    return <span className={`task-status status-${task.status}`}><Icon size={15} className={task.status === 'running' || task.status === 'generating' ? 'spin' : undefined} />{statusText[task.status] || task.status}</span>;
   }
   function taskCard(task: Task) {
     const steps = parsePlan(task.plan);
@@ -304,7 +313,7 @@ export default function Workspace() {
     const showAuthor = !own && runStart && (inThread || activeRoom?.kind === 'group' || message.kind === 'sample');
     const author = personById(message.author_id);
     return <article className={`message${own ? ' own' : ''}${runStart ? ' run-start' : ''}${likes || replies.length ? ' has-activity' : ''}`} key={message.id}>
-      {showAuthor && <div className="message-author"><Face person={author} name={message.author} size={20} />{message.author}{message.kind === 'agent' && <span className="ai-label">AI</span>}{message.kind === 'sample' && <span className="meta">Mẫu</span>}</div>}
+      {showAuthor && <div className="message-author"><Face person={author} name={message.author} size={20} />{message.author}</div>}
       <div className="message-bubble" tabIndex={0}><p>{message.text}</p>{message.file_id && <a className="attachment" href={`/api/files?id=${message.file_id}`}><FileText size={20} /><span>{message.file_name}</span><Download size={16} /></a>}</div>
       <div className="message-meta"><time dateTime={new Date(message.created).toISOString()}>{time(message.created)}</time><button aria-label={`Thích tin nhắn của ${message.author}`} aria-pressed={reactions.some(reaction => reaction.user_id === data?.user.id && reaction.emoji === 'thumb')} onClick={() => void act('react', { message: message.id, emoji: 'thumb' }, activeId)}><ThumbsUp size={14} />{likes || ''}</button>{!inThread && <button aria-label={`Trả lời tin nhắn của ${message.author}`} onClick={() => { setThread(message); setReply(''); openModal('thread'); }}><MessageCircle size={14} />{replies.length > 0 ? `${replies.length} trả lời` : ''}</button>}</div>
     </article>;
@@ -326,9 +335,9 @@ export default function Workspace() {
       <div className="search-field"><Search size={16} aria-hidden="true" /><label className="sr-only" htmlFor="chat-search">Tìm cuộc trò chuyện</label><input id="chat-search" type="search" placeholder="Tìm kiếm" value={search} onChange={event => setSearch(event.target.value)} /></div>
       {loadError && <div className="list-error">{errorBanner}</div>}
       <nav className="conversation-list" aria-label="Tin nhắn gần đây">
-        {!data && !loadError && <p className="list-empty" role="status">Đang tải tin nhắn…</p>}
+        {!data && !loadError && <div className="list-loading" role="status"><span className="sr-only">Đang tải tin nhắn…</span>{[0, 1, 2, 3, 4].map(index => <div className="skeleton-row" key={index} aria-hidden="true"><i /><span><b /><b /></span></div>)}</div>}
         {visibleRooms.map(({ room, latest }) => <button className={`conversation-row${activeId === room.id ? ' selected' : ''}`} key={room.id} onClick={() => selectRoom(room.id)} aria-current={activeId === room.id ? 'page' : undefined} title={rail ? roomName(room) : undefined}>
-          {roomFace(room, 36)}<span className="conversation-copy"><span className="conversation-top"><strong>{roomName(room)}</strong><time>{recentTime(latest?.created || room.created)}</time></span><span className="conversation-preview">{latest ? `${latest.author_id === data?.user.id ? 'Bạn: ' : room.kind === 'group' && latest.kind !== 'system' ? latest.author.split(' ').slice(-2).join(' ') + ': ' : ''}${latest.file_name || latest.text}` : 'Chưa có tin nhắn'}</span></span>
+          {roomFace(room)}<span className="conversation-copy"><span className="conversation-top"><strong>{roomName(room)}</strong><time>{recentTime(latest?.created || room.created)}</time></span><span className="conversation-preview">{latest ? `${latest.author_id === data?.user.id ? 'Bạn: ' : room.kind === 'group' && latest.kind !== 'system' ? latest.author.split(' ').slice(-2).join(' ') + ': ' : ''}${latest.file_name || latest.text}` : 'Chưa có tin nhắn'}</span></span>
         </button>)}
         {data && visibleRooms.length === 0 && <div className="list-empty"><p>{search ? 'Không tìm thấy cuộc trò chuyện' : 'Chưa có cuộc trò chuyện'}</p><button className="text-button" onClick={() => search ? setSearch('') : openModal('new')}>{search ? 'Xóa tìm kiếm' : 'Bắt đầu trò chuyện'}</button></div>}
       </nav>
@@ -337,21 +346,20 @@ export default function Workspace() {
     <main className="conversation" id="conversation" tabIndex={-1}>
       {activeRoom && <header className="chat-header">
         <button className="icon-button mobile-back" aria-label="Về danh sách trò chuyện" onClick={() => setMobileChat(false)}><ArrowLeft size={20} /></button>
-        <button className="chat-identity" onClick={() => showPanel(true)} aria-label={`${roomName(activeRoom)}, xem chi tiết`}>{roomFace(activeRoom, 24)}<h1>{roomName(activeRoom)}</h1>{other?.role && <span className="ai-label">AI</span>}</button>
-        {activeRoom.kind === 'group' && <button className="icon-button" aria-label="Thêm thành viên" title="Thêm thành viên" onClick={() => openModal('add')}><UserPlus size={19} /></button>}
+        <button className="chat-identity" onClick={() => showPanel(true)} aria-label={`${roomName(activeRoom)}, xem chi tiết`}>{roomFace(activeRoom, 32)}<h1>{roomName(activeRoom)}</h1></button>
         <button ref={panelToggle} className={`icon-button panel-toggle${activeState === 'working' ? ' is-active' : ''}`} aria-label={activeState === 'working' ? 'Chi tiết, bot đang làm việc' : 'Chi tiết'} title="Chi tiết" aria-pressed={panelOpen} aria-controls="details" onClick={() => showPanel(!panelOpen)}><PanelRight size={19} /></button>
       </header>}
       {loadError && <div className="chat-error">{errorBanner}</div>}
       {activeRoom ? <>
         <div className="chat-scroll" ref={scroll} onScroll={() => { const element = scroll.current; if (element) nearBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 160; }}>
           <div className="message-list" role="log" aria-label={`Tin nhắn trong ${roomName(activeRoom)}`} aria-live="polite" aria-relevant="additions">
-            {timeline.length === 0 && <div className="conversation-empty"><ArtFrame art={cover} sizes="352px" />{roomFace(activeRoom, 40)}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Chưa có tin nhắn. Gửi lời chào đầu tiên.'}</p></div>}
+            {timeline.length === 0 && <div className="conversation-empty">{panelOpen ? roomFace(activeRoom, 72) : <ArtFrame art={cover} sizes="352px" />}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Gửi lời chào đầu tiên.'}</p></div>}
             {timeline.map((entry, index) => {
               const previous = timeline[index - 1];
               const divider = !previous || new Date(previous.at).toDateString() !== new Date(entry.at).toDateString() || entry.at - previous.at > 60 * 60000;
               return <div key={entry.type === 'message' ? entry.message.id : `task-${entry.task.id}`}>{divider && <div className="date-divider"><span>{dayLabel(entry.at)}</span></div>}{entry.type === 'message' ? messageView(entry.message, divider ? undefined : previous) : taskCard(entry.task)}</div>;
             })}
-            {typingHere.map(([key]) => <div className="message run-start typing-row" key={key} aria-hidden="true"><div className="message-bubble typing-bubble"><i /><i /><i /></div></div>)}
+            {typingHere.map(([key, botName]) => <div className="message run-start typing-row" key={key} aria-hidden="true">{activeRoom.kind === 'group' && <div className="message-author"><Face person={personById(key.slice(activeId.length + 1))} name={botName} size={20} state="working" />{botName}</div>}<div className="message-bubble typing-bubble"><i /><i /><i /></div></div>)}
           </div>
         </div>
         <div className="composer-area">
@@ -372,45 +380,36 @@ export default function Workspace() {
           </form>
         </div>
       </> : signedOut ? <div className="welcome">
-        <ArtFrame art={ART.herringNet} className="scrim" sizes="(max-width: 700px) 100vw, 92vw" eager>
+        <ArtFrame art={ART.oysters} sizes="(max-width: 700px) 100vw, 92vw" eager>
           <div><h1>Làm tiếp,<br />không cần kể lại.</h1><p>Chat làm việc cùng đồng đội và bot AI. Bối cảnh ở lại trong phòng; bot chỉ làm sau khi bạn duyệt.</p></div>
-          <div className="welcome-foot"><div><Mark size={44} weight={2.2} /><p className="art-credit">{credit(ART.herringNet)}</p></div><Link className="on-art" href="/signin">Đăng nhập</Link></div>
+          <div className="welcome-foot"><Mark size={44} weight={2.2} /><Link className="on-art" href="/signin">Đăng nhập</Link></div>
         </ArtFrame>
       </div> : <div className="no-conversation">{data && <><ArtFrame art={ART.moonlight} sizes="(max-width: 700px) 100vw, 544px" /><h1>Chọn một cuộc trò chuyện</h1><button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button></>}</div>}
     </main>
     {panelOpen && activeRoom && <aside className="side-panel" id="details" aria-label="Chi tiết" onKeyDown={event => { if (event.key === 'Escape') showPanel(false); }}>
       <header className="panel-header"><h2>Chi tiết</h2><button className="icon-button" aria-label="Đóng chi tiết" title="Đóng" onClick={() => showPanel(false)}><X size={19} /></button></header>
       <div className="panel-body">
-        <figure className="panel-cover">
-          <ArtFrame art={cover} sizes="320px">
-            <div className="art-pills" aria-hidden="true">
-              {activeRoom.kind === 'group' ? <span className="art-pill">Thành viên<b>{members.length}</b></span> : <span className="art-pill">{other?.role ? 'Đồng đội AI' : 'Trò chuyện riêng'}</span>}
-              {context && <span className="art-pill">Kế hoạch<b>{tasks.length}</b></span>}
-            </div>
-          </ArtFrame>
-          <figcaption className="art-credit"><a href={cover.url} target="_blank" rel="noreferrer">{credit(cover)}</a></figcaption>
-        </figure>
+        <ArtFrame art={cover} className="panel-cover" sizes="320px" />
         <section className="panel-identity">
-          {roomFace(activeRoom, 56)}
+          {roomFace(activeRoom, 64)}
           <h3>{roomName(activeRoom)}</h3>
-          <p className="muted">{other?.role ? 'Đồng đội AI' : activeRoom.kind === 'group' ? `${members.length} thành viên` : 'Trò chuyện riêng'}</p>
-          {other?.role && <p className="panel-role">{other.role}</p>}
-          {other?.role && !data?.aiConnected && <p className="muted">Bot chưa kết nối dịch vụ AI.</p>}
+          {other?.role ? <p className="muted">{other.role}</p> : activeRoom.kind === 'group' && <p className="muted">{members.length} thành viên</p>}
+          {other?.role && !data?.aiConnected && <p className="muted">Chưa kết nối dịch vụ AI.</p>}
         </section>
         {context && <section className="panel-section">
           <h3>Công việc</h3>
           {tasks.length === 0 && <p className="muted">Chưa có kế hoạch nào.</p>}
-          <ul className="panel-list">{tasks.map(task => <li key={task.id}><span className="panel-item-title">{task.title}</span>{taskStatus(task)}{taskActions(task)}</li>)}</ul>
+          <ul className="panel-list">{tasks.map(task => <li key={task.id}><span className="panel-item-title">{task.title}</span>{taskStatus(task)}{taskActions(task, true)}</li>)}</ul>
           <form className="propose" onSubmit={propose}><label className="sr-only" htmlFor="proposal">Việc cần lên kế hoạch</label><textarea id="proposal" ref={proposalInput} rows={2} value={proposal} maxLength={3000} placeholder="Giao việc, ví dụ: soạn checklist ra mắt bản mobile" onChange={event => setProposal(event.target.value)} /><button className="primary" type="submit" disabled={saving || !proposal.trim()}>Tạo kế hoạch</button></form>
         </section>}
         {context && <section className="panel-section">
           <div className="section-head"><h3>Bối cảnh chung</h3><button className="text-button" onClick={editContext}>Chỉnh</button></div>
           <dl className="context-list"><dt>Mục tiêu</dt><dd>{context.goal || 'Chưa có mục tiêu.'}</dd>{context.repo && <><dt>Kho mã</dt><dd className="mono">{context.repo}</dd></>}{context.decisions && <><dt>Quyết định</dt><dd><ul>{context.decisions.split('\n').filter(Boolean).map((decision, index) => <li key={index}>{decision}</li>)}</ul></dd></>}</dl>
-          {context.editor && <p className="meta">Cập nhật bởi {context.editor}{context.updated ? ` · ${recentTime(context.updated)}` : ''}</p>}
+          {context.editor && <p className="meta">Cập nhật bởi {editorName(context.editor)}{context.updated ? ` · ${recentTime(context.updated)}` : ''}</p>}
         </section>}
         {activeRoom.kind === 'group' && <section className="panel-section">
           <div className="section-head"><h3>Thành viên</h3><button className="text-button" onClick={() => openModal('add')}>Thêm</button></div>
-          <ul className="member-list">{members.map(person => <li key={person.id}><Face person={person} name={person.name} size={28} /><span><strong>{person.name}{person.id === data?.user.id ? ' (Bạn)' : ''}</strong>{person.role && <small>AI · {person.role}</small>}</span></li>)}</ul>
+          <ul className="member-list">{members.map(person => <li key={person.id}><Face person={person} name={person.name} size={28} /><span><strong>{person.name}</strong>{person.id === data?.user.id ? <small>Bạn</small> : person.role && <small>{person.role}</small>}</span></li>)}</ul>
         </section>}
       </div>
     </aside>}
@@ -424,14 +423,14 @@ export default function Workspace() {
         {(modal === 'bot' || modal === 'group' || modal === 'add' || modal === 'context' || modal === 'plan') && <form className="modal-form" onSubmit={submitForm}>
           {(modal === 'bot' || modal === 'group') && <label htmlFor="new-name">{modal === 'bot' ? 'Tên bot' : 'Tên nhóm'}<input id="new-name" name="name" autoComplete="off" value={name} onChange={event => setName(event.target.value)} placeholder={modal === 'bot' ? 'Ví dụ: An' : 'Ví dụ: Nhóm bán hàng'} required maxLength={modal === 'bot' ? 50 : 60} /></label>}
           {modal === 'bot' && <label htmlFor="bot-role">Vai trò<textarea id="bot-role" name="role" value={role} onChange={event => setRole(event.target.value)} placeholder="Ví dụ: Hỗ trợ bán hàng, tư vấn sản phẩm và soạn tin nhắn cho khách." required maxLength={2000} rows={4} /></label>}
-          {(modal === 'group' || modal === 'add') && <><label htmlFor="member-search">Thành viên<input id="member-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></label><div className="member-picker">{picker.map(person => <label className="member-option" key={person.id}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>AI · {person.role}</small>}</span><input type="checkbox" checked={selected.includes(person.id)} onChange={event => setSelected(current => event.target.checked ? [...current, person.id] : current.filter(id => id !== person.id))} /></label>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div></>}
+          {(modal === 'group' || modal === 'add') && <><label htmlFor="member-search">Thành viên<input id="member-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></label><div className="member-picker">{picker.map(person => <label className="member-option" key={person.id}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>{person.role}</small>}</span><input type="checkbox" checked={selected.includes(person.id)} onChange={event => setSelected(current => event.target.checked ? [...current, person.id] : current.filter(id => id !== person.id))} /></label>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div></>}
           {modal === 'context' && editingContext && <><label>Mục tiêu<textarea rows={2} required value={editingContext.goal} onChange={event => setEditingContext({ ...editingContext, goal: event.target.value })} /></label><label>Kho mã tham chiếu<input value={editingContext.repo} placeholder="owner/repository" onChange={event => setEditingContext({ ...editingContext, repo: event.target.value })} /></label><label>Quyết định<textarea rows={4} value={editingContext.decisions} onChange={event => setEditingContext({ ...editingContext, decisions: event.target.value })} /></label></>}
           {modal === 'plan' && <label>Các bước thực hiện<textarea rows={6} value={plan} onChange={event => setPlan(event.target.value)} required /></label>}
           <button className="primary form-submit" type="submit" disabled={saving}>{saving ? 'Đang lưu…' : modal === 'bot' ? 'Tạo bot' : modal === 'group' ? 'Tạo nhóm' : modal === 'add' ? 'Thêm thành viên' : 'Lưu'}</button>
         </form>}
-        {modal === 'connect' && <><div className="search-field dialog-search"><Search size={16} /><label className="sr-only" htmlFor="connect-search">Tìm người hoặc bot</label><input id="connect-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></div><div className="member-picker">{picker.map(person => <button className="member-option" key={person.id} disabled={saving} onClick={() => void connect(person)}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>AI · {person.role}</small>}</span><ChevronRight size={18} /></button>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div><p className="member-help">Thành viên xuất hiện ở đây sau khi được cấp quyền truy cập Mora và đăng nhập.</p><button className="text-button" onClick={async () => { try { await navigator.clipboard.writeText(window.location.origin); toast.success('Đã sao chép liên kết. Liên kết không tự cấp quyền truy cập.'); } catch { toast.error('Bạn có thể sao chép URL trên thanh địa chỉ.'); } }}>Sao chép liên kết Mora</button></>}
-        {modal === 'mention' && <div className="member-picker">{chatBots.map(bot => <button className="member-option" key={bot.id} onClick={() => { setDraft(`${draft}${draft && !draft.endsWith(' ') ? ' ' : ''}@${bot.name} `); setModal(''); setTimeout(() => composer.current?.focus(), 0); }}><BotFace id={bot.id} size={32} /><span><strong>{bot.name}</strong><small>AI · {bot.role}</small></span></button>)}</div>}
-        {modal === 'thread' && thread && <><div className="thread-messages">{messageView(thread, undefined, true)}{messages.filter(message => message.parent_id === thread.id).map(message => messageView(message, undefined, true))}</div><form className="reply-form" onSubmit={event => { event.preventDefault(); void send(reply, thread.id); }}><label className="sr-only" htmlFor="thread-reply">Tin nhắn trả lời</label><textarea id="thread-reply" rows={2} placeholder="Trả lời" value={reply} onChange={event => setReply(event.target.value)} maxLength={6000} /><button className="send-button" disabled={busy || !reply.trim()} aria-label="Gửi trả lời"><ArrowUp size={19} /></button></form></>}
+        {modal === 'connect' && <><div className="search-field dialog-search"><Search size={16} /><label className="sr-only" htmlFor="connect-search">Tìm người hoặc bot</label><input id="connect-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></div><div className="member-picker">{picker.map(person => <button className="member-option" key={person.id} disabled={saving} onClick={() => void connect(person)}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>{person.role}</small>}</span><ChevronRight size={18} /></button>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div><p className="member-help">Thành viên xuất hiện ở đây sau khi được cấp quyền truy cập Mora và đăng nhập.</p><button className="text-button" onClick={async () => { try { await navigator.clipboard.writeText(window.location.origin); toast.success('Đã sao chép liên kết. Liên kết không tự cấp quyền truy cập.'); } catch { toast.error('Bạn có thể sao chép URL trên thanh địa chỉ.'); } }}>Sao chép liên kết Mora</button></>}
+        {modal === 'mention' && <div className="member-picker">{chatBots.map(bot => <button className="member-option" key={bot.id} onClick={() => { setDraft(`${draft}${draft && !draft.endsWith(' ') ? ' ' : ''}@${bot.name} `); setModal(''); setTimeout(() => composer.current?.focus(), 0); }}><BotFace id={bot.id} size={32} /><span><strong>{bot.name}</strong><small>{bot.role}</small></span></button>)}</div>}
+        {modal === 'thread' && thread && <><div className="thread-messages">{messageView(thread, undefined, true)}{messages.filter(message => message.parent_id === thread.id).map(message => messageView(message, undefined, true))}</div><form className="reply-form" onSubmit={event => { event.preventDefault(); void send(reply, thread.id); }}><label className="sr-only" htmlFor="thread-reply">Tin nhắn trả lời</label><textarea id="thread-reply" rows={1} placeholder="Trả lời" value={reply} onChange={event => setReply(event.target.value)} maxLength={6000} /><button className="send-button" disabled={busy || !reply.trim()} aria-label="Gửi trả lời"><ArrowUp size={19} /></button></form></>}
       </DialogContent>
     </Dialog>
   </>;

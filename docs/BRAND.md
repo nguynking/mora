@@ -1,6 +1,6 @@
 # Mora brand guideline — v4
 
-Status: pilot · 28/09/2026
+Status: pilot · 28/09/2026 (revised: people-free paintings, no captions, avatar system)
 Previous: v3 (monochrome, Grok Bot-style). The interactive
 [`docs/brand/brand-book.html`](brand/brand-book.html) still shows v3 and is
 kept as an archive until it is redrawn. An earlier v4 draft on the unmerged
@@ -60,15 +60,15 @@ Rules:
 | Style | Font | Size / weight | Use |
 | --- | --- | --- | --- |
 | Display | Newsreader | 36–64 px / 400, −2% tracking | Welcome and sign-in headlines |
-| Title | Newsreader | 19–28 px / 400–500 | Chat header, panel and section titles, dialog titles, plan titles, empty states |
-| Caption | Newsreader italic | 13–15 px | Art credits, the "Kế hoạch" kicker |
+| Title | Newsreader | 19–28 px / 400–500, word-spacing .09em | Chat header, panel and section titles, dialog titles, plan titles, empty states |
+| Kicker | Newsreader italic | 15 px | The "Kế hoạch" label on plan cards |
 | Message | System sans | 16 px / 400, line height 1.5 | Bubbles, composer, inputs |
 | Row | System sans | 14 px / 600 name, 13 px / 400 preview | Room list |
 | Meta | System sans | 12–13 px / 400 | Timestamps, events, labels |
 
 Newsreader is self-hosted at build time through `next/font` with the
 Vietnamese subset; nothing is requested from Google at runtime. Its word space
-is tight at title sizes, so serif titles add `word-spacing: .05em`. The system
+is tight at title sizes (0.2 em), so serif titles add `word-spacing: .09em`. The system
 sans (SF Pro, Segoe UI, Roboto) stays for everything you read in bulk.
 
 Sentence case everywhere. No all-caps Vietnamese. Never strip diacritics.
@@ -90,47 +90,57 @@ a loop on the first stem and a tail curl. Round caps and joins. Source:
 ## 5. Paintings
 
 Public-domain paintings, CC0 open access from The Metropolitan Museum of Art
-and the Art Institute of Chicago. Subjects: letters and reading, quiet
-interiors, sea and fields. They live in [`public/art`](../public/art) as WebP
-at 720 and 1400 px (about 0.9 MB for all ten), with credits and focal points
+and the Art Institute of Chicago. **No people in any of them**: still lifes,
+seascapes, fields and an empty interior. They live in
+[`public/art`](../public/art) as WebP at 720 and 1400 px (about 1.8 MB for all
+twelve), cropped to the painted surface, with titles, sources and focal points
 in [`lib/art.ts`](../lib/art.ts).
 
 | Where | Painting | Treatment |
 | --- | --- | --- |
-| Signed-out welcome | Winslow Homer, *The Herring Net* (1885) | Full pane, serif headline top left, mark and credit bottom left, bone "Đăng nhập" pill |
-| Sign-in | Jean Honoré Fragonard, *The Love Letter* (early 1770s) | Tall card beside the form on sand |
+| Signed-out welcome | Willem Claesz Heda, *Still Life with Oysters, a Silver Tazza, and Glassware* (1635) | Full window, serif headline top left, mark bottom left, bone "Đăng nhập" pill bottom right |
+| Sign-in | Édouard Manet, *Peonies* (1864–65) | Tall card beside the form on sand, headline and mark on the painting |
 | No room selected | Vilhelm Hammershøi, *Moonlight, Strandgade 30* (1900–06) | Card above "Chọn một cuộc trò chuyện" |
-| Each room | One of ten, chosen from the room id | Details panel cover with frosted pills (members, plans); empty-room state |
+| Each room | One of ten, chosen from the room id: Courbet *The Calm Sea*; Homer *Northeaster*, *Cannon Rock*; Monet *Stacks of Wheat*, *Stack of Wheat (Snow)*, *Water Lilies*; Fantin-Latour *Still Life with Flowers and Fruit*; Cézanne *Apples and a Pot of Primroses*; Van Gogh *Roses*; Heda | Details panel cover; the empty-room state when the panel is closed |
 
 Rules:
 
+- No people, not even small figures in a landscape. Check at full size before
+  adding a painting.
+- No captions or credit lines in the product. Titles and sources stay in
+  `lib/art.ts` and this guideline.
 - Always a rounded frame (20–28 px). The frame shows the painting's average
   tone until the image loads.
-- Text on a painting is white serif over a soft scrim, never on a busy area.
-- Labels on paintings are **frosted pills**: translucent white, blurred, white
-  text, with a white inner pill for a number (`Thành viên 4`).
-- Credit the work wherever it is shown large: artist, title, date · museum, in
-  italic serif caption. Covers link to the museum page.
-- Paintings are decorative (`alt=""`); the credit is visible text.
-- Add paintings only from CC0 sources, and record the museum URL in
-  `lib/art.ts`.
+- Text on a painting is white serif, placed over a dark area; use the soft
+  scrim only when the painting is light where the text sits.
+- A room's painting appears once on screen: in the panel when it is open,
+  otherwise in the empty-room state.
+- Paintings are decorative (`alt=""`).
+- Add paintings only from CC0 sources.
 
-## 6. Bots, people and rooms
+## 6. Avatars: bots, people and rooms
 
-Shape tells you what something is before you read its name.
+Every avatar is a circle, so rows line up whatever is in them.
 
 | Thing | Avatar |
 | --- | --- |
-| Bot | A flat shape with two capsule eyes, generated from the bot's id, in one of eight oil-paint pigments: madder `#C4553A`, ochre `#D09A3B`, sap green `#6E8A4B`, verdigris `#3E8C80`, ultramarine `#4A67A6`, rose `#C7727C`, sienna `#9C5F33`, slate `#8FA3AD`. Ink eyes. |
-| Mora (default bot) | The ink arch with two eyes (bone in dark mode). |
-| Person | Stone circle with initials. People never get color. |
-| Group room | Stone rounded square with initials. |
+| Bot | A disc in one of eight oil-paint pigments, generated from the bot's id, with two ink capsule eyes (spacing also varies by id): madder `#C4553A`, ochre `#D09A3B`, sap green `#6E8A4B`, verdigris `#3E8C80`, ultramarine `#4A67A6`, rose `#C7727C`, sienna `#9C5F33`, slate `#8FA3AD`. |
+| Mora (default bot) | The ink disc with paper eyes (bone disc with ink eyes in dark mode). |
+| Person | Stone disc with initials: the first letter of the first and last word, without diacritics ("Thanh Ý" → TY, "Nguyễn Văn An" → NA). People never get color. |
+| Group room | Two of its members on the diagonal, each 62% of the avatar: the most recent speaker in front, the one before behind, then other people, then bots. In a room of two, you sit behind the other member. The front face has a 2 px ring in the surface color; the back face is a shade deeper. A group with fewer than two members shows its name's initials. |
+
+Sizes: 36 px in the room list (44 px in the rail), 32 px in the chat header,
+20 px beside names in group transcripts, 28–32 px in lists and pickers, 64–72
+px in the details panel and empty states.
 
 The avatar is the status indicator: idle is still; waiting for approval looks
-up and blinks; working bobs and scans, and the details icon turns
-`working`. Under reduced motion the avatars stay still and the text ("Chờ
-duyệt", "Đang làm") carries the state. Bots are labelled `AI`; Mora never
-disguises a bot as a person.
+up and blinks; working bobs and scans, and the details icon turns `working`.
+Under reduced motion the avatars stay still and the text ("Chờ duyệt", "Đang
+làm") carries the state.
+
+No text labels beside names: no `AI` badge and no `Mẫu` (sample) marker. A
+bot's face already says it is a bot, and its role is shown where it helps
+(details panel, member lists, pickers).
 
 ## 7. Layout
 
@@ -140,15 +150,20 @@ narrower ones and is a full screen on phones. Signed out, the welcome painting
 takes the whole window.
 
 - Conversation: paper with a 24 px dot grid; the header has no divider.
-- Details panel: the room's painting, then identity, work, shared context and
-  members as white cards.
+- Details panel: the room's painting, then its avatar, name and one line (the
+  bot's role, or the member count), then work, shared context and members as
+  white cards. Plan actions in the panel are compact: "Duyệt" plus icon
+  buttons for stop and edit.
+- Adding members lives in the panel's members section, not the chat header.
 
 ## 8. Transcript and composer
 
 - Your messages: right, ink bubble. Everyone else: left, white bubble with a
   hairline shadow. Radius 20 px, no tails, 4 px between consecutive bubbles,
   14 px between authors.
-- Timestamps sit centered between sessions on a paper pill ("Hôm nay 09:41").
+- Timestamps sit centered between sessions ("Hôm nay 09:41", "Hôm qua 17:33",
+  "Thứ Ba 08:10", then "26/09 08:10"). The room list shows the time today,
+  "Hôm qua", the weekday within a week (T2 … CN), then "26/09".
   Per-message time, like and reply appear on hover or focus.
 - Events are small centered grey lines.
 - Plans are white cards: italic serif kicker "Kế hoạch", serif title, a
@@ -156,6 +171,9 @@ takes the whole window.
   Tiếp nhận).
 - Composer: a white pill with a soft shadow, a round stone `+`, the text field,
   and a round ink send button (stone when empty). Placeholder "Nhắn {tên}".
+  Thread replies use the same pill.
+- While a bot replies in a group, its face and name sit above the typing dots.
+- Loading shows skeleton rows, not text. The browser tab shows the open room.
 
 ## 9. Voice
 
@@ -174,8 +192,8 @@ Local formats: `4.000.000 ₫`, `28/09/2026`, 24-hour time.
 | Color | Black, white, greys | Paper, stone and ink; paintings and bots are the color |
 | Type | System font only | Newsreader serif for titles and captions; system sans for reading |
 | Mark | The arch character | The flourish *m*; the arch remains Mora the bot |
-| Art | None | Ten CC0 paintings: welcome, sign-in, empty states, room covers |
-| Surfaces | Grey bubbles and cards | White cards and bubbles on paper, dot grid, pill controls, frosted labels |
-| Bot colors | Saturated UI hues | Oil-paint pigments; purple kept only for "working" |
+| Art | None | Twelve CC0 paintings without people: welcome, sign-in, empty states, room covers; no captions |
+| Surfaces | Grey bubbles and cards | White cards and bubbles on paper, dot grid, pill controls |
+| Avatars | Bot silhouettes, grey rounded-square groups, `AI` badges | Circles only: pigment discs for bots, member pairs for groups, no badges |
 | Signed out | Error banner with a sign-in button | A welcome painting with the promise and a sign-in pill |
 | Account | No sign-out control | Sign-out button beside your name |

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArtFrame, Mark } from '../brand';
-import { ART, credit } from '@/lib/art';
+import { ART } from '@/lib/art';
 import styles from './signin.module.css';
 
 export default function SignIn() {
@@ -21,12 +21,11 @@ export default function SignIn() {
     finally { setBusy(false); }
   }
   return <main className={styles.page}>
-    <ArtFrame art={ART.loveLetter} className={`scrim ${styles.art}`} sizes="(max-width: 760px) 100vw, 50vw" eager>
+    <ArtFrame art={ART.peonies} className={`scrim ${styles.art}`} sizes="(max-width: 760px) 100vw, 50vw" eager>
       <p className={styles.line}>Làm tiếp,<br />không cần kể lại.</p>
-      <div className={styles.artFoot}><Mark size={40} weight={2.2} /><p className="art-credit">{credit(ART.loveLetter)}</p></div>
+      <Mark size={40} weight={2.2} />
     </ArtFrame>
     <form onSubmit={submit} className={styles.form}>
-      <Mark size={36} label="Mora" className={styles.formMark} />
       <h1>Đăng nhập</h1>
       {sent ? <p role="status" className={styles.note}>Kiểm tra email của bạn và mở liên kết đăng nhập trong trình duyệt này.</p> : <>
         <p className={styles.note}>Mora gửi liên kết đăng nhập đến email đã được mời vào không gian làm việc.</p>
