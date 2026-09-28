@@ -1,14 +1,16 @@
-# Mora brand guideline — v3
+# Mora brand guideline — v4
 
-Status: pilot · 26/09/2026
-Reference: [Grok Bot design language](reference/GROK_BOT_DESIGN.md) ·
-Interactive version: [`docs/brand/brand-book.html`](brand/brand-book.html)
+Status: pilot · 28/09/2026
+Previous: v3 (monochrome, Grok Bot-style). The interactive
+[`docs/brand/brand-book.html`](brand/brand-book.html) still shows v3 and is
+kept as an archive until it is redrawn. An earlier v4 draft on the unmerged
+branch `claude/zealous-maxwell-hp0j5m` kept the monochrome direction; this
+guideline replaces it.
 
-v3 replaces the colorful v2 guideline. Mora now follows the Grok Bot design
-language: a quiet black-and-white messenger where the bots are the only color.
-Mora adapts it for what the business needs that Grok Bot does not have:
-Vietnamese teams, people and bots in the same room, shared context, and
-approval before an agent acts.
+v4 keeps v3's layout and behavior and changes the feel: **paper and ink, with
+paintings**. The interface is warm and quiet, set on paper tones with a serif
+for titles. Color comes from public-domain paintings framed in rounded cards,
+and from the bots.
 
 ## 1. Idea
 
@@ -16,123 +18,144 @@ approval before an agent acts.
 | --- | --- |
 | Promise | **Làm tiếp, không cần kể lại.** Pick up the work. No re-explaining. |
 | Descriptor | Chat làm việc cùng đồng đội AI · Work chat with AI coworkers |
+| Mood | An editorial, museum-label calm: paper, ink, oil paint, a hand-drawn flourish. |
 | Design test | Does this help the team delegate, or give them one more thing to manage? If the second, remove it. |
 
-Personality: calm, plain, accountable. The interface stays out of the way; the
-bots and the conversation are the only things with character.
+Personality: calm, plain, accountable, a little literary. The interface stays
+out of the way; the paintings, the bots and the conversation carry the
+character.
 
 ## 2. Color
 
-Monochrome. Black, white and greys carry the entire interface. There is no
-brand accent color.
+Warm neutrals carry the interface. There is no brand accent color; paintings
+and bots are the color.
 
 | Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `background` | `#FFFFFF` | `#141414` | Conversation, dialogs |
-| `sidebar` | `#F7F7F7` | `#1B1B1B` | Room list, details panel |
-| `field` | `#EBEBEB` | `#262626` | Search field |
-| `hover` | `#EFEFEF` | `#242424` | Row and icon hover |
-| `selected` | `#E8E8E8` | `#2C2C2C` | Selected room |
-| `bubble` | `#F0F0F0` | `#262626` | Everyone else's messages, inline cards |
-| `bubble-own` | `#0A0A0A` | `#3F3F3F` | Your messages (white text) |
-| `foreground` | `#0A0A0A` | `#EDEDED` | Text |
-| `muted-foreground` | `#666666` | `#9B9B9B` | Previews, timestamps, events |
-| `border` | `#EBEBEB` | `#2A2A2A` | Pane dividers, composer outline |
-| `primary` | `#0A0A0A` | `#EDEDED` | Primary buttons, send |
-| `working` | `#8B5CF6` | `#A78BFA` | Only signal color: the details icon while a bot works |
-| `destructive` | `#D92D20` | `#F97066` | Errors only |
+| `background` | `#F5F3EE` paper | `#171613` | Conversation (with a faint dot grid), sign-in form |
+| `sidebar` | `#ECE8E0` stone | `#1D1C19` | Room list, details panel |
+| `card` / `bubble` | `#FFFFFF` | `#252420` / `#282621` | Everyone else's messages, plan cards, panel items |
+| `bubble-own` | `#1C1B18` ink | `#E9E4D9` bone | Your messages |
+| `foreground` | `#1C1B18` | `#EFEBE3` | Text |
+| `muted-foreground` | `#67635A` | `#A59F93` | Previews, timestamps, captions |
+| `muted` | `#E5E1D8` | `#2E2C27` | Secondary pills, `+` button |
+| `field` | `#E3DFD6` | `#2A2823` | Search pill |
+| `input` | `#8C867A` | `#7A7468` | Input borders (≥3:1 on their surface) |
+| `sand` | `#D8D1C2` | `#23211D` | Sign-in page |
+| `working` | `#7B5CA6` | `#B39DDB` | Only signal color: the details icon while a bot works |
+| `destructive` | `#B42318` | `#F97066` | Errors only |
 
 Rules:
 
-- The only saturated color in the product is a bot's avatar. Nothing else
-  may borrow bot colors.
-- Purple means one thing: a bot in this room is working right now.
-- Secondary text is at least 4.5:1 on every surface it sits on (light
-  `#666666` is 4.7:1 on the selected row; dark `#9B9B9B` is 5.1:1).
+- Selected rows and cards are white on stone, with a soft shadow, not a grey
+  fill.
+- Primary actions are ink pills (bone in dark mode). Secondary actions are
+  stone pills. One primary action per view.
+- Text contrast is at least 4.5:1 on every surface it sits on (muted on stone
+  is 4.9:1 light, 6.5:1 dark). Muted text on `sand` uses `sand-muted`.
 - State is carried by text or an icon as well as by color.
 
-## 3. Bots, people and rooms
+## 3. Type
+
+| Style | Font | Size / weight | Use |
+| --- | --- | --- | --- |
+| Display | Newsreader | 36–64 px / 400, −2% tracking | Welcome and sign-in headlines |
+| Title | Newsreader | 19–28 px / 400–500 | Chat header, panel and section titles, dialog titles, plan titles, empty states |
+| Caption | Newsreader italic | 13–15 px | Art credits, the "Kế hoạch" kicker |
+| Message | System sans | 16 px / 400, line height 1.5 | Bubbles, composer, inputs |
+| Row | System sans | 14 px / 600 name, 13 px / 400 preview | Room list |
+| Meta | System sans | 12–13 px / 400 | Timestamps, events, labels |
+
+Newsreader is self-hosted at build time through `next/font` with the
+Vietnamese subset; nothing is requested from Google at runtime. Its word space
+is tight at title sizes, so serif titles add `word-spacing: .05em`. The system
+sans (SF Pro, Segoe UI, Roboto) stays for everything you read in bulk.
+
+Sentence case everywhere. No all-caps Vietnamese. Never strip diacritics.
+
+## 4. The mark
+
+The Mora flourish: one monoline stroke drawing a lowercase *m* with a curl in,
+a loop on the first stem and a tail curl. Round caps and joins. Source:
+`MARK_PATH` in [`app/brand.tsx`](../app/brand.tsx).
+
+- On paper: ink. On paintings: white. App icon and favicon: bone mark on an
+  ink tile ([`public/favicon.svg`](../public/favicon.svg),
+  `public/apple-touch-icon.png`).
+- Stroke is 2.6 units at 24–32 px, 2.2 at 40 px and larger.
+- It heads the room list and sits in the lower left of art cards, as in a
+  printed plate. There is still no wordmark in the app surface.
+- Don't fill, outline, recolor with bot colors, or redraw it in a script font.
+
+## 5. Paintings
+
+Public-domain paintings, CC0 open access from The Metropolitan Museum of Art
+and the Art Institute of Chicago. Subjects: letters and reading, quiet
+interiors, sea and fields. They live in [`public/art`](../public/art) as WebP
+at 720 and 1400 px (about 0.9 MB for all ten), with credits and focal points
+in [`lib/art.ts`](../lib/art.ts).
+
+| Where | Painting | Treatment |
+| --- | --- | --- |
+| Signed-out welcome | Winslow Homer, *The Herring Net* (1885) | Full pane, serif headline top left, mark and credit bottom left, bone "Đăng nhập" pill |
+| Sign-in | Jean Honoré Fragonard, *The Love Letter* (early 1770s) | Tall card beside the form on sand |
+| No room selected | Vilhelm Hammershøi, *Moonlight, Strandgade 30* (1900–06) | Card above "Chọn một cuộc trò chuyện" |
+| Each room | One of ten, chosen from the room id | Details panel cover with frosted pills (members, plans); empty-room state |
+
+Rules:
+
+- Always a rounded frame (20–28 px). The frame shows the painting's average
+  tone until the image loads.
+- Text on a painting is white serif over a soft scrim, never on a busy area.
+- Labels on paintings are **frosted pills**: translucent white, blurred, white
+  text, with a white inner pill for a number (`Thành viên 4`).
+- Credit the work wherever it is shown large: artist, title, date · museum, in
+  italic serif caption. Covers link to the museum page.
+- Paintings are decorative (`alt=""`); the credit is visible text.
+- Add paintings only from CC0 sources, and record the museum URL in
+  `lib/art.ts`.
+
+## 6. Bots, people and rooms
 
 Shape tells you what something is before you read its name.
 
 | Thing | Avatar |
 | --- | --- |
-| Bot | A flat colored shape with two capsule eyes, generated from the bot's id. Shapes: rounded square, circle, pill, rounded triangle, tall capsule. Eight colors. |
-| Mora (default bot) | The **arch**: a black dome with two eyes (white in dark mode). The arch is reserved for Mora. |
-| Person | Grey circle with initials. People never get color. |
-| Group room | Grey rounded square with initials. |
+| Bot | A flat shape with two capsule eyes, generated from the bot's id, in one of eight oil-paint pigments: madder `#C4553A`, ochre `#D09A3B`, sap green `#6E8A4B`, verdigris `#3E8C80`, ultramarine `#4A67A6`, rose `#C7727C`, sienna `#9C5F33`, slate `#8FA3AD`. Ink eyes. |
+| Mora (default bot) | The ink arch with two eyes (bone in dark mode). |
+| Person | Stone circle with initials. People never get color. |
+| Group room | Stone rounded square with initials. |
 
-The avatar is the status indicator:
+The avatar is the status indicator: idle is still; waiting for approval looks
+up and blinks; working bobs and scans, and the details icon turns
+`working`. Under reduced motion the avatars stay still and the text ("Chờ
+duyệt", "Đang làm") carries the state. Bots are labelled `AI`; Mora never
+disguises a bot as a person.
 
-| State | Motion |
-| --- | --- |
-| Idle | Still |
-| Waiting for approval | Eyes look up, occasional blink |
-| Working (replying or running a task) | Gentle bob, eyes scan; the details icon turns purple |
+## 7. Layout
 
-Under reduced motion the avatars stay still and the text ("Chờ duyệt",
-"Đang làm") carries the state. Bots are also labelled `AI` in the header and in
-group messages; Mora never disguises a bot as a person.
+Unchanged from v3: a 288 px room list (or 76 px rail), the conversation (up to
+896 px), and a 344 px details panel that pins on wide screens, slides over on
+narrower ones and is a full screen on phones. Signed out, the welcome painting
+takes the whole window.
 
-## 4. The mark
+- Conversation: paper with a 24 px dot grid; the header has no divider.
+- Details panel: the room's painting, then identity, work, shared context and
+  members as white cards.
 
-The logo is the Mora arch character: black on light backgrounds, off-white on
-dark. The favicon switches with the system theme. Wordmark: `mora`, lowercase,
-system font, semibold. The app surface shows no wordmark; the mark lives in the
-browser tab, app icon, invoices and marketing.
+## 8. Transcript and composer
 
-## 5. Type
-
-The platform system font, like Grok Bot: SF Pro on Apple devices, Segoe UI on
-Windows, Roboto on Android. All three cover Vietnamese; no web font is loaded.
-
-| Style | Size / weight | Use |
-| --- | --- | --- |
-| Message | 16 px / 400, line height 1.5 | Bubbles, composer, mobile inputs |
-| Title | 15 px / 600 | Chat header, panel header |
-| Row | 14 px / 600 name, 13 px / 400 preview | Room list |
-| Meta | 12–13 px / 400 | Timestamps, events, labels |
-
-Sentence case everywhere. No all-caps Vietnamese. Never strip diacritics.
-
-## 6. Layout
-
-Three panes on desktop, like Grok Bot:
-
-1. **Sidebar (288 px, or a 76 px rail).** Collapse toggle and `+` on top,
-   search, one row per room (avatar, name, time, one-line preview), the
-   signed-in person at the bottom. The rail shows avatars only.
-2. **Conversation.** Plain header with small avatar, name and `AI` label; the
-   details icon on the right. No divider. Message column up to 896 px.
-3. **Details panel (344 px).** Mora's equivalent of the bot's screen panel:
-   the room's identity, its work (plans and their status), the shared context,
-   and members. It is pinned beside the conversation on wide screens, slides
-   over the conversation on narrower ones, and is a full screen on phones.
-
-Mobile shows one pane at a time with a back button.
-
-## 7. Transcript
-
-- Your messages: right, black bubble. Everyone else: left, grey bubble.
-  Radius 18 px, no tails, 4 px between consecutive bubbles, 14 px between
-  authors.
-- One-to-one chats show no names or avatars beside bubbles. Group chats show a
-  small avatar and name above each run of messages.
-- Timestamps sit centered between sessions ("Hôm nay 09:41"). Per-message time,
-  like and reply appear on hover or focus, and stay visible once a message has
-  likes or replies.
-- **Events** are small centered grey lines: "Linh Trần đã duyệt kế hoạch …".
-- **Plans are inline cards**: a grey card with a white inner list of numbered
-  steps, a status, and actions (Duyệt, Dừng, Chỉnh kế hoạch, Tiếp nhận). The
-  same plans are listed in the details panel.
-- While a bot replies, a grey bubble with three dots appears and its avatar
-  starts working.
-
-## 8. Composer
-
-A pill with a soft shadow: round grey `+` on the left (upload a file, mention a
-bot, create a plan), the text field, and a round black send button (grey when
-empty). Placeholder: "Nhắn {tên}".
+- Your messages: right, ink bubble. Everyone else: left, white bubble with a
+  hairline shadow. Radius 20 px, no tails, 4 px between consecutive bubbles,
+  14 px between authors.
+- Timestamps sit centered between sessions on a paper pill ("Hôm nay 09:41").
+  Per-message time, like and reply appear on hover or focus.
+- Events are small centered grey lines.
+- Plans are white cards: italic serif kicker "Kế hoạch", serif title, a
+  paper step list, status, and pill actions (Duyệt, Dừng, Chỉnh kế hoạch,
+  Tiếp nhận).
+- Composer: a white pill with a soft shadow, a round stone `+`, the text field,
+  and a round ink send button (stone when empty). Placeholder "Nhắn {tên}".
 
 ## 9. Voice
 
@@ -142,14 +165,17 @@ deploy). Restate the request, ask one question at a time, show evidence, mark
 estimates as estimates. No emoji from bots. Errors say what failed, what did
 not change and what to do next.
 
-Local formats: `4.000.000 ₫`, `26/09/2026`, 24-hour time.
+Local formats: `4.000.000 ₫`, `28/09/2026`, 24-hour time.
 
-## 10. What changed from v2
+## 10. What changed from v3
 
-| Area | v2 | v3 |
+| Area | v3 | v4 |
 | --- | --- | --- |
-| Color | Jade, turmeric, lacquer on warm paper | Black, white, greys; bots are the only color |
-| Bots | Turmeric rounded square with an arch glyph | Generated character per bot, animated by state |
-| Type | Be Vietnam Pro + JetBrains Mono | System font |
-| Layout | Three panes, plan cards with side rails | Grok-style sidebar with rail mode, pill composer, details panel |
-| Logo | Two-arch *m* on a jade tile | The Mora arch character |
+| Color | Black, white, greys | Paper, stone and ink; paintings and bots are the color |
+| Type | System font only | Newsreader serif for titles and captions; system sans for reading |
+| Mark | The arch character | The flourish *m*; the arch remains Mora the bot |
+| Art | None | Ten CC0 paintings: welcome, sign-in, empty states, room covers |
+| Surfaces | Grey bubbles and cards | White cards and bubbles on paper, dot grid, pill controls, frosted labels |
+| Bot colors | Saturated UI hues | Oil-paint pigments; purple kept only for "working" |
+| Signed out | Error banner with a sign-in button | A welcome painting with the promise and a sign-in pill |
+| Account | No sign-out control | Sign-out button beside your name |

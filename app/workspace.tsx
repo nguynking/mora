@@ -1,9 +1,12 @@
 'use client';
 import { uploadFile } from '@/lib/upload-file';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArtFrame, Mark } from './brand';
+import { ART, coverFor, credit } from '@/lib/art';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, CircleAlert, CircleCheck, CirclePause, Clock, Download, FileText, LoaderCircle, MessageCircle, PanelLeft, PanelRight, Paperclip, Pencil, Plus, Search, Square, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
+import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, CircleAlert, CircleCheck, CirclePause, Clock, Download, FileText, LoaderCircle, LogOut, MessageCircle, PanelLeft, PanelRight, Paperclip, Pencil, Plus, Search, Square, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/sonner';
@@ -33,8 +36,8 @@ const statusText: Record<string, string> = { pending: 'Chờ duyệt', running: 
 const statusIcon: Record<string, typeof Clock> = { pending: Clock, running: LoaderCircle, generating: LoaderCircle, stopped: CirclePause, done: CircleCheck, failed: CircleAlert };
 const store = { get: (key: string) => { try { return localStorage.getItem(key); } catch { return null; } }, set: (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* storage unavailable */ } } };
 
-// Bot characters: one simple shape, two capsule eyes. Mora itself is the monochrome arch.
-const BOT_COLORS = ['#FF5A4E', '#FFB224', '#22C55E', '#3B82F6', '#A855F7', '#FF7A30', '#14B8A6', '#EC4899'];
+// Bot characters: one simple shape, two capsule eyes, in oil-paint pigments. Mora itself is the ink arch.
+const BOT_COLORS = ['#C4553A', '#D09A3B', '#6E8A4B', '#3E8C80', '#4A67A6', '#C7727C', '#9C5F33', '#8FA3AD'];
 const SHAPES = {
   arch: { d: 'M6 33V20a14 14 0 0 1 28 0v13a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z', eyeY: 19, gap: 5 },
   squircle: { d: 'M16 4h8c8 0 12 4 12 12v8c0 8-4 12-12 12h-8C8 36 4 32 4 24v-8C4 8 8 4 16 4Z', eyeY: 17, gap: 5 },
@@ -52,7 +55,7 @@ function BotFace({ id, size = 36, state }: { id: string; size?: number; state?: 
   const color = mora ? 'currentColor' : BOT_COLORS[(seed >>> 4) % BOT_COLORS.length];
   return <svg className={`bot-face${mora ? ' is-mora' : ''}${state ? ` is-${state}` : ''}`} width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
     <path d={shape.d} fill={color} />
-    <g className="eyes" style={{ fill: mora ? 'var(--background)' : '#111111' }}>
+    <g className="eyes" style={{ fill: mora ? 'var(--background)' : 'var(--bot-eye)' }}>
       <rect x={20 - shape.gap - 1.7} y={shape.eyeY - 3.5} width="3.4" height="7" rx="1.7" />
       <rect x={20 + shape.gap - 1.7} y={shape.eyeY - 3.5} width="3.4" height="7" rx="1.7" />
     </g>
@@ -173,6 +176,7 @@ export default function Workspace() {
   const messages = data?.messages.filter(message => message.room_id === activeId) || [];
   const tasks = data?.tasks.filter(task => task.room_id === activeId) || [];
   const context = data?.contexts.find(item => item.room_id === activeId);
+  const cover = coverFor(activeId);
   const activeState = activeRoom ? botState(activeRoom) : undefined;
   const typingHere = Object.entries(typing).filter(([key]) => key.startsWith(activeId + ':'));
   const draft = drafts[activeId] || '';
@@ -306,14 +310,16 @@ export default function Workspace() {
     </article>;
   }
   const titles: Record<Exclude<Modal, ''>, string> = { new: 'Cuộc trò chuyện mới', connect: 'Tìm thành viên', bot: 'Tạo bot', group: 'Tạo nhóm', add: 'Thêm thành viên', thread: 'Trả lời', context: 'Chỉnh bối cảnh', plan: 'Chỉnh kế hoạch', mention: 'Nhắc đến bot' };
-  const errorBanner = loadError && <div className="error-banner" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => router.push('/signin')}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>;
+  const signedOut = needsLogin && !data;
+  const errorBanner = loadError && !signedOut && <div className="error-banner" role="alert"><span>{loadError}</span>{needsLogin ? <button onClick={() => router.push('/signin')}>Đăng nhập</button> : <button onClick={() => void refresh()}>Thử lại</button>}</div>;
 
   return <>
     <Toaster position="bottom-center" />
     <a className="skip-link" href="#conversation" onClick={() => setMobileChat(true)}>Đến cuộc trò chuyện</a>
-    <div className={`mora-app${mobileChat ? ' show-chat' : ''}${rail ? ' rail' : ''}${panelOpen && activeRoom ? ' show-panel' : ''}`}>
+    <div className={`mora-app${mobileChat ? ' show-chat' : ''}${rail ? ' rail' : ''}${panelOpen && activeRoom ? ' show-panel' : ''}${signedOut ? ' signed-out' : ''}`}>
     <aside className="chat-list" aria-label="Cuộc trò chuyện">
       <header className="list-header">
+        <span className="brand-mark" title="Mora"><Mark size={30} label="Mora" /></span>
         <button className="icon-button rail-toggle" aria-label={rail ? 'Mở rộng danh sách' : 'Thu gọn danh sách'} title={rail ? 'Mở rộng danh sách' : 'Thu gọn danh sách'} aria-pressed={rail} onClick={toggleRail}><PanelLeft size={19} /></button>
         <button className="icon-button new-chat" aria-label="Cuộc trò chuyện mới" title="Cuộc trò chuyện mới" onClick={() => openModal('new')}><Plus size={20} /></button>
       </header>
@@ -326,7 +332,7 @@ export default function Workspace() {
         </button>)}
         {data && visibleRooms.length === 0 && <div className="list-empty"><p>{search ? 'Không tìm thấy cuộc trò chuyện' : 'Chưa có cuộc trò chuyện'}</p><button className="text-button" onClick={() => search ? setSearch('') : openModal('new')}>{search ? 'Xóa tìm kiếm' : 'Bắt đầu trò chuyện'}</button></div>}
       </nav>
-      {data && <footer className="list-footer" title={rail ? data.user.name : undefined}><PersonAvatar name={data.user.name} size={28} /><span className="footer-name">{data.user.name}</span></footer>}
+      {data && <footer className="list-footer" title={rail ? data.user.name : undefined}><PersonAvatar name={data.user.name} size={28} /><span className="footer-name">{data.user.name}</span><form action="/signout" method="post"><button className="icon-button" aria-label="Đăng xuất" title="Đăng xuất"><LogOut size={17} /></button></form></footer>}
     </aside>
     <main className="conversation" id="conversation" tabIndex={-1}>
       {activeRoom && <header className="chat-header">
@@ -339,11 +345,11 @@ export default function Workspace() {
       {activeRoom ? <>
         <div className="chat-scroll" ref={scroll} onScroll={() => { const element = scroll.current; if (element) nearBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 160; }}>
           <div className="message-list" role="log" aria-label={`Tin nhắn trong ${roomName(activeRoom)}`} aria-live="polite" aria-relevant="additions">
-            {timeline.length === 0 && <div className="conversation-empty">{roomFace(activeRoom, 64)}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Chưa có tin nhắn'}</p></div>}
+            {timeline.length === 0 && <div className="conversation-empty"><ArtFrame art={cover} sizes="352px" />{roomFace(activeRoom, 40)}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Chưa có tin nhắn. Gửi lời chào đầu tiên.'}</p></div>}
             {timeline.map((entry, index) => {
               const previous = timeline[index - 1];
               const divider = !previous || new Date(previous.at).toDateString() !== new Date(entry.at).toDateString() || entry.at - previous.at > 60 * 60000;
-              return <div key={entry.type === 'message' ? entry.message.id : `task-${entry.task.id}`}>{divider && <div className="date-divider">{dayLabel(entry.at)}</div>}{entry.type === 'message' ? messageView(entry.message, divider ? undefined : previous) : taskCard(entry.task)}</div>;
+              return <div key={entry.type === 'message' ? entry.message.id : `task-${entry.task.id}`}>{divider && <div className="date-divider"><span>{dayLabel(entry.at)}</span></div>}{entry.type === 'message' ? messageView(entry.message, divider ? undefined : previous) : taskCard(entry.task)}</div>;
             })}
             {typingHere.map(([key]) => <div className="message run-start typing-row" key={key} aria-hidden="true"><div className="message-bubble typing-bubble"><i /><i /><i /></div></div>)}
           </div>
@@ -365,13 +371,27 @@ export default function Workspace() {
             <button className="send-button" type="submit" aria-label={busy ? 'Đang gửi' : 'Gửi tin nhắn'} disabled={busy || !draft.trim()}><ArrowUp size={19} /></button>
           </form>
         </div>
-      </> : <div className="no-conversation"><h1>{data ? 'Chọn một cuộc trò chuyện' : ''}</h1>{data && <button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button>}</div>}
+      </> : signedOut ? <div className="welcome">
+        <ArtFrame art={ART.herringNet} className="scrim" sizes="(max-width: 700px) 100vw, 92vw" eager>
+          <div><h1>Làm tiếp,<br />không cần kể lại.</h1><p>Chat làm việc cùng đồng đội và bot AI. Bối cảnh ở lại trong phòng; bot chỉ làm sau khi bạn duyệt.</p></div>
+          <div className="welcome-foot"><div><Mark size={44} weight={2.2} /><p className="art-credit">{credit(ART.herringNet)}</p></div><Link className="on-art" href="/signin">Đăng nhập</Link></div>
+        </ArtFrame>
+      </div> : <div className="no-conversation">{data && <><ArtFrame art={ART.moonlight} sizes="(max-width: 700px) 100vw, 544px" /><h1>Chọn một cuộc trò chuyện</h1><button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button></>}</div>}
     </main>
     {panelOpen && activeRoom && <aside className="side-panel" id="details" aria-label="Chi tiết" onKeyDown={event => { if (event.key === 'Escape') showPanel(false); }}>
       <header className="panel-header"><h2>Chi tiết</h2><button className="icon-button" aria-label="Đóng chi tiết" title="Đóng" onClick={() => showPanel(false)}><X size={19} /></button></header>
       <div className="panel-body">
+        <figure className="panel-cover">
+          <ArtFrame art={cover} sizes="320px">
+            <div className="art-pills" aria-hidden="true">
+              {activeRoom.kind === 'group' ? <span className="art-pill">Thành viên<b>{members.length}</b></span> : <span className="art-pill">{other?.role ? 'Đồng đội AI' : 'Trò chuyện riêng'}</span>}
+              {context && <span className="art-pill">Kế hoạch<b>{tasks.length}</b></span>}
+            </div>
+          </ArtFrame>
+          <figcaption className="art-credit"><a href={cover.url} target="_blank" rel="noreferrer">{credit(cover)}</a></figcaption>
+        </figure>
         <section className="panel-identity">
-          {roomFace(activeRoom, 72)}
+          {roomFace(activeRoom, 56)}
           <h3>{roomName(activeRoom)}</h3>
           <p className="muted">{other?.role ? 'Đồng đội AI' : activeRoom.kind === 'group' ? `${members.length} thành viên` : 'Trò chuyện riêng'}</p>
           {other?.role && <p className="panel-role">{other.role}</p>}
