@@ -1,5 +1,17 @@
 # Interface review
 
+> **v4 revision (28/09/2026).** Paintings with people replaced by still
+> lifes, seascapes, fields and an empty interior; credit captions removed.
+> Avatars are circles: pigment discs for bots, initials without diacritics
+> (first and last word) for people, and two-member diagonal pairs for groups,
+> ordered by who spoke last. Removed the `AI` and `Mẫu` labels, the duplicate
+> add-member button in the chat header, the panel's frosted pills and its
+> repeated subtitle, and the second mark on sign-in. Added Vietnamese
+> relative dates in the room list, compact plan actions in the panel, a pill
+> reply composer, skeleton loading rows, a soft fade at the transcript edges
+> and the room name in the browser tab. Verified with the same checks and
+> screenshot set as below.
+
 > **v4 update (28/09/2026).** The interface now follows `docs/BRAND.md` v4:
 > paper and ink tones, Newsreader titles, the flourish mark, white cards on a
 > dotted paper canvas, and CC0 paintings for the signed-out welcome, sign-in,

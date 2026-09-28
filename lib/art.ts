@@ -1,21 +1,22 @@
 // Public-domain paintings (CC0 open access) served from /public/art in two sizes.
-// Rooms get a stable painting from their id; see docs/BRAND.md §5 for use.
-export type Art = { slug: string; title: string; artist: string; date: string; museum: string; url: string; tone: string; focus: string };
+// No people in any of them. Rooms get a stable painting from their id; see docs/BRAND.md §5.
+export type Art = { slug: string; title: string; artist: string; date: string; source: string; tone: string; focus: string };
 
 export const ART = {
-  loveLetter: { slug: 'fragonard-love-letter', title: 'The Love Letter', artist: 'Jean Honoré Fragonard', date: 'early 1770s', museum: 'The Met', url: 'https://www.metmuseum.org/art/collection/search/436322', tone: '#835c36', focus: '50% 28%' },
-  curiosity: { slug: 'terborch-curiosity', title: 'Curiosity', artist: 'Gerard ter Borch', date: 'ca. 1660–62', museum: 'The Met', url: 'https://www.metmuseum.org/art/collection/search/435714', tone: '#37322c', focus: '48% 55%' },
-  waterPitcher: { slug: 'vermeer-water-pitcher', title: 'Young Woman with a Water Pitcher', artist: 'Johannes Vermeer', date: 'ca. 1662', museum: 'The Met', url: 'https://www.metmuseum.org/art/collection/search/437881', tone: '#514e46', focus: '45% 30%' },
-  moonlight: { slug: 'hammershoi-moonlight', title: 'Moonlight, Strandgade 30', artist: 'Vilhelm Hammershøi', date: '1900–1906', museum: 'The Met', url: 'https://www.metmuseum.org/art/collection/search/441933', tone: '#614e47', focus: '50% 60%' },
-  reading: { slug: 'corot-interrupted-reading', title: 'Interrupted Reading', artist: 'Camille Corot', date: 'c. 1870', museum: 'Art Institute of Chicago', url: 'https://www.artic.edu/artworks/81512', tone: '#806a57', focus: '50% 30%' },
-  hucksters: { slug: 'turner-hucksters', title: 'Fishing Boats with Hucksters Bargaining for Fish', artist: 'J. M. W. Turner', date: '1837–38', museum: 'Art Institute of Chicago', url: 'https://www.artic.edu/artworks/4796', tone: '#897b66', focus: '38% 50%' },
-  whalers: { slug: 'turner-whalers', title: 'Whalers', artist: 'J. M. W. Turner', date: 'ca. 1845', museum: 'The Met', url: 'https://www.metmuseum.org/art/collection/search/437854', tone: '#b1a682', focus: '55% 50%' },
-  lark: { slug: 'breton-song-lark', title: 'The Song of the Lark', artist: 'Jules Breton', date: '1884', museum: 'Art Institute of Chicago', url: 'https://www.artic.edu/artworks/94841', tone: '#6b5d49', focus: '50% 38%' },
-  herringNet: { slug: 'homer-herring-net', title: 'The Herring Net', artist: 'Winslow Homer', date: '1885', museum: 'Art Institute of Chicago', url: 'https://www.artic.edu/artworks/25865', tone: '#625642', focus: '50% 55%' },
-  wheat: { slug: 'monet-stacks-wheat', title: 'Stacks of Wheat (End of Summer)', artist: 'Claude Monet', date: '1890–91', museum: 'Art Institute of Chicago', url: 'https://www.artic.edu/artworks/64818', tone: '#8b867c', focus: '55% 55%' },
+  oysters: { slug: 'heda-oysters', title: 'Still Life with Oysters, a Silver Tazza, and Glassware', artist: 'Willem Claesz Heda', date: '1635', source: 'https://www.metmuseum.org/art/collection/search/438376', tone: '#251b0e', focus: '62% 50%' },
+  peonies: { slug: 'manet-peonies', title: 'Peonies', artist: 'Édouard Manet', date: '1864–65', source: 'https://www.metmuseum.org/art/collection/search/436961', tone: '#595648', focus: '50% 30%' },
+  moonlight: { slug: 'hammershoi-moonlight', title: 'Moonlight, Strandgade 30', artist: 'Vilhelm Hammershøi', date: '1900–1906', source: 'https://www.metmuseum.org/art/collection/search/441933', tone: '#614e47', focus: '50% 60%' },
+  calmSea: { slug: 'courbet-calm-sea', title: 'The Calm Sea', artist: 'Gustave Courbet', date: '1869', source: 'https://www.metmuseum.org/art/collection/search/436005', tone: '#c2bc9b', focus: '50% 62%' },
+  northeaster: { slug: 'homer-northeaster', title: 'Northeaster', artist: 'Winslow Homer', date: '1895', source: 'https://www.metmuseum.org/art/collection/search/11130', tone: '#6d7c81', focus: '40% 50%' },
+  cannonRock: { slug: 'homer-cannon-rock', title: 'Cannon Rock', artist: 'Winslow Homer', date: '1895', source: 'https://www.metmuseum.org/art/collection/search/11113', tone: '#84908e', focus: '50% 45%' },
+  wheat: { slug: 'monet-stacks-wheat', title: 'Stacks of Wheat (End of Summer)', artist: 'Claude Monet', date: '1890–91', source: 'https://www.artic.edu/artworks/64818', tone: '#8b867c', focus: '62% 55%' },
+  snow: { slug: 'monet-stack-snow', title: 'Stack of Wheat (Snow Effect, Overcast Day)', artist: 'Claude Monet', date: '1890–91', source: 'https://www.artic.edu/artworks/16560', tone: '#8d868d', focus: '35% 55%' },
+  waterLilies: { slug: 'monet-water-lilies', title: 'Water Lilies', artist: 'Claude Monet', date: '1906', source: 'https://www.artic.edu/artworks/16568', tone: '#517381', focus: '50% 50%' },
+  flowersFruit: { slug: 'fantin-latour-flowers', title: 'Still Life with Flowers and Fruit', artist: 'Henri Fantin-Latour', date: '1866', source: 'https://www.metmuseum.org/art/collection/search/436293', tone: '#6e5b48', focus: '50% 42%' },
+  primroses: { slug: 'cezanne-primroses', title: 'Still Life with Apples and a Pot of Primroses', artist: 'Paul Cézanne', date: 'ca. 1890', source: 'https://www.metmuseum.org/art/collection/search/435882', tone: '#617e78', focus: '55% 55%' },
+  roses: { slug: 'vangogh-roses', title: 'Roses', artist: 'Vincent van Gogh', date: '1890', source: 'https://www.metmuseum.org/art/collection/search/436534', tone: '#7f9176', focus: '50% 38%' },
 } satisfies Record<string, Art>;
 
-// Room covers. The sign-in, welcome and empty states use their own fixed pieces.
-const COVERS: Art[] = [ART.waterPitcher, ART.hucksters, ART.lark, ART.reading, ART.herringNet, ART.wheat, ART.whalers, ART.loveLetter, ART.moonlight, ART.curiosity];
+// Room covers. The welcome, sign-in and empty states use their own fixed pieces.
+const COVERS: Art[] = [ART.calmSea, ART.waterLilies, ART.flowersFruit, ART.northeaster, ART.wheat, ART.primroses, ART.cannonRock, ART.roses, ART.snow, ART.oysters];
 export const coverFor = (id: string) => COVERS[Array.from(id).reduce((hash, char) => (hash * 33 + char.charCodeAt(0)) >>> 0, 5381) % COVERS.length];
-export const credit = (art: Art) => `${art.artist}, ${art.title}, ${art.date} · ${art.museum}`;

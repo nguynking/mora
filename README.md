@@ -14,4 +14,4 @@ pnpm test:layout
 
 For local authenticated development, configure `.env.local` from `.env.example`, provision a separate development Supabase project, apply migrations with `pnpm db:migrate`, then run `pnpm dev`. Load local environment values into the migration process using your shell or `node --env-file=.env.local scripts/migrate.mjs`.
 
-The interface follows [docs/BRAND.md](docs/BRAND.md) v4: paper and ink, a Newsreader serif for titles, the flourish mark, and public-domain paintings (CC0, credited in `lib/art.ts`). Old Sites build scripts and D1 migrations are retained for reference and data recovery, and are not used by Vercel.
+The interface follows [docs/BRAND.md](docs/BRAND.md) v4: paper and ink, a Newsreader serif for titles, the flourish mark, and public-domain paintings without people (CC0, sources in `lib/art.ts`). Old Sites build scripts and D1 migrations are retained for reference and data recovery, and are not used by Vercel.
