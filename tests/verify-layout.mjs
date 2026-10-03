@@ -22,9 +22,9 @@ try {
   assert.match(html, /aria-label="Cuộc trò chuyện mới"/);
   assert.match(html, /id="chat-search"/);
   assert.match(html, /aria-label="Thu gọn danh sách"/, 'The sidebar can collapse to an avatar rail.');
-  assert.match(html, /class="brand-mark"[^>]*><svg class="mora-mark/, 'The flourish mark heads the room list.');
-  assert.match(html, /<html[^>]*class="[^"]*newsreader/i, 'The display serif is self-hosted and applied to the document.');
-  console.log('PASS production shell: exactly adjacent chat panes, no intervening overlay, no wordmark, flourish mark, serif, search and new-chat controls present.');
+  assert.match(html, /class="brand-mark"[^>]*><svg class="mora-mark/, 'The arch mark heads the room list.');
+  assert.doesNotMatch(html, /newsreader|art-frame/i, 'The restored shell uses system typography and no decorative paintings.');
+  console.log('PASS production shell: exactly adjacent chat panes, no intervening overlay, no wordmark, arch mark, system typography, search and new-chat controls present.');
 } finally {
   server.kill('SIGTERM');
   if (server.exitCode === null) await new Promise(resolve => server.once('exit', resolve));
