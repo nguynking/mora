@@ -1,15 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader } from "next/font/google";
 import "./globals.css";
-
-// Display serif for titles and art captions. Self-hosted at build time; covers Vietnamese.
-const serif = Newsreader({
-  subsets: ["latin", "vietnamese"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-serif",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Mora",
@@ -23,8 +13,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ece8e0" },
-    { media: "(prefers-color-scheme: dark)", color: "#1d1c19" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f7f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b1b1b" },
   ],
 };
 
@@ -34,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={serif.variable}>
+    <html lang="vi">
       <body className="antialiased">{children}</body>
     </html>
   );

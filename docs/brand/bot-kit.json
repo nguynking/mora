@@ -1,0 +1,94 @@
+{
+  "$description": "Mora bot characters v4: the arch family. Geometry is in SVG path syntax on a 40 x 40 unit canvas. The same strings work as Android VectorDrawable pathData and WinUI/XAML Path data; SwiftUI and Compose parse them with any SVG path parser. See docs/BRAND.md section 6.",
+  "version": "4.0.0",
+  "canvas": { "width": 40, "height": 40 },
+  "keylines": {
+    "bodyLeft": 5,
+    "bodyRight": 35,
+    "baseline": 35,
+    "baseCornerRadius": 4,
+    "faceLine": 22.5,
+    "eyeCenters": [14.5, 25.5],
+    "eyeWidth": 5,
+    "eyeHeight": 5.4
+  },
+  "silhouettes": {
+    "arch": {
+      "name": "Vòm",
+      "reserved": "mora",
+      "path": "M5 20A15 15 0 0 1 35 20V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31Z"
+    },
+    "tile": {
+      "name": "Gạch",
+      "path": "M5 16A9 9 0 0 1 14 7H26A9 9 0 0 1 35 16V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31Z"
+    },
+    "bud": {
+      "name": "Búp",
+      "path": "M5 21C5 13.5 12 9.5 18.6 5.2Q20 4.3 21.4 5.2C28 9.5 35 13.5 35 21V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31Z"
+    },
+    "twin": {
+      "name": "Đôi",
+      "path": "M5 17A7.5 7.5 0 0 1 20 17A7.5 7.5 0 0 1 35 17V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31Z"
+    },
+    "bell": {
+      "name": "Chuông",
+      "path": "M10 17A10 10 0 0 1 30 17C30 24 35 25 35 29V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31V29C5 25 10 24 10 17Z"
+    },
+    "cup": {
+      "name": "Chén",
+      "path": "M5 11Q5 7 9 7Q20 17 31 7Q35 7 35 11V31A4 4 0 0 1 31 35H9A4 4 0 0 1 5 31Z"
+    }
+  },
+  "assignableSilhouettes": ["tile", "bud", "twin", "bell", "cup"],
+  "eyes": {
+    "$description": "Each glyph is drawn once per eye, centered on (cx, cy) = (14.5, 22.5) and (25.5, 22.5). Paths below are for the left eye; translate by +11 on x for the right eye.",
+    "arch": { "use": "idle, thinking, waiting", "path": "M12 24.4V22.3A2.5 2.5 0 0 1 17 22.3V24.4A0.8 0.8 0 0 1 16.2 25.2H12.8A0.8 0.8 0 0 1 12 24.4Z" },
+    "bar": { "use": "working", "path": "M13 21.3H16A1.2 1.2 0 0 1 16 23.7H13A1.2 1.2 0 0 1 13 21.3Z" },
+    "flip": { "use": "blocked (rotate left eye +14 deg and right eye -14 deg around each eye center)", "path": "M12 20.6V22.7A2.5 2.5 0 0 0 17 22.7V20.6A0.8 0.8 0 0 0 16.2 19.8H12.8A0.8 0.8 0 0 0 12 20.6Z" },
+    "smile": { "use": "done (stroke 2, round caps, no fill)", "path": "M12.1 23.7A2.4 2.4 0 0 1 16.9 23.7", "stroke": 2 },
+    "line": { "use": "paused", "path": "M12.9 23.1H16.1A0.8 0.8 0 0 1 16.1 24.7H12.9A0.8 0.8 0 0 1 12.9 23.1Z" }
+  },
+  "colors": {
+    "$description": "OKLCH with near-equal lightness so no bot looks more important. No hue within 45 degrees of the working purple (293). Paused = same lightness at 15% chroma.",
+    "ot": { "name": "Ớt", "hex": "#F87966", "oklch": "oklch(0.72 0.16 30)", "paused": "#B39F9C" },
+    "cam": { "name": "Cam", "hex": "#F99B44", "oklch": "oklch(0.77 0.15 60)", "paused": "#BFB1A6" },
+    "nghe": { "name": "Nghệ", "hex": "#F1C035", "oklch": "oklch(0.83 0.155 88)", "paused": "#CEC7B7" },
+    "com": { "name": "Cốm", "hex": "#A0D157", "oklch": "oklch(0.80 0.16 128)", "paused": "#B9C1B1" },
+    "la": { "name": "Lá", "hex": "#4BC680", "oklch": "oklch(0.74 0.15 155)", "paused": "#A0AFA5" },
+    "ngoc": { "name": "Ngọc", "hex": "#30C6BF", "oklch": "oklch(0.75 0.12 190)", "paused": "#A2B2B0" },
+    "troi": { "name": "Trời", "hex": "#4BAEED", "oklch": "oklch(0.72 0.13 240)", "paused": "#9AA7B0" },
+    "sen": { "name": "Sen", "hex": "#EC84B7", "oklch": "oklch(0.74 0.14 350)", "paused": "#B6A6AD" }
+  },
+  "eyeColor": "#141414",
+  "mora": { "body": "color.foreground", "eyes": "color.background" },
+  "states": {
+    "idle": { "vi": "Sẵn sàng", "eyes": "arch", "eyeOffset": [0, 0], "motion": "blink every 6 s (120 ms close)" },
+    "thinking": { "vi": "Đang nghĩ", "eyes": "arch", "eyeOffset": [1.2, -1.4], "motion": "eyes drift between (1.2,-1.4) and (-1.2,-1.4), 2.4 s alternate" },
+    "working": { "vi": "Đang làm", "eyes": "bar", "eyeOffset": [0, 0.6], "motion": "body nods 1.2 u every 0.8 s; eyes scan +/-1.2 u over 1.6 s" },
+    "waiting": { "vi": "Chờ duyệt", "eyes": "arch", "eyeOffset": [0, -1.6], "motion": "one 3.2 u hop every 3.2 s; blink every 4 s" },
+    "blocked": { "vi": "Cần giúp", "eyes": "flip", "eyeOffset": [0, 0.4], "motion": "three +/-1 u shakes in 400 ms, every 3 s" },
+    "done": { "vi": "Xong", "eyes": "smile", "eyeOffset": [0, 0], "motion": "one bounce (480 ms), hold 4 s, then idle" },
+    "paused": { "vi": "Tạm dừng", "eyes": "line", "eyeOffset": [0, 0], "motion": "none; body uses the paused color" }
+  },
+  "transitions": {
+    "acknowledge": "one 3.2 u hop, 320 ms, when the bot receives a mention or a task",
+    "eyeChange": "120 ms crossfade between eye glyphs"
+  },
+  "reducedMotion": "No loops, hops, shakes or bounces. Eye glyphs and offsets still change, so every state stays visible without motion.",
+  "sizes": {
+    "16": "Mention chip. Static idle face only.",
+    "20": "Author line in group chats. Static idle face only.",
+    "24": "Chat header. Expressions, no motion.",
+    "32": "Pickers, member lists.",
+    "36": "Sidebar row (default).",
+    "44": "Rail, mobile room list.",
+    "72": "Details panel identity.",
+    "96": "Empty states, onboarding, bot settings."
+  },
+  "assignment": {
+    "hash": "FNV-1a 32-bit over the UTF-8 bytes of the NFC-normalized bot id",
+    "combinations": "5 silhouettes x 8 colors = 40; index i maps to silhouette = assignableSilhouettes[i % 5], color = colors[floor(i / 5)]",
+    "order": "start = hash % 40; walk i = (start + k * 17) % 40 for k = 0..39 (17 is coprime with 40, so every pair is visited once)",
+    "rule": "Walk the order and take the first look whose silhouette and color are both unused in the workspace; if none, the first with an unused color; if none, the first unused pair; past 40 bots, the first in the order. So the first five bots get five silhouettes, the first eight get eight colors, and no two bots share a look until there are 40. Store { silhouette, color } on the bot and never recompute it; renaming a bot keeps its look. People can change it in bot settings."
+  }
+}

@@ -2,10 +2,10 @@
 import { uploadFile } from '@/lib/upload-file';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArtFrame, Mark } from './brand';
-import { ART, coverFor } from '@/lib/art';
+import { AiLabel, BotFace, Mark, sized } from './brand';
+import { botStatusText, workspaceLooks, type BotLook, type BotState } from '@/lib/bot-look';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUp, AtSign, Check, ChevronRight, CircleAlert, CircleCheck, CirclePause, Clock, Download, FileText, LoaderCircle, LogOut, MessageCircle, PanelLeft, PanelRight, Paperclip, Pencil, Plus, Search, Square, ThumbsUp, UserPlus, Users, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -13,13 +13,12 @@ import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 
 type Room = { id: string; name: string; description: string; created: number; kind: 'direct' | 'group'; restricted: number };
-type Person = { id: string; name: string; role?: string };
+type Person = { id: string; name: string; role?: string; created?: number; look?: BotLook };
 type Message = { id: string; room_id: string; author_id: string; author: string; text: string; kind: string; created: number; parent_id?: string; file_id?: string; file_name?: string };
 type Context = { room_id: string; goal: string; repo: string; decisions: string; revision: number; editor?: string; updated?: number };
 type Task = { id: string; room_id: string; title: string; plan: string; status: string; output?: string; error?: string; created: number; updated: number; mode: string; requester?: string; approved_by?: string };
 type State = { user: Person; rooms: Room[]; messages: Message[]; members: Person[]; bots: Person[]; roomMembers: { room_id: string; member_id: string }[]; reactions: { message_id: string; user_id: string; emoji: string }[]; contexts: Context[]; tasks: Task[]; aiConnected: boolean };
 type Modal = '' | 'new' | 'connect' | 'bot' | 'group' | 'add' | 'thread' | 'context' | 'plan' | 'mention';
-type BotState = 'working' | 'waiting' | undefined;
 type Entry = { type: 'message'; at: number; message: Message } | { type: 'task'; at: number; task: Task };
 const pad = (value: number) => String(value).padStart(2, '0');
 const time = (value: number) => { const date = new Date(value); return `${pad(date.getHours())}:${pad(date.getMinutes())}`; };
@@ -32,8 +31,8 @@ const recentTime = (value: number) => { const days = daysAgo(value); return days
 const dayLabel = (value: number) => { const days = daysAgo(value); return `${days <= 0 ? 'Hôm nay' : days === 1 ? 'Hôm qua' : days < 7 ? WEEKDAY_NAMES[new Date(value).getDay()] : shortDate(value)} ${time(value)}`; };
 const plain = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
 const normalize = (text: string) => plain(text).toLowerCase();
-// First and last word, without diacritics: "Thanh Ý" → TY, "Nguyễn Văn An" → NA.
-const initials = (name: string) => { const words = plain(name.replace(/@.*/, '')).split(/[\s._-]+/).filter(Boolean); return (words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0]?.[0] || '').toUpperCase(); };
+// First and last word, without tone marks; keep Đ: "Thanh Ý" → TY, "Nguyễn Văn An" → NA.
+const initials = (name: string) => { const words = name.replace(/@.*/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/[\s._-]+/).filter(Boolean); return (words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0]?.[0] || '').toUpperCase(); };
 // Seeded contexts carry a "· dữ liệu mẫu" suffix on the editor's name.
 const editorName = (name: string) => name.replace(/\s*·\s*(?:dữ liệu\s+)?mẫu$/iu, '');
 const parsePlan = (plan: string) => { try { const steps = JSON.parse(plan); return Array.isArray(steps) ? steps.map(String) : []; } catch { return []; } };
@@ -41,42 +40,27 @@ const statusText: Record<string, string> = { pending: 'Chờ duyệt', running: 
 const statusIcon: Record<string, typeof Clock> = { pending: Clock, running: LoaderCircle, generating: LoaderCircle, stopped: CirclePause, done: CircleCheck, failed: CircleAlert };
 const store = { get: (key: string) => { try { return localStorage.getItem(key); } catch { return null; } }, set: (key: string, value: string) => { try { localStorage.setItem(key, value); } catch { /* storage unavailable */ } } };
 
-// Every avatar is a circle. Bots are a pigment disc with two eyes; Mora is the ink one.
-const BOT_COLORS = ['#C4553A', '#D09A3B', '#6E8A4B', '#3E8C80', '#4A67A6', '#C7727C', '#9C5F33', '#8FA3AD'];
-const seedOf = (value: string) => Array.from(value).reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) >>> 0, 7);
-const sized = (size?: number) => size ? { '--size': `${size}px` } as CSSProperties : undefined;
-
-function BotFace({ id, size, state }: { id: string; size?: number; state?: BotState }) {
-  const mora = id === 'mora', seed = seedOf(id), gap = mora ? 5 : [4.6, 5.2, 5.8][seed % 3];
-  return <svg className={`bot-face${mora ? ' is-mora' : ''}${state ? ` is-${state}` : ''}`} style={sized(size)} viewBox="0 0 40 40" aria-hidden="true">
-    <circle cx="20" cy="20" r="20" fill={mora ? 'currentColor' : BOT_COLORS[(seed >>> 4) % BOT_COLORS.length]} />
-    <g className="eyes" style={{ fill: mora ? 'var(--background)' : 'var(--bot-eye)' }}>
-      <rect x={20 - gap - 1.7} y="14.5" width="3.4" height="7" rx="1.7" />
-      <rect x={20 + gap - 1.7} y="14.5" width="3.4" height="7" rx="1.7" />
-    </g>
-  </svg>;
-}
 function PersonAvatar({ name, size }: { name: string; size?: number }) {
   return <span className="avatar" style={sized(size)} aria-hidden="true">{initials(name)}</span>;
 }
 function Face({ person, name, size, state }: { person?: Person; name: string; size?: number; state?: BotState }) {
-  return person?.role ? <BotFace id={person.id} size={size} state={state} /> : <PersonAvatar name={name} size={size} />;
+  return person?.role ? <BotFace id={person.id} size={size} state={state} look={person.look} /> : <PersonAvatar name={name} size={size} />;
 }
-// A group is shown by two of its members, overlapping on the diagonal.
-function GroupAvatar({ faces, name, size }: { faces: Person[]; name: string; size?: number }) {
-  if (faces.length < 2) return <PersonAvatar name={name} size={size} />;
-  return <span className="avatar-stack" style={sized(size)} aria-hidden="true">{faces.slice(0, 2).map(person => <span className="avatar-slot" key={person.id}><Face person={person} name={person.name} /></span>)}</span>;
+function GroupAvatar({ name, size }: { name: string; size?: number }) {
+  return <span className="avatar group-avatar" style={sized(size)} aria-hidden="true">{initials(name)}</span>;
 }
 
 export default function Workspace() {
   const router = useRouter();
   const [data, setData] = useState<State | null>(null);
+  const [observedAt, setObservedAt] = useState(0);
   const [loadError, setLoadError] = useState('');
   const [needsLogin, setNeedsLogin] = useState(false);
   const [roomId, setRoomId] = useState('');
   const [mobileChat, setMobileChat] = useState(false);
   const [rail, setRail] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [panelOverlay, setPanelOverlay] = useState(false);
   const [search, setSearch] = useState('');
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -98,6 +82,7 @@ export default function Workspace() {
   const composer = useRef<HTMLTextAreaElement>(null);
   const proposalInput = useRef<HTMLTextAreaElement>(null);
   const panelToggle = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLElement>(null);
   const afterMenu = useRef<(() => void) | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const scroll = useRef<HTMLDivElement>(null);
@@ -116,7 +101,7 @@ export default function Workspace() {
       const result = await response.json() as State & { error?: string };
       if (sequence !== fetchSequence.current) return;
       if (!response.ok) { setNeedsLogin(response.status === 401); throw Error(result.error || 'Không tải được tin nhắn.'); }
-      setData(result); dataRef.current = result; setLoadError(''); setNeedsLogin(false);
+      setData(result); setObservedAt(Date.now()); dataRef.current = result; setLoadError(''); setNeedsLogin(false);
       setRoomId(current => {
         if (current) return current;
         const activity = new Map(result.rooms.map(room => [room.id, room.created]));
@@ -125,6 +110,16 @@ export default function Workspace() {
       });
     } catch (error) { if (sequence === fetchSequence.current) setLoadError(error instanceof Error ? error.message : 'Mất kết nối.'); }
   }, []);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 68.75rem)');
+    const sync = () => setPanelOverlay(media.matches);
+    const frame = requestAnimationFrame(sync);
+    media.addEventListener('change', sync);
+    return () => { cancelAnimationFrame(frame); media.removeEventListener('change', sync); };
+  }, []);
+  useEffect(() => {
+    if (panelOpen && panelOverlay) panel.current?.querySelector<HTMLButtonElement>('button')?.focus();
+  }, [panelOpen, panelOverlay]);
   useEffect(() => { const initial = setTimeout(() => void refresh(), 0); const timer = setInterval(() => { if (!document.hidden) void refresh(); }, 4000); return () => { clearTimeout(initial); clearInterval(timer); }; }, [refresh]);
   // Layout preferences are per browser and only read after hydration.
   useEffect(() => {
@@ -144,29 +139,31 @@ export default function Workspace() {
   }, [refresh, roomId]);
   async function act(action: string, values: Record<string, unknown> = {}, targetRoom = roomId) { try { return await post(action, values, targetRoom); } catch (error) { toast.error(error instanceof Error ? error.message : 'Vui lòng thử lại.', { duration: Infinity, closeButton: true }); } }
 
-  const people = useMemo(() => [...(data?.members || []), ...(data?.bots || [])], [data?.members, data?.bots]);
+  const people = useMemo(() => {
+    const looks = workspaceLooks(data?.bots || []);
+    return [...(data?.members || []), ...(data?.bots || []).map(bot => ({ ...bot, look: looks.get(bot.id) }))];
+  }, [data?.members, data?.bots]);
   const personById = (id: string) => people.find(person => person.id === id);
   const roomPeople = (room: Room) => people.filter(person => data?.roomMembers.some(member => member.room_id === room.id && member.member_id === person.id) || (!room.restricted && data?.members.some(member => member.id === person.id)));
   const roomName = (room: Room) => room.kind === 'direct' ? roomPeople(room).find(person => person.id !== data?.user.id)?.name || room.name : ({ product: 'Nhóm sản phẩm', general: 'Nhóm chung', ideas: 'Ý tưởng' }[room.id] || room.name);
   const counterpart = (room: Room) => room.kind === 'direct' ? roomPeople(room).find(person => person.id !== data?.user.id) : undefined;
   const botState = (room: Room, bot?: Person): BotState => {
-    if (Object.keys(typing).some(key => bot ? key === `${room.id}:${bot.id}` : key.startsWith(`${room.id}:`))) return 'working';
+    if (Object.keys(typing).some(key => bot ? key === `${room.id}:${bot.id}` : key.startsWith(`${room.id}:`))) return 'thinking';
+    if (failedReply?.room === room.id && (!bot || failedReply.bot.id === bot.id)) return 'blocked';
+    // Plans are handled by Mora; other bots must not inherit Mora's task status.
+    if (bot && bot.id !== 'mora') return 'idle';
     const roomTasks = data?.tasks.filter(task => task.room_id === room.id) || [];
     if (roomTasks.some(task => task.status === 'running' || task.status === 'generating')) return 'working';
+    if (roomTasks.some(task => task.status === 'failed')) return 'blocked';
     if (roomTasks.some(task => task.status === 'pending')) return 'waiting';
-  };
-  // The two most recent speakers (then other people, then bots), most recent in front.
-  // In a room of two, you sit behind the other member.
-  const groupFaces = (room: Room) => {
-    const inRoom = roomPeople(room), me = data?.user.id;
-    const recent = (data?.messages || []).filter(message => message.room_id === room.id && message.kind !== 'system').map(message => message.author_id).reverse();
-    const others = inRoom.filter(person => person.id !== me);
-    const ordered = [...new Set([...recent, ...others.filter(person => !person.role).map(person => person.id), ...others.map(person => person.id)])].map(id => others.find(person => person.id === id)).filter((person): person is Person => !!person);
-    return ordered.length > 1 ? [ordered[1], ordered[0]] : [...inRoom.filter(person => person.id === me), ...ordered];
+    const latest = [...roomTasks].sort((a, b) => b.updated - a.updated)[0];
+    if (latest?.status === 'stopped') return 'paused';
+    if (latest?.status === 'done' && observedAt - latest.updated < 4000) return 'done';
+    return 'idle';
   };
   const roomFace = (room: Room, size?: number) => {
     const other = counterpart(room);
-    if (room.kind === 'group') return <GroupAvatar faces={groupFaces(room)} name={roomName(room)} size={size} />;
+    if (room.kind === 'group') return <GroupAvatar name={roomName(room)} size={size} />;
     return <Face person={other} name={roomName(room)} size={size} state={other?.role ? botState(room, other) : undefined} />;
   };
   const rooms = useMemo(() => {
@@ -182,8 +179,7 @@ export default function Workspace() {
   const messages = data?.messages.filter(message => message.room_id === activeId) || [];
   const tasks = data?.tasks.filter(task => task.room_id === activeId) || [];
   const context = data?.contexts.find(item => item.room_id === activeId);
-  const cover = coverFor(activeId);
-  const activeState = activeRoom ? botState(activeRoom) : undefined;
+  const activeState = activeRoom ? botState(activeRoom, other) : 'idle';
   const typingHere = Object.entries(typing).filter(([key]) => key.startsWith(activeId + ':'));
   const draft = drafts[activeId] || '';
   const visibleRooms = rooms.filter(({ room, latest }) => normalize(`${roomName(room)} ${latest?.text || ''}`).includes(normalize(search)));
@@ -313,7 +309,7 @@ export default function Workspace() {
     const showAuthor = !own && runStart && (inThread || activeRoom?.kind === 'group' || message.kind === 'sample');
     const author = personById(message.author_id);
     return <article className={`message${own ? ' own' : ''}${runStart ? ' run-start' : ''}${likes || replies.length ? ' has-activity' : ''}`} key={message.id}>
-      {showAuthor && <div className="message-author"><Face person={author} name={message.author} size={20} />{message.author}</div>}
+      {showAuthor && <div className="message-author"><Face person={author} name={message.author} size={20} />{message.author}{(author?.role || message.kind === 'agent') && <AiLabel />}</div>}
       <div className="message-bubble" tabIndex={0}><p>{message.text}</p>{message.file_id && <a className="attachment" href={`/api/files?id=${message.file_id}`}><FileText size={20} /><span>{message.file_name}</span><Download size={16} /></a>}</div>
       <div className="message-meta"><time dateTime={new Date(message.created).toISOString()}>{time(message.created)}</time><button aria-label={`Thích tin nhắn của ${message.author}`} aria-pressed={reactions.some(reaction => reaction.user_id === data?.user.id && reaction.emoji === 'thumb')} onClick={() => void act('react', { message: message.id, emoji: 'thumb' }, activeId)}><ThumbsUp size={14} />{likes || ''}</button>{!inThread && <button aria-label={`Trả lời tin nhắn của ${message.author}`} onClick={() => { setThread(message); setReply(''); openModal('thread'); }}><MessageCircle size={14} />{replies.length > 0 ? `${replies.length} trả lời` : ''}</button>}</div>
     </article>;
@@ -326,7 +322,7 @@ export default function Workspace() {
     <Toaster position="bottom-center" />
     <a className="skip-link" href="#conversation" onClick={() => setMobileChat(true)}>Đến cuộc trò chuyện</a>
     <div className={`mora-app${mobileChat ? ' show-chat' : ''}${rail ? ' rail' : ''}${panelOpen && activeRoom ? ' show-panel' : ''}${signedOut ? ' signed-out' : ''}`}>
-    <aside className="chat-list" aria-label="Cuộc trò chuyện">
+    <aside className="chat-list" aria-label="Cuộc trò chuyện" inert={panelOpen && panelOverlay ? true : undefined}>
       <header className="list-header">
         <span className="brand-mark" title="Mora"><Mark size={30} label="Mora" /></span>
         <button className="icon-button rail-toggle" aria-label={rail ? 'Mở rộng danh sách' : 'Thu gọn danh sách'} title={rail ? 'Mở rộng danh sách' : 'Thu gọn danh sách'} aria-pressed={rail} onClick={toggleRail}><PanelLeft size={19} /></button>
@@ -336,30 +332,36 @@ export default function Workspace() {
       {loadError && <div className="list-error">{errorBanner}</div>}
       <nav className="conversation-list" aria-label="Tin nhắn gần đây">
         {!data && !loadError && <div className="list-loading" role="status"><span className="sr-only">Đang tải tin nhắn…</span>{[0, 1, 2, 3, 4].map(index => <div className="skeleton-row" key={index} aria-hidden="true"><i /><span><b /><b /></span></div>)}</div>}
-        {visibleRooms.map(({ room, latest }) => <button className={`conversation-row${activeId === room.id ? ' selected' : ''}`} key={room.id} onClick={() => selectRoom(room.id)} aria-current={activeId === room.id ? 'page' : undefined} title={rail ? roomName(room) : undefined}>
-          {roomFace(room)}<span className="conversation-copy"><span className="conversation-top"><strong>{roomName(room)}</strong><time>{recentTime(latest?.created || room.created)}</time></span><span className="conversation-preview">{latest ? `${latest.author_id === data?.user.id ? 'Bạn: ' : room.kind === 'group' && latest.kind !== 'system' ? latest.author.split(' ').slice(-2).join(' ') + ': ' : ''}${latest.file_name || latest.text}` : 'Chưa có tin nhắn'}</span></span>
-        </button>)}
+        {visibleRooms.map(({ room, latest }) => {
+          const peer = counterpart(room);
+          const state = botState(room, peer);
+          const prefix = latest?.author_id === data?.user.id ? 'Bạn: ' : room.kind === 'group' && latest?.kind !== 'system' ? `${latest?.author.split(' ').at(-1)}: ` : '';
+          const preview = drafts[room.id] ? `Bản nháp: ${drafts[room.id]}` : peer?.role && state !== 'idle' ? botStatusText(state) : latest ? `${prefix}${latest.file_name || latest.text}` : peer?.role ? 'Sẵn sàng' : 'Chưa có tin nhắn';
+          return <button className={`conversation-row${activeId === room.id ? ' selected' : ''}`} key={room.id} onClick={() => selectRoom(room.id)} aria-current={activeId === room.id ? 'page' : undefined} title={roomName(room)}>
+            {roomFace(room)}<span className="conversation-copy"><span className="conversation-top"><strong><span className="room-name">{roomName(room)}</span>{peer?.role && <AiLabel />}</strong><time>{recentTime(latest?.created || room.created)}</time></span><span className="conversation-preview">{preview}</span></span>
+          </button>;
+        })}
         {data && visibleRooms.length === 0 && <div className="list-empty"><p>{search ? 'Không tìm thấy cuộc trò chuyện' : 'Chưa có cuộc trò chuyện'}</p><button className="text-button" onClick={() => search ? setSearch('') : openModal('new')}>{search ? 'Xóa tìm kiếm' : 'Bắt đầu trò chuyện'}</button></div>}
       </nav>
       {data && <footer className="list-footer" title={rail ? data.user.name : undefined}><PersonAvatar name={data.user.name} size={28} /><span className="footer-name">{data.user.name}</span><form action="/signout" method="post"><button className="icon-button" aria-label="Đăng xuất" title="Đăng xuất"><LogOut size={17} /></button></form></footer>}
     </aside>
-    <main className="conversation" id="conversation" tabIndex={-1}>
+    <main className="conversation" id="conversation" tabIndex={-1} inert={panelOpen && panelOverlay ? true : undefined}>
       {activeRoom && <header className="chat-header">
         <button className="icon-button mobile-back" aria-label="Về danh sách trò chuyện" onClick={() => setMobileChat(false)}><ArrowLeft size={20} /></button>
-        <button className="chat-identity" onClick={() => showPanel(true)} aria-label={`${roomName(activeRoom)}, xem chi tiết`}>{roomFace(activeRoom, 32)}<h1>{roomName(activeRoom)}</h1></button>
+        <button className="chat-identity" onClick={() => showPanel(true)} aria-label={`${roomName(activeRoom)}${other?.role ? `, đồng đội AI, ${botStatusText(activeState)}` : ''}, xem chi tiết`}>{roomFace(activeRoom, 24)}<span className="identity-copy"><span className="identity-name"><h1>{roomName(activeRoom)}</h1>{other?.role && <AiLabel />}</span>{other?.role && <span className="identity-status">{botStatusText(activeState)}</span>}</span></button>
         <button ref={panelToggle} className={`icon-button panel-toggle${activeState === 'working' ? ' is-active' : ''}`} aria-label={activeState === 'working' ? 'Chi tiết, bot đang làm việc' : 'Chi tiết'} title="Chi tiết" aria-pressed={panelOpen} aria-controls="details" onClick={() => showPanel(!panelOpen)}><PanelRight size={19} /></button>
       </header>}
       {loadError && <div className="chat-error">{errorBanner}</div>}
       {activeRoom ? <>
         <div className="chat-scroll" ref={scroll} onScroll={() => { const element = scroll.current; if (element) nearBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 160; }}>
           <div className="message-list" role="log" aria-label={`Tin nhắn trong ${roomName(activeRoom)}`} aria-live="polite" aria-relevant="additions">
-            {timeline.length === 0 && <div className="conversation-empty">{panelOpen ? roomFace(activeRoom, 72) : <ArtFrame art={cover} sizes="352px" />}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Gửi lời chào đầu tiên.'}</p></div>}
+            {timeline.length === 0 && <div className="conversation-empty">{roomFace(activeRoom, 72)}<h2>{roomName(activeRoom)}</h2><p>{other?.role || 'Gửi lời chào đầu tiên.'}</p></div>}
             {timeline.map((entry, index) => {
               const previous = timeline[index - 1];
               const divider = !previous || new Date(previous.at).toDateString() !== new Date(entry.at).toDateString() || entry.at - previous.at > 60 * 60000;
               return <div key={entry.type === 'message' ? entry.message.id : `task-${entry.task.id}`}>{divider && <div className="date-divider"><span>{dayLabel(entry.at)}</span></div>}{entry.type === 'message' ? messageView(entry.message, divider ? undefined : previous) : taskCard(entry.task)}</div>;
             })}
-            {typingHere.map(([key, botName]) => <div className="message run-start typing-row" key={key} aria-hidden="true">{activeRoom.kind === 'group' && <div className="message-author"><Face person={personById(key.slice(activeId.length + 1))} name={botName} size={20} state="working" />{botName}</div>}<div className="message-bubble typing-bubble"><i /><i /><i /></div></div>)}
+            {typingHere.map(([key, botName]) => <div className="message run-start typing-row" key={key} aria-hidden="true">{activeRoom.kind === 'group' && <div className="message-author"><Face person={personById(key.slice(activeId.length + 1))} name={botName} size={20} state="thinking" />{botName}<AiLabel /></div>}<div className="message-bubble typing-bubble"><i /><i /><i /></div></div>)}
           </div>
         </div>
         <div className="composer-area">
@@ -375,25 +377,29 @@ export default function Workspace() {
                 {context && <DropdownMenuItem onSelect={() => { showPanel(true); afterMenu.current = () => proposalInput.current?.focus(); }}><Check size={16} />Tạo kế hoạch</DropdownMenuItem>}
               </DropdownMenuContent>
             </DropdownMenu>
-            <label className="sr-only" htmlFor="message">Tin nhắn</label><textarea id="message" ref={composer} rows={1} placeholder={`Nhắn ${roomName(activeRoom)}`} value={draft} maxLength={6000} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void send(); } }} />
+            <label className="sr-only" htmlFor="message">Tin nhắn</label><textarea id="message" ref={composer} rows={1} placeholder={`Nhắn ${roomName(activeRoom)}`} value={draft} maxLength={6000} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229 && !window.matchMedia('(pointer: coarse)').matches) { event.preventDefault(); void send(); } }} />
             <button className="send-button" type="submit" aria-label={busy ? 'Đang gửi' : 'Gửi tin nhắn'} disabled={busy || !draft.trim()}><ArrowUp size={19} /></button>
           </form>
         </div>
       </> : signedOut ? <div className="welcome">
-        <ArtFrame art={ART.oysters} sizes="(max-width: 700px) 100vw, 92vw" eager>
-          <div><h1>Làm tiếp,<br />không cần kể lại.</h1><p>Chat làm việc cùng đồng đội và bot AI. Bối cảnh ở lại trong phòng; bot chỉ làm sau khi bạn duyệt.</p></div>
-          <div className="welcome-foot"><Mark size={44} weight={2.2} /><Link className="on-art" href="/signin">Đăng nhập</Link></div>
-        </ArtFrame>
-      </div> : <div className="no-conversation">{data && <><ArtFrame art={ART.moonlight} sizes="(max-width: 700px) 100vw, 544px" /><h1>Chọn một cuộc trò chuyện</h1><button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button></>}</div>}
+        <div className="welcome-content"><Mark size={72} /><h1>Làm tiếp,<br />không cần kể lại.</h1><p>Chat làm việc cùng đồng đội và bot AI.</p><Link className="primary" href="/signin">Đăng nhập</Link></div>
+      </div> : <div className="no-conversation">{data && <><Mark size={72} /><h1>Chọn một cuộc trò chuyện</h1><p>Nhắn cho đồng đội hoặc bắt đầu làm việc cùng bot.</p><button className="primary" onClick={() => openModal('new')}>Cuộc trò chuyện mới</button></>}</div>}
     </main>
-    {panelOpen && activeRoom && <aside className="side-panel" id="details" aria-label="Chi tiết" onKeyDown={event => { if (event.key === 'Escape') showPanel(false); }}>
+    {panelOpen && activeRoom && <aside ref={panel} className="side-panel" id="details" aria-label="Chi tiết" role={panelOverlay ? 'dialog' : undefined} aria-modal={panelOverlay ? true : undefined} tabIndex={-1} onKeyDown={event => {
+      if (event.key === 'Escape') showPanel(false);
+      if (panelOverlay && event.key === 'Tab' && !modal) {
+        const controls = Array.from(panel.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), [tabindex="0"]') || []).filter(element => element.offsetParent !== null);
+        const first = controls[0], last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    }}>
       <header className="panel-header"><h2>Chi tiết</h2><button className="icon-button" aria-label="Đóng chi tiết" title="Đóng" onClick={() => showPanel(false)}><X size={19} /></button></header>
       <div className="panel-body">
-        <ArtFrame art={cover} className="panel-cover" sizes="320px" />
         <section className="panel-identity">
-          {roomFace(activeRoom, 64)}
-          <h3>{roomName(activeRoom)}</h3>
-          {other?.role ? <p className="muted">{other.role}</p> : activeRoom.kind === 'group' && <p className="muted">{members.length} thành viên</p>}
+          {roomFace(activeRoom, 72)}
+          <h3>{roomName(activeRoom)}{other?.role && <AiLabel />}</h3>
+          {other?.role ? <><p className="bot-status">{botStatusText(activeState)}</p><p className="muted">{other.role}</p></> : activeRoom.kind === 'group' && <p className="muted">{members.length} thành viên</p>}
           {other?.role && !data?.aiConnected && <p className="muted">Chưa kết nối dịch vụ AI.</p>}
         </section>
         {context && <section className="panel-section">
@@ -409,7 +415,7 @@ export default function Workspace() {
         </section>}
         {activeRoom.kind === 'group' && <section className="panel-section">
           <div className="section-head"><h3>Thành viên</h3><button className="text-button" onClick={() => openModal('add')}>Thêm</button></div>
-          <ul className="member-list">{members.map(person => <li key={person.id}><Face person={person} name={person.name} size={28} /><span><strong>{person.name}</strong>{person.id === data?.user.id ? <small>Bạn</small> : person.role && <small>{person.role}</small>}</span></li>)}</ul>
+          <ul className="member-list">{members.map(person => <li key={person.id}><Face person={person} name={person.name} size={28} state={person.role ? botState(activeRoom, person) : undefined} /><span><strong>{person.name}{person.role && <AiLabel />}</strong>{person.id === data?.user.id ? <small>Bạn</small> : person.role && <small>{botStatusText(botState(activeRoom, person))} · {person.role}</small>}</span></li>)}</ul>
         </section>}
       </div>
     </aside>}
@@ -423,13 +429,13 @@ export default function Workspace() {
         {(modal === 'bot' || modal === 'group' || modal === 'add' || modal === 'context' || modal === 'plan') && <form className="modal-form" onSubmit={submitForm}>
           {(modal === 'bot' || modal === 'group') && <label htmlFor="new-name">{modal === 'bot' ? 'Tên bot' : 'Tên nhóm'}<input id="new-name" name="name" autoComplete="off" value={name} onChange={event => setName(event.target.value)} placeholder={modal === 'bot' ? 'Ví dụ: An' : 'Ví dụ: Nhóm bán hàng'} required maxLength={modal === 'bot' ? 50 : 60} /></label>}
           {modal === 'bot' && <label htmlFor="bot-role">Vai trò<textarea id="bot-role" name="role" value={role} onChange={event => setRole(event.target.value)} placeholder="Ví dụ: Hỗ trợ bán hàng, tư vấn sản phẩm và soạn tin nhắn cho khách." required maxLength={2000} rows={4} /></label>}
-          {(modal === 'group' || modal === 'add') && <><label htmlFor="member-search">Thành viên<input id="member-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></label><div className="member-picker">{picker.map(person => <label className="member-option" key={person.id}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>{person.role}</small>}</span><input type="checkbox" checked={selected.includes(person.id)} onChange={event => setSelected(current => event.target.checked ? [...current, person.id] : current.filter(id => id !== person.id))} /></label>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div></>}
+          {(modal === 'group' || modal === 'add') && <><label htmlFor="member-search">Thành viên<input id="member-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></label><div className="member-picker">{picker.map(person => <label className="member-option" key={person.id}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}{person.role && <AiLabel />}</strong>{person.role && <small>{person.role}</small>}</span><input type="checkbox" checked={selected.includes(person.id)} onChange={event => setSelected(current => event.target.checked ? [...current, person.id] : current.filter(id => id !== person.id))} /></label>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div></>}
           {modal === 'context' && editingContext && <><label>Mục tiêu<textarea rows={2} required value={editingContext.goal} onChange={event => setEditingContext({ ...editingContext, goal: event.target.value })} /></label><label>Kho mã tham chiếu<input value={editingContext.repo} placeholder="owner/repository" onChange={event => setEditingContext({ ...editingContext, repo: event.target.value })} /></label><label>Quyết định<textarea rows={4} value={editingContext.decisions} onChange={event => setEditingContext({ ...editingContext, decisions: event.target.value })} /></label></>}
           {modal === 'plan' && <label>Các bước thực hiện<textarea rows={6} value={plan} onChange={event => setPlan(event.target.value)} required /></label>}
           <button className="primary form-submit" type="submit" disabled={saving}>{saving ? 'Đang lưu…' : modal === 'bot' ? 'Tạo bot' : modal === 'group' ? 'Tạo nhóm' : modal === 'add' ? 'Thêm thành viên' : 'Lưu'}</button>
         </form>}
-        {modal === 'connect' && <><div className="search-field dialog-search"><Search size={16} /><label className="sr-only" htmlFor="connect-search">Tìm người hoặc bot</label><input id="connect-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></div><div className="member-picker">{picker.map(person => <button className="member-option" key={person.id} disabled={saving} onClick={() => void connect(person)}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}</strong>{person.role && <small>{person.role}</small>}</span><ChevronRight size={18} /></button>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div><p className="member-help">Thành viên xuất hiện ở đây sau khi được cấp quyền truy cập Mora và đăng nhập.</p><button className="text-button" onClick={async () => { try { await navigator.clipboard.writeText(window.location.origin); toast.success('Đã sao chép liên kết. Liên kết không tự cấp quyền truy cập.'); } catch { toast.error('Bạn có thể sao chép URL trên thanh địa chỉ.'); } }}>Sao chép liên kết Mora</button></>}
-        {modal === 'mention' && <div className="member-picker">{chatBots.map(bot => <button className="member-option" key={bot.id} onClick={() => { setDraft(`${draft}${draft && !draft.endsWith(' ') ? ' ' : ''}@${bot.name} `); setModal(''); setTimeout(() => composer.current?.focus(), 0); }}><BotFace id={bot.id} size={32} /><span><strong>{bot.name}</strong><small>{bot.role}</small></span></button>)}</div>}
+        {modal === 'connect' && <><div className="search-field dialog-search"><Search size={16} /><label className="sr-only" htmlFor="connect-search">Tìm người hoặc bot</label><input id="connect-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Tìm người hoặc bot" /></div><div className="member-picker">{picker.map(person => <button className="member-option" key={person.id} disabled={saving} onClick={() => void connect(person)}><Face person={person} name={person.name} size={32} /><span><strong>{person.name}{person.role && <AiLabel />}</strong>{person.role && <small>{person.role}</small>}</span><ChevronRight size={18} /></button>)}{!picker.length && <p className="muted">Không tìm thấy thành viên.</p>}</div><p className="member-help">Thành viên xuất hiện ở đây sau khi được cấp quyền truy cập Mora và đăng nhập.</p><button className="text-button" onClick={async () => { try { await navigator.clipboard.writeText(window.location.origin); toast.success('Đã sao chép liên kết. Liên kết không tự cấp quyền truy cập.'); } catch { toast.error('Bạn có thể sao chép URL trên thanh địa chỉ.'); } }}>Sao chép liên kết Mora</button></>}
+        {modal === 'mention' && <div className="member-picker">{chatBots.map(bot => <button className="member-option" key={bot.id} onClick={() => { setDraft(`${draft}${draft && !draft.endsWith(' ') ? ' ' : ''}@${bot.name} `); setModal(''); setTimeout(() => composer.current?.focus(), 0); }}><BotFace id={bot.id} size={32} look={bot.look} /><span><strong>{bot.name}<AiLabel /></strong><small>{bot.role}</small></span></button>)}</div>}
         {modal === 'thread' && thread && <><div className="thread-messages">{messageView(thread, undefined, true)}{messages.filter(message => message.parent_id === thread.id).map(message => messageView(message, undefined, true))}</div><form className="reply-form" onSubmit={event => { event.preventDefault(); void send(reply, thread.id); }}><label className="sr-only" htmlFor="thread-reply">Tin nhắn trả lời</label><textarea id="thread-reply" rows={1} placeholder="Trả lời" value={reply} onChange={event => setReply(event.target.value)} maxLength={6000} /><button className="send-button" disabled={busy || !reply.trim()} aria-label="Gửi trả lời"><ArrowUp size={19} /></button></form></>}
       </DialogContent>
     </Dialog>
